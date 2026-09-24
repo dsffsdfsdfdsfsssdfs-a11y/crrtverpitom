@@ -1,11 +1,12 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import content from '../data/site.json';
 
 export default function Home() {
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
-  const c=content;
+  const [c,setContent]=useState(content);
+  useEffect(()=>{const receive=(event:MessageEvent)=>{if(event.data?.type==='crr-preview')setContent(event.data.content)};window.addEventListener('message',receive);return()=>window.removeEventListener('message',receive)},[]);
   const fontStyles={'--headingFont':`${c.appearance.headingFont}, Georgia, serif`,'--bodyFont':`${c.appearance.bodyFont}, Arial, sans-serif`} as React.CSSProperties;
   const videoSrc=(url:string)=>url.includes('watch?v=')?url.replace('watch?v=','embed/'):url;
   return <main style={fontStyles}>
