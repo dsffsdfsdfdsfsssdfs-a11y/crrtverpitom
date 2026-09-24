@@ -24,6 +24,7 @@ export default function HomeClient({initialContent,inlineLogo='',initialLogoUrl=
       <img src={c.hero.image} alt="" decoding="async" style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
       <span/>
     </div>
+    <div className="overscroll-bottom-backdrop" aria-hidden="true"/>
     <main style={fontStyles}>
     <header className="topbar">
       <a className="brand header-brand" href="#top"><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc?<img className="brand-image" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}} src={logoSrc} alt="Логотип" loading="eager" decoding="sync" fetchPriority="high"/>:<span className="brand-mark">ЦР</span>}</span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
