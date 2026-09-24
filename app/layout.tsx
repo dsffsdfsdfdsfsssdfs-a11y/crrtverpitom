@@ -1,5 +1,7 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
+
+export const viewport: Viewport = { themeColor: '#1d1511' };
 
 export const metadata: Metadata = {
   title: 'Центр размножения растений — Тверь',
