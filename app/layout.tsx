@@ -5,20 +5,16 @@ export const viewport: Viewport = { themeColor: '#f3eee4' };
 
 export const metadata: Metadata = {
   title: 'Центр размножения растений — Тверь',
-  description: 'Декоративные растения собственного производства в Тверской области.',
-  icons: {
-    icon: [{ url: '/favicon-v13.png?v=13', type: 'image/png', sizes: '64x64' }],
-    shortcut: ['/favicon-v13.png?v=13'],
-    apple: [{ url: '/favicon-v13.png?v=13', type: 'image/png', sizes: '64x64' }]
-  }
+  description: 'Декоративные растения собственного производства в Тверской области.'
 };
 
 export default function RootLayout({children}:{children:React.ReactNode}) {
   return (
     <html lang="ru">
       <head>
-        <link rel="icon" type="image/png" sizes="64x64" href="/favicon-v13.png?v=13" />
-        <link rel="shortcut icon" type="image/png" href="/favicon-v13.png?v=13" />
+        <link rel="icon" type="image/png" sizes="64x64" href="/favicon-v14.png?v=14" />
+        <link rel="shortcut icon" type="image/png" href="/favicon-v14.png?v=14" />
+        <link rel="apple-touch-icon" href="/favicon-v14.png?v=14" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
