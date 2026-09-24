@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 
 const name = 'crr_admin_session';
 const secret = () => process.env.ADMIN_SESSION_SECRET || '';
-export function configured() { return Boolean(process.env.ADMIN_PASSWORD && secret() && process.env.GITHUB_TOKEN); }
+export function configured() { return Boolean(process.env.ADMIN_PASSWORD && secret()); }
 function sign(value:string) { return createHmac('sha256', secret()).update(value).digest('hex'); }
 export function token() { const value = 'owner'; return `${value}.${sign(value)}`; }
 export async function isAdmin() { const value=(await cookies()).get(name)?.value; if(!value || !secret()) return false; const [body,signature]=value.split('.'); const expected=sign(body||''); if(!body||!signature||signature.length!==expected.length) return false; return timingSafeEqual(Buffer.from(signature),Buffer.from(expected)); }
