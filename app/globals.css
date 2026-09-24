@@ -16,6 +16,10 @@
 @media(max-width:1100px) and (min-width:761px){.topbar{grid-template-columns:minmax(300px,1fr) auto}.topbar .phone{display:none}.topbar nav{gap:1.35rem}}
 @media(max-width:760px){.topbar{display:flex}.brand-logo-slot{min-height:52px}.header-brand .brand-copy{white-space:normal}}
 
-main{width:100%;min-height:100vh;background:var(--cream);display:block}
+main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cream);display:block}
 
-body::before{content:'';position:fixed;left:0;right:0;top:-100vh;bottom:-100vh;background:#1d1511;z-index:-9999;pointer-events:none}
+
+.overscroll-top-backdrop{position:fixed;z-index:0;left:0;right:0;top:0;height:790px;overflow:hidden;background:#1d1511;pointer-events:none}
+.overscroll-top-backdrop img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:center}
+.overscroll-top-backdrop span{position:absolute;inset:0;background:linear-gradient(90deg,#1b120ddd,#1b120d33),linear-gradient(0deg,#1f161288,transparent 50%)}
+@media(max-width:760px){.overscroll-top-backdrop{height:700px}}
