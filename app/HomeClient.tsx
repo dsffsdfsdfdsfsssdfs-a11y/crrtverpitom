@@ -20,10 +20,6 @@ export default function HomeClient({initialContent,inlineLogo='',initialLogoUrl=
   const videoSrc=(url:string)=>url.includes('watch?v=')?url.replace('watch?v=','embed/'):url;
   const logoSrc=inlineLogo&&c.header.logoImage===initialLogoUrl?inlineLogo:c.header.logoImage;
   return <>
-    <div className="overscroll-top-backdrop" aria-hidden="true">
-      <img src={c.hero.image} alt="" decoding="async" style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
-      <span/>
-    </div>
     <div className="overscroll-bottom-backdrop" aria-hidden="true"/>
     <main style={fontStyles}>
     <header className="topbar">
@@ -32,6 +28,10 @@ export default function HomeClient({initialContent,inlineLogo='',initialLogoUrl=
       <a className="phone desktop" href={'tel:+'+c.phoneLink}>{c.phone}</a><button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
     <section className="hero" id="top">
+      <div className="hero-top-extension" aria-hidden="true">
+        <img src={c.hero.image} alt="" decoding="async" style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
+        <span/>
+      </div>
       <img className="hero-bg" src={c.hero.image} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
       <div className="hero-overlay"/><div className="hero-copy" style={{transform:`translate(${heroTextX}px,${heroTextY}px)`}}>
         <p className="eyebrow">{c.hero.eyebrow}</p><h1 style={{fontSize:`calc(clamp(3.3rem,6.3vw,6.7rem) * ${Number(c.hero.titleSize)/100})`}}>{c.hero.title}<br/><em>{c.hero.accent}</em></h1>
