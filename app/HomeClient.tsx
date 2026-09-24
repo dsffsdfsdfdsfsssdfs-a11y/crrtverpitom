@@ -13,8 +13,6 @@ export default function HomeClient({initialContent,inlineLogo='',initialLogoUrl=
   const logoY=clamp(num(c.header.logoY,0),-20,20);
   const textX=clamp(num(c.header.textX,0),-25,45);
   const textY=clamp(num(c.header.textY,0),-20,20);
-  const heroTextX=clamp(num(c.hero.textX,0),-100,180);
-  const heroTextY=clamp(num(c.hero.textY,0),-24,280);
   const logoSlot=Math.max(68,logoSize+Math.abs(logoX)+16);
   const fontStyles={'--headingFont':`${c.appearance.headingFont}, Georgia, serif`,'--bodyFont':`${c.appearance.bodyFont}, Arial, sans-serif`} as React.CSSProperties;
   const videoSrc=(url:string)=>url.includes('watch?v=')?url.replace('watch?v=','embed/'):url;
