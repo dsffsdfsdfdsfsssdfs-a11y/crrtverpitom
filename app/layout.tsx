@@ -7,9 +7,9 @@ export const metadata: Metadata = {
   title: 'Центр размножения растений — Тверь',
   description: 'Декоративные растения собственного производства в Тверской области.',
   icons: {
-    icon: [{ url: '/favicon-v12.png?v=12', type: 'image/png', sizes: '64x64' }],
-    shortcut: ['/favicon-v12.png?v=12'],
-    apple: [{ url: '/favicon-v12.png?v=12', type: 'image/png', sizes: '64x64' }]
+    icon: [{ url: '/favicon-v13.png?v=13', type: 'image/png', sizes: '64x64' }],
+    shortcut: ['/favicon-v13.png?v=13'],
+    apple: [{ url: '/favicon-v13.png?v=13', type: 'image/png', sizes: '64x64' }]
   }
 };
 
@@ -17,8 +17,8 @@ export default function RootLayout({children}:{children:React.ReactNode}) {
   return (
     <html lang="ru">
       <head>
-        <link rel="icon" type="image/png" sizes="64x64" href="/favicon-v12.png?v=12" />
-        <link rel="shortcut icon" type="image/png" href="/favicon-v12.png?v=12" />
+        <link rel="icon" type="image/png" sizes="64x64" href="/favicon-v13.png?v=13" />
+        <link rel="shortcut icon" type="image/png" href="/favicon-v13.png?v=13" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
