@@ -25,7 +25,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       <a className="phone desktop" href={'tel:+'+c.phoneLink}>{c.phone}</a><button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
     <section className="hero" id="top">
-      <img className="hero-bg" src={c.hero.image} alt="" aria-hidden="true" loading="eager" decoding="async" fetchPriority="high" style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
+      <img className="hero-bg" src={c.hero.image} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
       <div className="hero-overlay"/><div className="hero-copy" style={{transform:`translate(${heroTextX}px,${heroTextY}px)`}}>
         <p className="eyebrow">{c.hero.eyebrow}</p><h1 style={{fontSize:`calc(clamp(3.3rem,6.3vw,6.7rem) * ${Number(c.hero.titleSize)/100})`}}>{c.hero.title}<br/><em>{c.hero.accent}</em></h1>
         <p className="intro">{c.hero.intro}</p>
