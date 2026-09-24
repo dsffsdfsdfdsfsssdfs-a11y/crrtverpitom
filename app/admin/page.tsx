@@ -3,15 +3,55 @@ import './admin.css';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 type Content=any;
 const setPath=(o:any,path:string,value:string)=>{const p=path.split('.');let x=o;for(let i=0;i<p.length-1;i++)x=x[p[i]];x[p.at(-1)!]=value};
+const readDataUrl=(file:Blob)=>new Promise<string>((ok,bad)=>{const r=new FileReader();r.onload=()=>ok(String(r.result));r.onerror=bad;r.readAsDataURL(file)});
+async function optimizeImage(file:File){
+ if(!file.type.startsWith('image/')||file.type==='image/svg+xml')return file;
+ try{
+  const bitmap=await createImageBitmap(file);
+  const maxSide=2000;
+  const scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
+  if(scale===1&&file.size<900000){bitmap.close();return file}
+  const canvas=document.createElement('canvas');
+  canvas.width=Math.max(1,Math.round(bitmap.width*scale));
+  canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+  const ctx=canvas.getContext('2d');
+  if(!ctx){bitmap.close();return file}
+  ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
+  bitmap.close();
+  const blob=await new Promise<Blob|null>(ok=>canvas.toBlob(ok,'image/webp',.82));
+  if(!blob||blob.size>=file.size)return file;
+  return new File([blob],file.name.replace(/\.[^.]+$/,'')+'.webp',{type:'image/webp'});
+ }catch{return file}
+}
 export default function Admin(){
- const [password,setPassword]=useState(''),[content,setContent]=useState<Content|null>(null),[message,setMessage]=useState('');const previewRef=useRef<HTMLIFrameElement>(null);
+ const [password,setPassword]=useState(''),[content,setContent]=useState<Content|null>(null),[message,setMessage]=useState(''),[uploading,setUploading]=useState(0),[saving,setSaving]=useState(false);const previewRef=useRef<HTMLIFrameElement>(null);
  useEffect(()=>{if(content)previewRef.current?.contentWindow?.postMessage({type:'crr-preview',content},window.location.origin)},[content]);
  const change=(path:string,value:string)=>setContent((old:Content)=>{const copy=structuredClone(old);setPath(copy,path,value);return copy});
  async function login(e:FormEvent){e.preventDefault();const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});if(!r.ok){setMessage((await r.json()).error);return}setContent(await fetch('/api/admin/content').then(x=>x.json()))}
- async function save(){setMessage('Сохраняю…');const r=await fetch('/api/admin/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(content)});setMessage(r.ok?'Сохранено. Изменения уже опубликованы.':(await r.json()).error)}
- async function upload(index:number,file:File,target?:string){const path=index===-1?'header.logoImage':target?target+'.image':'galleryImages.'+index;const dataUrl=await new Promise<string>((ok,bad)=>{const r=new FileReader();r.onload=()=>ok(String(r.result));r.onerror=bad;r.readAsDataURL(file)});change(path,dataUrl);setMessage('Предпросмотр обновлён. Загружаю фото…');const base64=dataUrl.split(',')[1];const r=await fetch('/api/admin/upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:file.name,base64})});const data=await r.json();if(!data.url){setMessage(data.error||'Ошибка загрузки');return}change(path,data.url+'?v='+Date.now());setMessage('Фото загружено. Нажми «Сохранить изменения».')}
+ async function save(){if(uploading){setMessage('Фото ещё загружается — подожди пару секунд.');return}if(saving)return;setSaving(true);setMessage('Сохраняю…');try{const r=await fetch('/api/admin/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(content)});setMessage(r.ok?'Сохранено. Изменения уже опубликованы.':(await r.json()).error)}finally{setSaving(false)}}
+ async function upload(index:number,file:File,target?:string){
+  const path=index===-1?'header.logoImage':target?target+'.image':'galleryImages.'+index;
+  const previewUrl=URL.createObjectURL(file);
+  change(path,previewUrl);
+  setUploading(x=>x+1);
+  setMessage('Фото уже видно в предпросмотре. Загружаю…');
+  try{
+    const optimized=await optimizeImage(file);
+    const dataUrl=await readDataUrl(optimized);
+    const r=await fetch('/api/admin/upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:optimized.name,base64:dataUrl.split(',')[1]})});
+    const data=await r.json();
+    if(!r.ok||!data.url)throw new Error(data.error||'Ошибка загрузки');
+    change(path,data.url+'?v='+Date.now());
+    setMessage('Фото загружено. Сохранение теперь займёт доли секунды.');
+  }catch(error){
+    setMessage(error instanceof Error?error.message:'Ошибка загрузки');
+  }finally{
+    setUploading(x=>Math.max(0,x-1));
+    window.setTimeout(()=>URL.revokeObjectURL(previewUrl),5000);
+  }
+ }
  if(!content)return <main className="admin-shell"><form className="login-card" onSubmit={login}><p className="eyebrow gold">ЦЕНТР РАЗМНОЖЕНИЯ РАСТЕНИЙ</p><h1>Вход в редактор</h1><p>Доступ только для владельца сайта.</p><input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Пароль" required/><button className="gold-btn">Войти <span>↗</span></button>{message&&<small>{message}</small>}</form></main>;
- return <main className="admin-shell"><header className="admin-head"><a href="/">← Открыть сайт</a><div><b>Редактор сайта</b><button onClick={save} className="gold-btn">Сохранить изменения</button></div></header><div className="editor-layout"><div className="admin-wrap"><p className="admin-message">{message||'Меняй всё нужное и нажми «Сохранить изменения». Изменения публикуются сразу.'}</p>
+ return <main className="admin-shell"><header className="admin-head"><a href="/">← Открыть сайт</a><div><b>Редактор сайта</b><button onClick={save} className="gold-btn" disabled={saving||uploading>0}>{uploading?`Загрузка фото… (${uploading})`:saving?'Сохраняю…':'Сохранить изменения'}</button></div></header><div className="editor-layout"><div className="admin-wrap"><p className="admin-message">{message||'Меняй всё нужное и нажми «Сохранить изменения». Изменения публикуются сразу.'}</p>
  <section><h2>Шапка, логотип и шрифты</h2><label>Название в шапке<input value={content.header.title} onChange={e=>change('header.title',e.target.value)}/></label><label>Подпись под названием<input value={content.header.subtitle} onChange={e=>change('header.subtitle',e.target.value)}/></label><label>Логотип<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(-1,e.target.files[0])}/></label><label>Шрифт заголовков<select value={content.appearance.headingFont} onChange={e=>change('appearance.headingFont',e.target.value)}><option>Playfair Display</option><option>Georgia</option><option>Manrope</option><option>Arial</option></select></label><label>Основной шрифт<select value={content.appearance.bodyFont} onChange={e=>change('appearance.bodyFont',e.target.value)}><option>Manrope</option><option>Arial</option><option>Georgia</option></select></label></section>
  <section><h2>Первый экран</h2><label>Строка над заголовком<input value={content.hero.eyebrow} onChange={e=>change('hero.eyebrow',e.target.value)}/></label><label>Заголовок<input value={content.hero.title} onChange={e=>change('hero.title',e.target.value)}/></label><label>Золотая строка<input value={content.hero.accent} onChange={e=>change('hero.accent',e.target.value)}/></label><label>Описание<textarea value={content.hero.intro} onChange={e=>change('hero.intro',e.target.value)}/></label><label>Фоновое фото первого экрана<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(-2,e.target.files[0],'hero')}/></label></section>
  <section><h2>Контакты</h2><label>Главный телефон<input value={content.phone} onChange={e=>change('phone',e.target.value)}/></label><label>Номер для звонка — только цифры<input value={content.phoneLink} onChange={e=>change('phoneLink',e.target.value)}/></label><label>Почта<input value={content.email} onChange={e=>change('email',e.target.value)}/></label><label>Адрес<input value={content.address} onChange={e=>change('address',e.target.value)}/></label>{content.contacts.map((x:any,i:number)=><div className="contact-edit" key={i}><b>Контакт {i+1}</b><input value={x.name} onChange={e=>change('contacts.'+i+'.name',e.target.value)}/><input value={x.label} onChange={e=>change('contacts.'+i+'.label',e.target.value)}/><input value={x.phone} onChange={e=>change('contacts.'+i+'.phone',e.target.value)} placeholder="Номер для звонка"/></div>)}</section>
