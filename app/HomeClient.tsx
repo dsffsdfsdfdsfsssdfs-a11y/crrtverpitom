@@ -18,6 +18,7 @@ export default function HomeClient({initialContent,inlineLogo='',initialLogoUrl=
   const logoSlot=Math.max(68,logoSize+Math.abs(logoX)+16);
   const fontStyles={'--headingFont':`${c.appearance.headingFont}, Georgia, serif`,'--bodyFont':`${c.appearance.bodyFont}, Arial, sans-serif`} as React.CSSProperties;
   const videoSrc=(url:string)=>url.includes('watch?v=')?url.replace('watch?v=','embed/'):url;
+  const phoneHref=(phone:string)=>{const digits=(phone||'').replace(/\D/g,'');if(!digits)return '';return 'tel:'+(digits.startsWith('8')?'+7'+digits.slice(1):'+'+digits)};
   const logoSrc=inlineLogo&&c.header.logoImage===initialLogoUrl?inlineLogo:c.header.logoImage;
   return <>
     <div className="overscroll-bottom-backdrop" aria-hidden="true"/>
@@ -28,14 +29,28 @@ export default function HomeClient({initialContent,inlineLogo='',initialLogoUrl=
       <nav className={menu?'open':''}><a href="#about">{c.header.nav[0]}</a><a href="#assortment">{c.header.nav[1]}</a><a href="#gallery">{c.header.nav[2]}</a><a href="#knowledge">{c.header.nav[3]}</a></nav>
       <a className="phone desktop" href={'tel:+'+c.phoneLink}>{c.phone}</a><button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
-    <section className="hero" id="top">
+    <section className="hero hero-contacts" id="top">
       <img className="hero-bg" src={c.hero.image} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
-      <div className="hero-overlay"/><div className="hero-copy" style={{transform:`translate(${heroTextX}px,${heroTextY}px)`}}>
-        <p className="eyebrow">{c.hero.eyebrow}</p><h1 style={{fontSize:`calc(clamp(3.3rem,6.3vw,6.7rem) * ${Number(c.hero.titleSize)/100})`}}>{c.hero.title}<br/><em>{c.hero.accent}</em></h1>
-        <p className="intro">{c.hero.intro}</p>
-        <div className="actions"><button className="gold-btn" onClick={()=>setOrder(true)}>Сделать заказ <span>↗</span></button><a className="text-btn" href="#about">Узнать больше <span>↓</span></a></div>
+      <div className="hero-overlay"/>
+      <div className="hero-contact-layout">
+        <div className="hero-contact-main">
+          <p className="eyebrow">{c.hero.eyebrow}</p>
+          <h1>Центр размножения<br/><em>растений</em></h1>
+          <p className="intro">{c.hero.intro}</p>
+          <div className="actions"><button className="gold-btn" onClick={()=>setOrder(true)}>Сделать заказ <span>↗</span></button><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
+        </div>
+        <aside className="hero-contact-card">
+          <p className="eyebrow gold">КОНТАКТЫ</p>
+          <div className="hero-contact-list">
+            {c.contacts.map((x:{name:string,label:string,phone:string},i:number)=><div className="hero-contact-item" key={x.name||i}><small>{i===0?'Наталья Никулина':i===1?'Дарья Живанович':x.name}</small>{x.phone?<a href={phoneHref(x.phone)}>{x.label}</a>:<span>{x.label||'Телефон уточняется'}</span>}</div>)}
+          </div>
+          <div className="hero-contact-meta">
+            <div><small>Почта</small><a href={'mailto:'+c.email}>{c.email}</a></div>
+            <div><small>Адрес</small><span>{c.address}</span></div>
+          </div>
+          <a className="hero-map-btn" target="_blank" rel="noreferrer" href={'https://yandex.ru/maps/?text='+encodeURIComponent(c.address)}>Открыть точку в Яндекс Картах <span>↗</span></a>
+        </aside>
       </div>
-      <div className="hero-note"><span>{c.hero.area}</span><small>{c.hero.areaLabel}</small></div>
     </section>
     <section className="numbers"><div><b>6 га</b><span>маточных насаждений</span></div><div><b>144–96</b><span>ячеек в кассетах</span></div><div><b>Р9</b><span>готовые растения</span></div><div><b>Тверь</b><span>выращиваем с душой</span></div></section>
     <section className="about wrap" id="about"><p className="eyebrow gold">НАША СПЕЦИАЛИЗАЦИЯ</p><div className="two"><h2>{c.specialty.title}</h2><div><p>{c.specialty.paragraph1}</p><p>{c.specialty.paragraph2}</p><a className="line-link" href="#assortment">Посмотреть ассортимент <span>→</span></a></div></div></section>
