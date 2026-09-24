@@ -6,7 +6,7 @@ export default function Home() {
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
   const [c,setContent]=useState(content);
-  useEffect(()=>{const receive=(event:MessageEvent)=>{if(event.data?.type==='crr-preview')setContent(event.data.content)};window.addEventListener('message',receive);return()=>window.removeEventListener('message',receive)},[]);
+  useEffect(()=>{let active=true;fetch('/api/site',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(data=>{if(active)setContent(data)}).catch(()=>{});const receive=(event:MessageEvent)=>{if(event.data?.type==='crr-preview')setContent(event.data.content)};window.addEventListener('message',receive);return()=>{active=false;window.removeEventListener('message',receive)}},[]);
   const fontStyles={'--headingFont':`${c.appearance.headingFont}, Georgia, serif`,'--bodyFont':`${c.appearance.bodyFont}, Arial, sans-serif`} as React.CSSProperties;
   const videoSrc=(url:string)=>url.includes('watch?v=')?url.replace('watch?v=','embed/'):url;
   return <main style={fontStyles}>
