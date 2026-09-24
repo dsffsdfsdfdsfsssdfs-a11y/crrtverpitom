@@ -1,13 +1,128 @@
 {
-  "header": {"logoImage":"", "logoSize":43, "logoX":0, "logoY":0, "textSize":100, "textX":0, "textY":0, "title":"Центр", "subtitle":"размножения растений", "nav":["О питомнике","Ассортимент","Фотографии","Полезное"]},
-  "appearance": {"headingFont":"Playfair Display", "bodyFont":"Manrope"},
-  "hero": { "eyebrow": "ТВЕРСКАЯ ОБЛАСТЬ · ДЕРЕВНЯ КОЗИНО", "title": "Растения, выращенные", "accent": "с заботой о результате.", "intro": "Профессиональный питомник декоративных лиственных и хвойных растений. Укоренённые черенки для садовых центров, ландшафтных проектов и питомников.", "area": "5000", "areaLabel": "м² тепличного комплекса", "image":"https://images.unsplash.com/photo-1463320726281-696a485928c7?auto=format&fit=crop&w=2200&q=85", "imageScale":100,"imageX":50,"imageY":50,"titleSize":100,"textX":0,"textY":0 },
-  "contacts": [{"name":"Наталья Никулина","label":"8 (916) 796-44-60","phone":"89167964460"},{"name":"Дарья Живанович","label":"+7 (920) 683-44-60","phone":"79206834460"},{"name":"Алла Жарняк","label":"уточняется","phone":""}],
-  "email": "crr.tver@gmail.com", "address": "Тверская область, деревня Козино", "phone": "+7 916 796-44-60", "phoneLink": "79167964460",
-  "specialty": {"title":"Здоровый старт для каждого растения.","paragraph1":"Мы занимаемся вегетативным размножением декоративных лиственных и хвойных растений в кассетах. Контролируем весь путь: от маточника до готового к доращиванию черенка.","paragraph2":"Выращиваем укоренённые черенки в кассетах 144, 104, 96 ячеек и в горшках Р9."},
-  "greenhouse": {"title":"Тепличный комплекс", "accent":"5 000 м²", "text":"Современные теплицы позволяют поддерживать стабильные условия для качественного укоренения черенков.", "image":"https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=2200&q=85"},
-  "mother": {"title":"Маточник", "accent":"6 гектаров", "text":"Собственная база здоровых маточных растений — основа стабильного качества каждой партии.", "image":"https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=2200&q=85"},
-  "assortment": ["Туя","Гортензия","Дёрен","Пузыреплодник","Спирея","Другие культуры"],
-  "resources": [{"title":"Агротехника доращивания черенков в Р9","url":"#"},{"title":"Теплицы, техника и оборудование в питомнике","url":"#"},{"title":"Реалити-шоу «Будни питомниковода»","url":"#"}],
-  "priceUrl": "#", "galleryImages": ["https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=900&q=85","https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=900&q=85","https://images.unsplash.com/photo-1463936575829-25148e1db1b8?auto=format&fit=crop&w=900&q=85","https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=1200&q=85"], "galleryImageSettings":[{"scale":100,"x":50,"y":50},{"scale":100,"x":50,"y":50},{"scale":100,"x":50,"y":50},{"scale":100,"x":50,"y":50}], "videos": []
+  "header": {
+    "logoImage": "https://raw.githubusercontent.com/dsffsdfsdfdsfsssdfs-a11y/crrtverpitom/main/public/uploads/1790256114074-------------codex-23-----.-2026--.--20_10_08.png",
+    "logoSize": 43,
+    "logoX": 0,
+    "logoY": 0,
+    "textSize": 100,
+    "textX": 0,
+    "textY": 0,
+    "title": "Центр",
+    "subtitle": "размножения растений",
+    "nav": [
+      "О питомнике",
+      "Ассортимент",
+      "Фотографии",
+      "Полезное"
+    ]
+  },
+  "appearance": {
+    "headingFont": "Playfair Display",
+    "bodyFont": "Manrope"
+  },
+  "hero": {
+    "eyebrow": "ТВЕРСКАЯ ОБЛАСТЬ · ДЕРЕВНЯ КОЗИНО",
+    "title": "Растения, выращенные",
+    "accent": "с заботой о результате.",
+    "intro": "Профессиональный питомник декоративных лиственных и хвойных растений. Укоренённые черенки для садовых центров, ландшафтных проектов и питомников.",
+    "area": "5000",
+    "areaLabel": "м² тепличного комплекса",
+    "image": "https://raw.githubusercontent.com/dsffsdfsdfdsfsssdfs-a11y/crrtverpitom/main/public/uploads/1790256146854-lyjh500c3dfczzpumdyigwunksyimztdsbhjlv1khcud4udhjd8rer980wfvtjt44dhpo1kcp-jgsej5jfmdaso7.jpg",
+    "imageScale": 100,
+    "imageX": 50,
+    "imageY": 50,
+    "titleSize": 100,
+    "textX": 0,
+    "textY": 0
+  },
+  "contacts": [
+    {
+      "name": "Наталья Никулина",
+      "label": "8 (916) 796-44-60",
+      "phone": "89167964460"
+    },
+    {
+      "name": "Дарья Живанович",
+      "label": "+7 (920) 683-44-60",
+      "phone": "79206834460"
+    },
+    {
+      "name": "Алла Жарняк",
+      "label": "уточняется",
+      "phone": ""
+    }
+  ],
+  "email": "crr.tver@gmail.com",
+  "address": "Тверская область, деревня Козино",
+  "phone": "+7 916 796-44-60",
+  "phoneLink": "79167964460",
+  "specialty": {
+    "title": "Здоровый старт для каждого растения.",
+    "paragraph1": "Мы занимаемся вегетативным размножением декоративных лиственных и хвойных растений в кассетах. Контролируем весь путь: от маточника до готового к доращиванию черенка.",
+    "paragraph2": "Выращиваем укоренённые черенки в кассетах 144, 104, 96 ячеек и в горшках Р9."
+  },
+  "greenhouse": {
+    "title": "Тепличный комплекс",
+    "accent": "5 000 м²",
+    "text": "Современные теплицы позволяют поддерживать стабильные условия для качественного укоренения черенков.",
+    "image": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=2200&q=85"
+  },
+  "mother": {
+    "title": "Маточник",
+    "accent": "6 гектаров",
+    "text": "Собственная база здоровых маточных растений — основа стабильного качества каждой партии.",
+    "image": "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=2200&q=85"
+  },
+  "assortment": [
+    "Туя",
+    "Гортензия",
+    "Дёрен",
+    "Пузыреплодник",
+    "Спирея",
+    "Другие культуры"
+  ],
+  "resources": [
+    {
+      "title": "Агротехника доращивания черенков в Р9",
+      "url": "#"
+    },
+    {
+      "title": "Теплицы, техника и оборудование в питомнике",
+      "url": "#"
+    },
+    {
+      "title": "Реалити-шоу «Будни питомниковода»",
+      "url": "#"
+    }
+  ],
+  "priceUrl": "#",
+  "galleryImages": [
+    "https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=900&q=85",
+    "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=900&q=85",
+    "https://images.unsplash.com/photo-1463936575829-25148e1db1b8?auto=format&fit=crop&w=900&q=85",
+    "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=1200&q=85"
+  ],
+  "galleryImageSettings": [
+    {
+      "scale": 100,
+      "x": 50,
+      "y": 50
+    },
+    {
+      "scale": 100,
+      "x": 50,
+      "y": 50
+    },
+    {
+      "scale": 100,
+      "x": 50,
+      "y": 50
+    },
+    {
+      "scale": 100,
+      "x": 50,
+      "y": 50
+    }
+  ],
+  "videos": []
 }
