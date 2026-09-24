@@ -8,7 +8,7 @@ async function optimizeImage(file:File){
  if(!file.type.startsWith('image/')||file.type==='image/svg+xml')return file;
  try{
   const bitmap=await createImageBitmap(file);
-  const maxSide=2000;
+  const maxSide=2800;
   const scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
   if(scale===1&&file.size<900000){bitmap.close();return file}
   const canvas=document.createElement('canvas');
@@ -18,19 +18,22 @@ async function optimizeImage(file:File){
   if(!ctx){bitmap.close();return file}
   ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
   bitmap.close();
-  const blob=await new Promise<Blob|null>(ok=>canvas.toBlob(ok,'image/webp',.82));
+  const blob=await new Promise<Blob|null>(ok=>canvas.toBlob(ok,'image/webp',.92));
   if(!blob||blob.size>=file.size)return file;
   return new File([blob],file.name.replace(/\.[^.]+$/,'')+'.webp',{type:'image/webp'});
  }catch{return file}
 }
 export default function Admin(){
- const [password,setPassword]=useState(''),[content,setContent]=useState<Content|null>(null),[message,setMessage]=useState(''),[uploading,setUploading]=useState(0),[saving,setSaving]=useState(false);const previewRef=useRef<HTMLIFrameElement>(null);
- useEffect(()=>{if(content)previewRef.current?.contentWindow?.postMessage({type:'crr-preview',content},window.location.origin)},[content]);
+ const [password,setPassword]=useState(''),[content,setContent]=useState<Content|null>(null),[message,setMessage]=useState(''),[uploading,setUploading]=useState(0),[saving,setSaving]=useState(false);const previewRef=useRef<HTMLIFrameElement>(null);const contentRef=useRef<Content|null>(null);
+ const sendPreview=(next:Content|null=contentRef.current)=>{if(next)previewRef.current?.contentWindow?.postMessage({type:'crr-preview',content:next},window.location.origin)};
+ useEffect(()=>{contentRef.current=content;if(content){requestAnimationFrame(()=>sendPreview(content))}},[content]);
+ useEffect(()=>{const ready=(event:MessageEvent)=>{if(event.origin===window.location.origin&&event.data?.type==='crr-preview-ready')sendPreview()};window.addEventListener('message',ready);return()=>window.removeEventListener('message',ready)},[]);
  const change=(path:string,value:string)=>setContent((old:Content)=>{const copy=structuredClone(old);setPath(copy,path,value);return copy});
- async function login(e:FormEvent){e.preventDefault();const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});if(!r.ok){setMessage((await r.json()).error);return}setContent(await fetch('/api/admin/content').then(x=>x.json()))}
- async function save(){if(uploading){setMessage('Фото ещё загружается — подожди пару секунд.');return}if(saving)return;setSaving(true);setMessage('Сохраняю…');try{const r=await fetch('/api/admin/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(content)});setMessage(r.ok?'Сохранено. Изменения уже опубликованы.':(await r.json()).error)}finally{setSaving(false)}}
+ async function login(e:FormEvent){e.preventDefault();const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});if(!r.ok){setMessage((await r.json()).error);return}setContent(await fetch('/api/admin/content?ts='+Date.now(),{cache:'no-store'}).then(x=>x.json()))}
+ async function save(){if(uploading){setMessage('Фото ещё загружается — подожди пару секунд.');return}if(saving||!content)return;setSaving(true);setMessage('Сохраняю…');try{const r=await fetch('/api/admin/save',{method:'POST',headers:{'Content-Type':'application/json','Cache-Control':'no-cache'},cache:'no-store',body:JSON.stringify(content)});const data=await r.json();if(!r.ok)throw new Error(data.error||'Ошибка сохранения');const fresh=await fetch('/api/admin/content?ts='+Date.now(),{cache:'no-store'}).then(x=>{if(!x.ok)throw new Error('Не удалось проверить сохранение');return x.json()});setContent(fresh);contentRef.current=fresh;sendPreview(fresh);setMessage('Сохранено. Изменения записаны на сервер и уже видны на сайте.')}catch(error){setMessage(error instanceof Error?error.message:'Ошибка сохранения')}finally{setSaving(false)}}
  async function upload(index:number,file:File,target?:string){
   const path=index===-1?'header.logoImage':target?target+'.image':'galleryImages.'+index;
+  const previous=path.split('.').reduce((o:any,k)=>o?.[k],content);
   const previewUrl=URL.createObjectURL(file);
   change(path,previewUrl);
   setUploading(x=>x+1);
@@ -44,6 +47,7 @@ export default function Admin(){
     change(path,data.url+'?v='+Date.now());
     setMessage('Фото загружено. Сохранение теперь займёт доли секунды.');
   }catch(error){
+    change(path,typeof previous==='string'?previous:'');
     setMessage(error instanceof Error?error.message:'Ошибка загрузки');
   }finally{
     setUploading(x=>Math.max(0,x-1));
@@ -60,4 +64,4 @@ export default function Admin(){
  <section><h2>Ассортимент</h2>{content.assortment.map((x:string,i:number)=><label key={i}>Позиция {i+1}<input value={x} onChange={e=>change('assortment.'+i,e.target.value)}/></label>)}<button type="button" className="outline-btn" onClick={()=>setContent((o:Content)=>({...o,assortment:[...o.assortment,'Новая культура']}))}>Добавить культуру</button></section>
  <section><h2>Фотографии</h2><div className="upload-grid">{content.galleryImages.map((url:string,i:number)=><label className="upload" key={i} style={{backgroundImage:'url('+url+')'}}><input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(i,e.target.files[0])}/><span>Заменить фото</span></label>)}</div>{content.galleryImages.map((_:string,i:number)=><div className="contact-edit" key={'settings'+i}><b>Фото {i+1}: масштаб и сдвиг</b><input type="number" value={content.galleryImageSettings[i].scale} onChange={e=>change('galleryImageSettings.'+i+'.scale',e.target.value)} placeholder="Масштаб"/><input type="number" value={content.galleryImageSettings[i].x} onChange={e=>change('galleryImageSettings.'+i+'.x',e.target.value)} placeholder="По X"/><input type="number" value={content.galleryImageSettings[i].y} onChange={e=>change('galleryImageSettings.'+i+'.y',e.target.value)} placeholder="По Y"/></div>)}<button type="button" className="outline-btn" onClick={()=>setContent((o:Content)=>({...o,galleryImages:[...o.galleryImages,''],galleryImageSettings:[...o.galleryImageSettings,{scale:100,x:50,y:50}]}))}>Добавить фото</button></section>
  <section><h2>Видео</h2><p>Вставь ссылку на YouTube — видео появится на сайте.</p>{content.videos.map((v:any,i:number)=><div className="contact-edit" key={i}><input value={v.title} onChange={e=>change('videos.'+i+'.title',e.target.value)} placeholder="Название видео"/><input value={v.url} onChange={e=>change('videos.'+i+'.url',e.target.value)} placeholder="https://www.youtube.com/watch?v=…"/></div>)}<button type="button" className="outline-btn" onClick={()=>setContent((o:Content)=>({...o,videos:[...o.videos,{title:'Новое видео',url:''}]}))}>Добавить видео</button></section>
- <section><h2>Полезные ссылки</h2>{content.resources.map((x:any,i:number)=><div className="contact-edit" key={i}><input value={x.title} onChange={e=>change('resources.'+i+'.title',e.target.value)}/><input value={x.url} onChange={e=>change('resources.'+i+'.url',e.target.value)} placeholder="Ссылка"/></div>)}</section><section><h2>Размер и положение</h2><p>Числа можно менять и сразу смотреть результат справа.</p>{[['Размер логотипа','header.logoSize'],['Логотип по X','header.logoX'],['Логотип по Y','header.logoY'],['Размер текста шапки (%)','header.textSize'],['Текст шапки по X','header.textX'],['Текст шапки по Y','header.textY'],['Размер главного заголовка (%)','hero.titleSize'],['Главный текст по X','hero.textX'],['Главный текст по Y','hero.textY'],['Масштаб главного фото (%)','hero.imageScale'],['Главное фото по X (%)','hero.imageX'],['Главное фото по Y (%)','hero.imageY']].map(([label,path])=><label key={path}>{label}<input type="number" value={path.split('.').reduce((o:any,k)=>o[k],content)} onChange={e=>change(path,e.target.value)}/></label>)}</section></div><aside className="preview-panel"><div className="preview-label"><span>Предпросмотр</span><small>Изменения видны сразу</small></div><div className="preview-frame"><iframe ref={previewRef} src="/" title="Предпросмотр сайта" onLoad={()=>previewRef.current?.contentWindow?.postMessage({type:'crr-preview',content},window.location.origin)}/></div></aside></div></main>}
+ <section><h2>Полезные ссылки</h2>{content.resources.map((x:any,i:number)=><div className="contact-edit" key={i}><input value={x.title} onChange={e=>change('resources.'+i+'.title',e.target.value)}/><input value={x.url} onChange={e=>change('resources.'+i+'.url',e.target.value)} placeholder="Ссылка"/></div>)}</section><section><h2>Размер и положение</h2><p>Числа можно менять и сразу смотреть результат справа.</p>{[['Размер логотипа','header.logoSize'],['Логотип по X','header.logoX'],['Логотип по Y','header.logoY'],['Размер текста шапки (%)','header.textSize'],['Текст шапки по X','header.textX'],['Текст шапки по Y','header.textY'],['Размер главного заголовка (%)','hero.titleSize'],['Главный текст по X','hero.textX'],['Главный текст по Y','hero.textY'],['Масштаб главного фото (%)','hero.imageScale'],['Главное фото по X (%)','hero.imageX'],['Главное фото по Y (%)','hero.imageY']].map(([label,path])=><label key={path}>{label}<input type="number" value={path.split('.').reduce((o:any,k)=>o[k],content)} onChange={e=>change(path,e.target.value)}/></label>)}</section></div><aside className="preview-panel"><div className="preview-label"><span>Предпросмотр</span><small>Изменения видны сразу</small></div><div className="preview-frame"><iframe ref={previewRef} src="/?preview=1" title="Предпросмотр сайта" onLoad={()=>sendPreview(content)}/></div></aside></div></main>}
