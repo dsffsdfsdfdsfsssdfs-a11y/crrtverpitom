@@ -7,7 +7,7 @@ export const revalidate = 0;
 function localizeRepoAssets(value: any): any {
   if (typeof value === 'string') {
     const match = value.match(/^https:\/\/raw\.githubusercontent\.com\/dsffsdfsdfdsfsssdfs-a11y\/crrtverpitom\/[^/]+\/public\/(.+)$/i);
-    return match ? '/' + match[1] : value;
+    return match ? '/repo-assets/' + match[1].replace(/^uploads\//,'') : value;
   }
   if (Array.isArray(value)) return value.map(localizeRepoAssets);
   if (value && typeof value === 'object') {
@@ -18,5 +18,11 @@ function localizeRepoAssets(value: any): any {
 
 export default async function Home() {
   const content = localizeRepoAssets(await readContent());
-  return <HomeClient initialContent={content} />;
+  const criticalImages = [content?.header?.logoImage, content?.hero?.image].filter((src): src is string => typeof src === 'string' && src.length > 0);
+  return (
+    <>
+      {criticalImages.map(src => <link key={src} rel="preload" as="image" href={src} />)}
+      <HomeClient initialContent={content} />
+    </>
+  );
 }
