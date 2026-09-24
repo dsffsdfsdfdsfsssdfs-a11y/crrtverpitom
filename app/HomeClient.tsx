@@ -20,7 +20,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const videoSrc=(url:string)=>url.includes('watch?v=')?url.replace('watch?v=','embed/'):url;
   return <main style={fontStyles}>
     <header className="topbar">
-      <a className="brand header-brand" href="#top"><span className="brand-logo-slot" style={{width:logoSlot}}>{c.header.logoImage?<img className="brand-image" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}} src={c.header.logoImage} alt="Логотип" loading="eager" decoding="async"/>:<span className="brand-mark">ЦР</span>}</span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
+      <a className="brand header-brand" href="#top"><span className="brand-logo-slot" style={{width:logoSlot}}>{c.header.logoImage?<img className="brand-image" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}} src={c.header.logoImage} alt="Логотип" loading="eager" decoding="async" fetchPriority="high"/>:<span className="brand-mark">ЦР</span>}</span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
       <nav className={menu?'open':''}><a href="#about">{c.header.nav[0]}</a><a href="#assortment">{c.header.nav[1]}</a><a href="#gallery">{c.header.nav[2]}</a><a href="#knowledge">{c.header.nav[3]}</a></nav>
       <a className="phone desktop" href={'tel:+'+c.phoneLink}>{c.phone}</a><button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
