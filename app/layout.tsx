@@ -5,7 +5,12 @@ export const viewport: Viewport = { themeColor: '#1d1511' };
 
 export const metadata: Metadata = {
   title: 'Центр размножения растений — Тверь',
-  description: 'Декоративные растения собственного производства в Тверской области.'
+  description: 'Декоративные растения собственного производства в Тверской области.',
+  icons: {
+    icon: [{ url: '/icon?v=5', type: 'image/png', sizes: '64x64' }],
+    shortcut: ['/icon?v=5'],
+    apple: [{ url: '/icon?v=5', sizes: '64x64', type: 'image/png' }]
+  }
 };
 
 export default function RootLayout({children}:{children:React.ReactNode}) {
