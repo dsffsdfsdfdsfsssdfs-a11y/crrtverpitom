@@ -4,9 +4,9 @@
     "logoSize": "53",
     "logoX": "0",
     "logoY": "-4",
-    "textSize": "120",
-    "textX": "0",
-    "textY": "-5",
+    "textSize": "125",
+    "textX": "2",
+    "textY": "-2",
     "title": "ЦЕНТР",
     "subtitle": "РАЗМНОЖЕНИЯ РАСТЕНИЙ",
     "nav": [
@@ -31,7 +31,7 @@
     "imageScale": "127",
     "imageX": "75",
     "imageY": "74",
-    "titleSize": "98",
+    "titleSize": "101",
     "textX": "-41",
     "textY": "-104"
   },
