@@ -28,7 +28,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       <a className="phone desktop" href={'tel:+'+c.phoneLink}>{c.phone}</a><button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
     <section className="hero hero-contacts" id="top" style={{backgroundImage:`url(${c.hero.image})`,backgroundPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,backgroundSize:'cover',backgroundRepeat:'no-repeat'}}>
-      <img className="hero-bg" src={c.hero.image} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
+      <div className="hero-bg" aria-hidden="true" style={{backgroundImage:`url(${c.hero.image})`,backgroundSize:'cover',backgroundPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,backgroundRepeat:'no-repeat',transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
       <div className="hero-overlay"/>
       <div className="hero-contact-layout">
         <div className="hero-contact-main">
