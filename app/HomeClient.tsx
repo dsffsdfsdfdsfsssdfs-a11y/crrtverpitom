@@ -5,7 +5,7 @@ export default function HomeClient({initialContent,inlineLogo='',initialLogoUrl=
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
   const [c,setContent]=useState<any>(initialContent);
-  useEffect(()=>{const receive=(event:MessageEvent)=>{if(event.origin===window.location.origin&&event.data?.type==='crr-preview'&&event.data.content)setContent(event.data.content)};window.addEventListener('message',receive);return()=>window.removeEventListener('message',receive)},[]);
+  useEffect(()=>{const receive=(event:MessageEvent)=>{if(event.origin===window.location.origin&&event.data?.type==='crr-preview'&&event.data.content)setContent(event.data.content)};window.addEventListener('message',receive);if(window.parent!==window)window.parent.postMessage({type:'crr-preview-ready'},window.location.origin);return()=>window.removeEventListener('message',receive)},[]);
   const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
   const clamp=(v:number,min:number,max:number)=>Math.min(max,Math.max(min,v));
   const logoSize=clamp(num(c.header.logoSize,53),28,105);
@@ -21,10 +21,7 @@ export default function HomeClient({initialContent,inlineLogo='',initialLogoUrl=
   const logoSrc=inlineLogo&&c.header.logoImage===initialLogoUrl?inlineLogo:c.header.logoImage;
   return <>
     <div className="overscroll-bottom-backdrop" aria-hidden="true"/>
-    <div aria-hidden="true" style={{position:'fixed',zIndex:0,left:0,right:0,top:0,height:240,overflow:'hidden',background:'#1d1511',pointerEvents:'none'}}>
-      <img src={c.hero.image} alt="" decoding="async" style={{position:'absolute',inset:0,width:'100%',height:790,objectFit:'cover',objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transformOrigin:'center',transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
-      <span style={{position:'absolute',inset:0,background:'linear-gradient(90deg,#1b120ddd,#1b120d33),linear-gradient(0deg,#1f161288,transparent 50%)'}}/>
-    </div>
+    <div className="overscroll-top-header" aria-hidden="true"/>
     <main style={fontStyles}>
     <header className="topbar">
       <a className="brand header-brand" href="#top"><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc?<img className="brand-image" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}} src={logoSrc} alt="Логотип" loading="eager" decoding="sync" fetchPriority="high"/>:<span className="brand-mark">ЦР</span>}</span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
