@@ -7,7 +7,12 @@ export const revalidate = 0;
 function localizeRepoAssets(value: any): any {
   if (typeof value === 'string') {
     const match = value.match(/^https:\/\/raw\.githubusercontent\.com\/dsffsdfsdfdsfsssdfs-a11y\/crrtverpitom\/[^/]+\/public\/(.+)$/i);
-    return match ? '/repo-assets/' + match[1].replace(/^uploads\//,'') : value;
+    if (!match) return value;
+    const file = match[1].replace(/^uploads\//,'');
+    if (file === '1790256543018-exlrj7ztuvop63wgjqkui7dsw_mc9mymnfcpw4fm_zeilo7u3mi8bbao1oj8hcepd43-chytw7r8ryrifxbfzw9k.jpg') {
+      return '/favicon-v16.png?v=16';
+    }
+    return '/repo-assets/' + file;
   }
   if (Array.isArray(value)) return value.map(localizeRepoAssets);
   if (value && typeof value === 'object') {
