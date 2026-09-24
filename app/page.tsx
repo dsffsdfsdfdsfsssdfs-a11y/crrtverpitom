@@ -1,18 +1,18 @@
 import HomeClient from './HomeClient';
-import { readContent } from '@/lib/local-content';
+import { inlineImage, readContent } from '@/lib/local-content';
 
 export const revalidate = false;
 
 export default async function Home() {
   const content = await readContent();
-  const heroImage = typeof content?.hero?.image === 'string' ? content.hero.image : '';
   const logoImage = typeof content?.header?.logoImage === 'string' ? content.header.logoImage : '';
+  const inlineLogo = logoImage ? await inlineImage(logoImage) : '';
 
   return (
-    <>
-      {heroImage ? <link rel="preload" as="image" href={heroImage} fetchPriority="high" /> : null}
-      {logoImage ? <link rel="preload" as="image" href={logoImage} fetchPriority="high" /> : null}
-      <HomeClient initialContent={content} />
-    </>
+    <HomeClient
+      initialContent={content}
+      inlineLogo={inlineLogo}
+      initialLogoUrl={logoImage}
+    />
   );
 }
