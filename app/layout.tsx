@@ -7,9 +7,9 @@ export const metadata: Metadata = {
   title: 'Центр размножения растений — Тверь',
   description: 'Декоративные растения собственного производства в Тверской области.',
   icons: {
-    icon: [{ url: '/icon?v=5', type: 'image/png', sizes: '64x64' }],
-    shortcut: ['/icon?v=5'],
-    apple: [{ url: '/icon?v=5', sizes: '64x64', type: 'image/png' }]
+    icon: [{ url: '/crr-tab-icon-v2.svg?v=20260925-3', type: 'image/svg+xml' }],
+    shortcut: ['/crr-tab-icon-v2.svg?v=20260925-3'],
+    apple: [{ url: '/crr-tab-icon-v2.svg?v=20260925-3', type: 'image/svg+xml' }]
   }
 };
 
