@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-export default function HomeClient({initialContent,inlineLogo='',initialLogoUrl=''}:{initialContent:any;inlineLogo?:string;initialLogoUrl?:string}) {
+export default function HomeClient({initialContent}:{initialContent:any}) {
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
   const [c,setContent]=useState<any>(initialContent);
@@ -17,18 +17,18 @@ export default function HomeClient({initialContent,inlineLogo='',initialLogoUrl=
   const fontStyles={'--headingFont':`${c.appearance.headingFont}, Georgia, serif`,'--bodyFont':`${c.appearance.bodyFont}, Arial, sans-serif`} as React.CSSProperties;
   const videoSrc=(url:string)=>url.includes('watch?v=')?url.replace('watch?v=','embed/'):url;
   const phoneHref=(phone:string)=>{const digits=(phone||'').replace(/\D/g,'');if(!digits)return '';return 'tel:'+(digits.startsWith('8')?'+7'+digits.slice(1):'+'+digits)};
-  const logoSrc=inlineLogo&&c.header.logoImage===initialLogoUrl?inlineLogo:c.header.logoImage;
+  const logoSrc=c.header.logoImage;
   return <>
     <div className="overscroll-bottom-backdrop" aria-hidden="true"/>
     <div className="overscroll-top-header" aria-hidden="true"/>
     <main style={fontStyles}>
     <header className="topbar">
-      <a className="brand header-brand" href="#top"><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc?<img className="brand-image" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}} src={logoSrc} alt="Логотип" loading="eager" decoding="sync" fetchPriority="high"/>:<span className="brand-mark">ЦР</span>}</span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
+      <a className="brand header-brand" href="#top"><span className="brand-logo-slot" style={{width:logoSlot,backgroundImage:"url('/favicon-v14.png?v=14')",backgroundRepeat:'no-repeat',backgroundPosition:'center',backgroundSize:`${logoSize}px ${logoSize}px`}}>{logoSrc?<img className="brand-image" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}} src={logoSrc} alt="Логотип" loading="eager" decoding="async" fetchPriority="high"/>:<span className="brand-mark">ЦР</span>}</span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
       <nav className={menu?'open':''}><a href="#about">{c.header.nav[0]}</a><a href="#assortment">{c.header.nav[1]}</a><a href="#gallery">{c.header.nav[2]}</a><a href="#knowledge">{c.header.nav[3]}</a></nav>
       <a className="phone desktop" href={'tel:+'+c.phoneLink}>{c.phone}</a><button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
     <section className="hero hero-contacts" id="top">
-      <img className="hero-bg" src={c.hero.image} alt="" aria-hidden="true" loading="eager" decoding="sync" fetchPriority="high" style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
+      <img className="hero-bg" src={c.hero.image} alt="" aria-hidden="true" loading="eager" decoding="async" fetchPriority="high" style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
       <div className="hero-overlay"/>
       <div className="hero-contact-layout">
         <div className="hero-contact-main">
