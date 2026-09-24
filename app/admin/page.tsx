@@ -1,4 +1,5 @@
 'use client';
+import './admin.css';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 type Content=any;
 const setPath=(o:any,path:string,value:string)=>{const p=path.split('.');let x=o;for(let i=0;i<p.length-1;i++)x=x[p[i]];x[p.at(-1)!]=value};
