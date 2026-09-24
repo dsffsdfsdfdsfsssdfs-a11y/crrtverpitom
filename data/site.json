@@ -1,12 +1,12 @@
 {
   "header": {
     "logoImage": "https://raw.githubusercontent.com/dsffsdfsdfdsfsssdfs-a11y/crrtverpitom/main/public/uploads/1790256114074-------------codex-23-----.-2026--.--20_10_08.png",
-    "logoSize": 43,
+    "logoSize": "48",
     "logoX": 0,
-    "logoY": 0,
-    "textSize": 100,
-    "textX": 0,
-    "textY": 0,
+    "logoY": "2",
+    "textSize": "106",
+    "textX": "2",
+    "textY": "1",
     "title": "Центр",
     "subtitle": "размножения растений",
     "nav": [
@@ -17,8 +17,8 @@
     ]
   },
   "appearance": {
-    "headingFont": "Playfair Display",
-    "bodyFont": "Manrope"
+    "headingFont": "Manrope",
+    "bodyFont": "Georgia"
   },
   "hero": {
     "eyebrow": "ТВЕРСКАЯ ОБЛАСТЬ · ДЕРЕВНЯ КОЗИНО",
@@ -28,12 +28,12 @@
     "area": "5000",
     "areaLabel": "м² тепличного комплекса",
     "image": "https://raw.githubusercontent.com/dsffsdfsdfdsfsssdfs-a11y/crrtverpitom/main/public/uploads/1790256146854-lyjh500c3dfczzpumdyigwunksyimztdsbhjlv1khcud4udhjd8rer980wfvtjt44dhpo1kcp-jgsej5jfmdaso7.jpg",
-    "imageScale": 100,
-    "imageX": 50,
-    "imageY": 50,
-    "titleSize": 100,
-    "textX": 0,
-    "textY": 0
+    "imageScale": "129",
+    "imageX": "50",
+    "imageY": "66",
+    "titleSize": "112",
+    "textX": "-45",
+    "textY": "-64"
   },
   "contacts": [
     {
