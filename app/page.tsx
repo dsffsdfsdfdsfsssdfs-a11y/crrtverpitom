@@ -17,7 +17,7 @@ export default function Home() {
     </header>
     <section className="hero" id="top" style={{backgroundImage:`linear-gradient(90deg,#1b120ddd,#1b120d33),url(${c.hero.image})`,backgroundSize:`cover, ${c.hero.imageScale}%`,backgroundPosition:`center, ${c.hero.imageX}% ${c.hero.imageY}%`}}>
       <div className="hero-overlay"/><div className="hero-copy" style={{transform:`translate(${c.hero.textX}px,${c.hero.textY}px)`}}>
-        <p className="eyebrow">{c.hero.eyebrow}</p><h1 style={{fontSize:`calc(clamp(3.3rem,6.3vw,6.7rem) * ${c.hero.titleSize/100})`}}>{c.hero.title}<br/><em>{c.hero.accent}</em></h1>
+        <p className="eyebrow">{c.hero.eyebrow}</p><h1 style={{fontSize:`calc(clamp(3.3rem,6.3vw,6.7rem) * ${Number(c.hero.titleSize)/100})`}}>{c.hero.title}<br/><em>{c.hero.accent}</em></h1>
         <p className="intro">{c.hero.intro}</p>
         <div className="actions"><button className="gold-btn" onClick={()=>setOrder(true)}>Сделать заказ <span>↗</span></button><a className="text-btn" href="#about">Узнать больше <span>↓</span></a></div>
       </div>
