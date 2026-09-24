@@ -25,3 +25,11 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .hero-top-extension{position:absolute;left:0;right:0;bottom:100%;height:100vh;overflow:hidden;pointer-events:none;z-index:0;background:#1d1511}
 .hero-top-extension img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:center}
 .hero-top-extension span{position:absolute;inset:0;background:linear-gradient(90deg,#1b120ddd,#1b120d33),linear-gradient(0deg,#1f161288,transparent 50%)}
+
+/* Light nursery header requested by the owner. */
+.topbar{background:#f3eee4!important;color:#4f5a4c!important;border-bottom:1px solid #d8cfc2!important}
+.topbar nav a{color:#4f5a4c!important;opacity:.9}
+.topbar nav a:hover{color:#8b6a42!important}
+.topbar .phone{color:#7a6047!important}
+.topbar .burger{color:#4f5a4c!important}
+.overscroll-top-header{position:fixed;z-index:0;left:0;right:0;top:0;height:320px;background:#f3eee4;pointer-events:none}
