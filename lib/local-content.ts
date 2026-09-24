@@ -56,6 +56,15 @@ export async function inlineImage(url: string, maxBytes = 2500000) {
   if (url.startsWith('data:image/')) return url;
 
   try {
+    const rawRepoUpload = url.match(/^https:\/\/raw\.githubusercontent\.com\/dsffsdfsdfdsfsssdfs-a11y\/crrtverpitom\/[^/]+\/public\/uploads\/([^?#]+)/i);
+    if (rawRepoUpload) {
+      const filename = path.basename(rawRepoUpload[1]);
+      const file = path.join(process.cwd(), 'public', 'uploads', filename);
+      const buf = await fs.readFile(file);
+      if (buf.length > maxBytes) return '';
+      return `data:${mimeFromName(filename)};base64,${buf.toString('base64')}`;
+    }
+
     if (url.startsWith('/uploads/')) {
       await ensureStorage();
       const filename = path.basename(url.split('?')[0]);
