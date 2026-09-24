@@ -1,14 +1,14 @@
 {
   "header": {
-    "logoImage": "https://raw.githubusercontent.com/dsffsdfsdfdsfsssdfs-a11y/crrtverpitom/main/public/uploads/1790256114074-------------codex-23-----.-2026--.--20_10_08.png",
-    "logoSize": "48",
-    "logoX": 0,
-    "logoY": "2",
-    "textSize": "106",
-    "textX": "2",
-    "textY": "1",
-    "title": "Центр",
-    "subtitle": "размножения растений",
+    "logoImage": "https://raw.githubusercontent.com/dsffsdfsdfdsfsssdfs-a11y/crrtverpitom/main/public/uploads/1790256543018-exlrj7ztuvop63wgjqkui7dsw_mc9mymnfcpw4fm_zeilo7u3mi8bbao1oj8hcepd43-chytw7r8ryrifxbfzw9k.jpg",
+    "logoSize": "53",
+    "logoX": "0",
+    "logoY": "-4",
+    "textSize": "120",
+    "textX": "0",
+    "textY": "-5",
+    "title": "ЦЕНТР",
+    "subtitle": "РАЗМНОЖЕНИЯ РАСТЕНИЙ",
     "nav": [
       "О питомнике",
       "Ассортимент",
@@ -17,7 +17,7 @@
     ]
   },
   "appearance": {
-    "headingFont": "Manrope",
+    "headingFont": "Georgia",
     "bodyFont": "Georgia"
   },
   "hero": {
@@ -28,12 +28,12 @@
     "area": "5000",
     "areaLabel": "м² тепличного комплекса",
     "image": "https://raw.githubusercontent.com/dsffsdfsdfdsfsssdfs-a11y/crrtverpitom/main/public/uploads/1790256146854-lyjh500c3dfczzpumdyigwunksyimztdsbhjlv1khcud4udhjd8rer980wfvtjt44dhpo1kcp-jgsej5jfmdaso7.jpg",
-    "imageScale": "129",
-    "imageX": "50",
-    "imageY": "66",
-    "titleSize": "112",
-    "textX": "-45",
-    "textY": "-64"
+    "imageScale": "127",
+    "imageX": "75",
+    "imageY": "74",
+    "titleSize": "98",
+    "textX": "-41",
+    "textY": "-104"
   },
   "contacts": [
     {
