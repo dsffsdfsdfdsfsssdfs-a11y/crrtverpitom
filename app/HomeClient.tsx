@@ -5,37 +5,7 @@ export default function HomeClient({initialContent,inlineLogo='',initialLogoUrl=
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
   const [c,setContent]=useState<any>(initialContent);
-  useEffect(()=>{
-    const receive=(event:MessageEvent)=>{if(event.origin===window.location.origin&&event.data?.type==='crr-preview'&&event.data.content)setContent(event.data.content)};
-
-    const atTop=()=>window.scrollY<=0;
-    const atBottom=()=>window.scrollY+window.innerHeight>=document.documentElement.scrollHeight-1;
-
-    const stopEdgeWheel=(event:WheelEvent)=>{
-      if((atTop()&&event.deltaY<0)||(atBottom()&&event.deltaY>0))event.preventDefault();
-    };
-
-    let touchY=0;
-    const rememberTouch=(event:TouchEvent)=>{touchY=event.touches[0]?.clientY??0};
-    const stopEdgeTouch=(event:TouchEvent)=>{
-      const y=event.touches[0]?.clientY??touchY;
-      const delta=y-touchY;
-      if((atTop()&&delta>0)||(atBottom()&&delta<0))event.preventDefault();
-      touchY=y;
-    };
-
-    window.addEventListener('message',receive);
-    window.addEventListener('wheel',stopEdgeWheel,{passive:false});
-    window.addEventListener('touchstart',rememberTouch,{passive:true});
-    window.addEventListener('touchmove',stopEdgeTouch,{passive:false});
-
-    return()=>{
-      window.removeEventListener('message',receive);
-      window.removeEventListener('wheel',stopEdgeWheel);
-      window.removeEventListener('touchstart',rememberTouch);
-      window.removeEventListener('touchmove',stopEdgeTouch);
-    };
-  },[]);
+  useEffect(()=>{const receive=(event:MessageEvent)=>{if(event.origin===window.location.origin&&event.data?.type==='crr-preview'&&event.data.content)setContent(event.data.content)};window.addEventListener('message',receive);return()=>window.removeEventListener('message',receive)},[]);
   const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
   const clamp=(v:number,min:number,max:number)=>Math.min(max,Math.max(min,v));
   const logoSize=clamp(num(c.header.logoSize,53),28,105);
