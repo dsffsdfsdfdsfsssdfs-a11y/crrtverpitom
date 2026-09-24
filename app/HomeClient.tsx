@@ -24,7 +24,8 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       <nav className={menu?'open':''}><a href="#about">{c.header.nav[0]}</a><a href="#assortment">{c.header.nav[1]}</a><a href="#gallery">{c.header.nav[2]}</a><a href="#knowledge">{c.header.nav[3]}</a></nav>
       <a className="phone desktop" href={'tel:+'+c.phoneLink}>{c.phone}</a><button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
-    <section className="hero" id="top" style={{backgroundImage:`linear-gradient(90deg,#1b120ddd,#1b120d33),url(${c.hero.image})`,backgroundSize:`cover, ${c.hero.imageScale}%`,backgroundPosition:`center, ${c.hero.imageX}% ${c.hero.imageY}%`}}>
+    <section className="hero" id="top">
+      <img className="hero-bg" src={c.hero.image} alt="" aria-hidden="true" loading="eager" decoding="async" fetchPriority="high" style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
       <div className="hero-overlay"/><div className="hero-copy" style={{transform:`translate(${heroTextX}px,${heroTextY}px)`}}>
         <p className="eyebrow">{c.hero.eyebrow}</p><h1 style={{fontSize:`calc(clamp(3.3rem,6.3vw,6.7rem) * ${Number(c.hero.titleSize)/100})`}}>{c.hero.title}<br/><em>{c.hero.accent}</em></h1>
         <p className="intro">{c.hero.intro}</p>
