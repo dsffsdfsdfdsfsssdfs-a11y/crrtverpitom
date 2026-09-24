@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-export default function HomeClient({initialContent}:{initialContent:any}) {
+export default function HomeClient({initialContent,inlineLogo='',initialLogoUrl=''}:{initialContent:any;inlineLogo?:string;initialLogoUrl?:string}) {
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
   const [c,setContent]=useState<any>(initialContent);
@@ -18,9 +18,10 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const logoSlot=Math.max(68,logoSize+Math.abs(logoX)+16);
   const fontStyles={'--headingFont':`${c.appearance.headingFont}, Georgia, serif`,'--bodyFont':`${c.appearance.bodyFont}, Arial, sans-serif`} as React.CSSProperties;
   const videoSrc=(url:string)=>url.includes('watch?v=')?url.replace('watch?v=','embed/'):url;
+  const logoSrc=inlineLogo&&c.header.logoImage===initialLogoUrl?inlineLogo:c.header.logoImage;
   return <main style={fontStyles}>
     <header className="topbar">
-      <a className="brand header-brand" href="#top"><span className="brand-logo-slot" style={{width:logoSlot}}>{c.header.logoImage?<img className="brand-image" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}} src={c.header.logoImage} alt="Логотип" loading="eager" decoding="async" fetchPriority="high"/>:<span className="brand-mark">ЦР</span>}</span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
+      <a className="brand header-brand" href="#top"><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc?<img className="brand-image" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}} src={logoSrc} alt="Логотип" loading="eager" decoding="sync" fetchPriority="high"/>:<span className="brand-mark">ЦР</span>}</span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
       <nav className={menu?'open':''}><a href="#about">{c.header.nav[0]}</a><a href="#assortment">{c.header.nav[1]}</a><a href="#gallery">{c.header.nav[2]}</a><a href="#knowledge">{c.header.nav[3]}</a></nav>
       <a className="phone desktop" href={'tel:+'+c.phoneLink}>{c.phone}</a><button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
