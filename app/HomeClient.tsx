@@ -1,11 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-type ContactIconType='phone'|'mail';
-function ContactIcon({type}:{type:ContactIconType}){
-  if(type==='phone')return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 3.5 9.8 7l-1.7 2.1c1.2 2.4 3.1 4.3 5.5 5.5l2.1-1.7 3.5 2.6c.5.4.7 1.1.4 1.7l-1 2.2c-.3.7-1 1.1-1.8 1-7.1-.8-12.8-6.5-13.6-13.6-.1-.8.3-1.5 1-1.8l2.2-1c.6-.3 1.3-.1 1.7.4Z"/></svg>;
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4.5 7 7.5 6 7.5-6"/></svg>;
-}
 export default function HomeClient({initialContent}:{initialContent:any}) {
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
@@ -44,43 +39,6 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <p className="intro">{c.hero.intro}</p>
           <div className="actions"><button className="gold-btn" onClick={()=>setOrder(true)}>Сделать заказ <span>↗</span></button><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
         </div>
-        <svg className="contact-clip-defs" width="0" height="0" aria-hidden="true" focusable="false">
-          <defs>
-            <clipPath id="contactCardClip" clipPathUnits="objectBoundingBox">
-              <path d="M .055 0 H .79 C .812 0 .828 .007 .844 .024 L .978 .184 C .993 .202 1 .222 1 .248 V .94 C 1 .976 .976 1 .94 1 H .055 C .02 1 0 .976 0 .94 V .06 C 0 .024 .02 0 .055 0 Z"/>
-            </clipPath>
-          </defs>
-        </svg>
-        <aside className="hero-contact-card">
-          <div className="contact-card-title"><p className="eyebrow gold">КОНТАКТЫ</p></div>
-
-          <div className="contact-people">
-            {contactPeople.map((x:{name:string,label:string,phone:string},i:number)=>{
-              const shownLabel=i===0?(x.label||'').replace(/^8(?=\s*\()/,'+7'):x.label;
-              return <div className="contact-person" key={x.name||i}>
-                <span className="contact-glyph"><ContactIcon type="phone"/></span>
-                <div className="contact-person-copy">
-                  <small>{i===0?'Наталья Никулина':i===1?'Дарья Живанович':x.name}</small>
-                  <div className="contact-person-value">{x.phone?<a href={phoneHref(x.phone)}>{shownLabel}</a>:<span>{x.label||'Уточняется'}</span>}</div>
-                </div>
-              </div>
-            })}
-          </div>
-
-          <div className="contact-details">
-            <div className="contact-detail">
-              <span className="contact-glyph"><ContactIcon type="mail"/></span>
-              <div className="contact-detail-copy"><small>Почта</small><a href={'mailto:'+c.email}>{c.email}</a></div>
-            </div>
-
-            <div className="contact-detail contact-detail-address">
-              <div className="contact-detail-copy">
-                <small>Адрес</small>
-                <a className="contact-address-link" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78" title="Открыть в Яндекс Картах">{c.address}</a>
-              </div>
-            </div>
-          </div>
-        </aside>
       </div>
     </section>
     <section className="numbers"><div><b>6 га</b><span>маточных насаждений</span></div><div><b>144–96</b><span>ячеек в кассетах</span></div><div><b>Р9</b><span>готовые растения</span></div><div><b>Тверь</b><span>выращиваем с душой</span></div></section>
