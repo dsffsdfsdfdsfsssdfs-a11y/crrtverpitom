@@ -69,8 +69,10 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
               const shownLabel=i===0?(x.label||'').replace(/^8(?=\s*\()/,'+7'):x.label;
               return <div className="contact-person" key={x.name||i}>
                 <span className="contact-glyph"><ContactIcon type="phone"/></span>
-                <small>{i===0?'Наталья Никулина':i===1?'Дарья Живанович':x.name}</small>
-                <div className="contact-person-value">{x.phone?<a href={phoneHref(x.phone)}>{shownLabel}</a>:<span>{x.label||'Уточняется'}</span>}</div>
+                <div className="contact-person-copy">
+                  <small>{i===0?'Наталья Никулина':i===1?'Дарья Живанович':x.name}</small>
+                  <div className="contact-person-value">{x.phone?<a href={phoneHref(x.phone)}>{shownLabel}</a>:<span>{x.label||'Уточняется'}</span>}</div>
+                </div>
               </div>
             })}
           </div>
