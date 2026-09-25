@@ -404,6 +404,6 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 }
 
 /* Critical first-screen media are inlined into the HTML; keep them immediately visible. */
-.hero{background:#2a221d}
+
 .hero-bg-image{object-fit:cover;opacity:1}
 .brand-image-img{display:block;object-fit:contain}
