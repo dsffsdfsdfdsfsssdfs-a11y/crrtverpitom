@@ -53,3 +53,18 @@ linear-gradient(180deg,rgba(11,10,8,.04),rgba(11,10,8,.20));pointer-events:none}
 .ve-inspector select option{background:#151719;color:#f0f0ee}
 .ve-login-card:before{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,.03) 18%,rgba(255,255,255,0) 40%)}
 .ve-login-lock svg{width:22px;height:22px;display:block}
+
+.ve-login-lock .lock-shackle{transform-origin:7px 11px;transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .2s ease}
+.ve-login-lock.is-open .lock-shackle{transform:translateY(-1px) rotate(-28deg)}
+.ve-login-field.login-field-error{border-color:rgba(239,75,75,.82);box-shadow:0 0 0 3px rgba(239,75,75,.08),inset 0 1px 0 rgba(255,255,255,.04)}
+.login-error-text{color:#ff5c5c!important;font-weight:700}
+.login-shake{animation:loginShake .42s cubic-bezier(.36,.07,.19,.97)}
+@keyframes loginShake{
+  0%,100%{transform:translateX(0)}
+  15%{transform:translateX(-10px)}
+  30%{transform:translateX(9px)}
+  45%{transform:translateX(-7px)}
+  60%{transform:translateX(6px)}
+  75%{transform:translateX(-3px)}
+  90%{transform:translateX(2px)}
+}
