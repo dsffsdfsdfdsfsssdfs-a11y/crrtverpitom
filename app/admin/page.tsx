@@ -75,6 +75,7 @@ export default function Admin(){
   const [selected,setSelected]=useState<LayerKey>('line1');
   const [message,setMessage]=useState('');
   const [loginError,setLoginError]=useState(false);
+  const [loginSuccess,setLoginSuccess]=useState(false);
   const [loginShake,setLoginShake]=useState(false);
   const [saving,setSaving]=useState(false);
   const [uploading,setUploading]=useState(false);
@@ -221,6 +222,7 @@ export default function Admin(){
   async function login(e:FormEvent){
     e.preventDefault();
     setLoginError(false);
+    setLoginSuccess(false);
     const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});
     if(!r.ok){
       setMessage('Неверный пароль');
@@ -233,7 +235,9 @@ export default function Admin(){
       return;
     }
     const fresh=await fetch('/api/admin/content?ts='+Date.now(),{cache:'no-store'}).then(x=>x.json());
-    setContent(fresh); setDirty(false);
+    setMessage('Успешно');
+    setLoginSuccess(true);
+    window.setTimeout(()=>{setContent(fresh);setDirty(false)},520);
   }
 
   async function save(){
@@ -264,7 +268,7 @@ export default function Admin(){
   const current=content;
   const groups=useMemo(()=>Array.from(new Set(LAYERS.map(x=>x.group))),[]);
 
-  if(!content)return <main className="ve-login"><div className="ve-login-backdrop"/><form onSubmit={login} className={'ve-login-card '+(loginShake?'login-shake':'')}><div className="ve-login-logo-wrap"><img className="ve-login-logo" src="/uploads/1790294762962-fgf.webp?v=1790294762845" alt="Центр размножения растений"/></div><h1>РЕДАКТОР САЙТА</h1><p>Центр размножения растений</p><div className={'ve-login-field '+(loginError?'login-field-error':'')}><span className={'ve-login-lock '+(password.length>0?'is-open':'')} aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><g className="lock-shackle"><path d="M8 11V8.2a4 4 0 0 1 8 0V11" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></g><rect x="5" y="10.5" width="14" height="10.5" rx="2.6" stroke="currentColor" strokeWidth="2"/><circle cx="12" cy="14.8" r="1.25" fill="currentColor"/><path d="M12 15.8v2.35" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg></span><input type="password" value={password} onChange={e=>{setPassword(e.target.value);if(loginError){setLoginError(false);setMessage('')}}} placeholder="Пароль"/></div><button className="ve-login-submit">ВОЙТИ</button>{message&&<small className={loginError?'login-error-text':''}>{message}</small>}</form></main>;
+  if(!content)return <main className="ve-login"><div className="ve-login-backdrop"/><form onSubmit={login} className={'ve-login-card '+(loginShake?'login-shake':'')}><div className="ve-login-logo-wrap"><img className="ve-login-logo" src="/uploads/1790294762962-fgf.webp?v=1790294762845" alt="Центр размножения растений"/></div><h1>РЕДАКТОР САЙТА</h1><p>Центр размножения растений</p><div className={'ve-login-field '+(loginError?'login-field-error':loginSuccess?'login-field-success':'')}><span className={'ve-login-lock '+(password.length>0?'is-open':'')} aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><g className="lock-shackle"><path d="M8 11V8.2a4 4 0 0 1 8 0V11" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></g><rect x="5" y="10.5" width="14" height="10.5" rx="2.6" stroke="currentColor" strokeWidth="2"/><circle cx="12" cy="14.8" r="1.25" fill="currentColor"/><path d="M12 15.8v2.35" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg></span><input type="password" value={password} onChange={e=>{setPassword(e.target.value);if(loginError||loginSuccess){setLoginError(false);setLoginSuccess(false);setMessage('')}}} placeholder="Пароль"/></div><button className="ve-login-submit">ВОЙТИ</button>{message&&<small className={loginError?'login-error-text':loginSuccess?'login-success-text':''}>{message}</small>}</form></main>;
 
   return <main className="ve-app">
     <header className="ve-top">
