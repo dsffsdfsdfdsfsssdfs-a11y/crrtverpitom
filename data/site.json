@@ -22,8 +22,8 @@
   },
   "hero": {
     "eyebrow": "ТВЕРСКАЯ ОБЛАСТЬ · ДЕРЕВНЯ КОЗИНО",
-    "title": "Выращиваем",
-    "accent": "красивых садов",
+    "title": "",
+    "accent": "",
     "intro": "",
     "area": "5000",
     "areaLabel": "м² тепличного комплекса",
@@ -34,9 +34,24 @@
     "titleSize": "119",
     "textX": "-41",
     "textY": "-104",
-    "title2": "растения для",
-    "subtitle": "Хвойные и лиственные растения собственного производства",
-    "titleFont": "Georgia"
+    "title2": "",
+    "subtitle": "",
+    "line1Size": "100",
+    "line1X": "0",
+    "line1Y": "0",
+    "line1Font": "Georgia",
+    "line2Size": "112",
+    "line2X": "0",
+    "line2Y": "0",
+    "line2Font": "Georgia",
+    "accentSize": "95",
+    "accentX": "0",
+    "accentY": "0",
+    "accentFont": "Georgia",
+    "subtitleSize": "100",
+    "subtitleX": "0",
+    "subtitleY": "0",
+    "subtitleFont": "Manrope"
   },
   "contacts": [
     {
