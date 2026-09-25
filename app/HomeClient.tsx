@@ -57,7 +57,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
         <svg className="contact-clip-defs" width="0" height="0" aria-hidden="true" focusable="false">
           <defs>
             <clipPath id="contactCardClip" clipPathUnits="objectBoundingBox">
-              <path d="M .045 0 H .785 C .81 0 .825 .008 .842 .025 L .978 .185 C .993 .203 1 .222 1 .248 V .952 C 1 .982 .982 1 .952 1 H .19 C .155 1 .128 .99 .101 .971 L .026 .921 C .008 .908 0 .89 0 .865 V .052 C 0 .02 .02 0 .045 0 Z"/>
+              <path d="M .055 0 H .79 C .812 0 .828 .007 .844 .024 L .978 .184 C .993 .202 1 .222 1 .248 V .94 C 1 .976 .976 1 .94 1 H .055 C .02 1 0 .976 0 .94 V .06 C 0 .024 .02 0 .055 0 Z"/>
             </clipPath>
           </defs>
         </svg>
