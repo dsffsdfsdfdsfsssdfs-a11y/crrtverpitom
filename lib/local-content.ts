@@ -16,8 +16,6 @@ async function ensureStorage() {
   }
 }
 
-let cleanedOnce = false;
-
 function collectUploadNames(value: unknown, names = new Set<string>()) {
   if (typeof value === 'string' && value.startsWith('/uploads/')) {
     names.add(path.basename(value.split('?')[0]));
@@ -43,12 +41,7 @@ async function cleanupUnusedUploads(content: unknown) {
 
 export async function readContent() {
   try {
-    const content = JSON.parse(await fs.readFile(contentFile, 'utf8'));
-    if (!cleanedOnce) {
-      cleanedOnce = true;
-      await cleanupUnusedUploads(content);
-    }
-    return content;
+    return JSON.parse(await fs.readFile(contentFile, 'utf8'));
   } catch {
     return JSON.parse(await fs.readFile(fallbackFile, 'utf8'));
   }
