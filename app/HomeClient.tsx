@@ -32,8 +32,6 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const heroSrc=mediaSrc(c.hero.image);
   const contactPeople=(c.contacts||[]).filter((x:{phone?:string})=>Boolean((x.phone||'').trim()));
   return <>
-    <div className="overscroll-bottom-backdrop" aria-hidden="true"/>
-    <div className="overscroll-top-header" aria-hidden="true"/>
     <main style={fontStyles}>
     <header className="topbar">
       <a className="brand header-brand" href="/" aria-label="Обновить страницу" onClick={(e)=>{e.preventDefault();window.location.reload()}}><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc&&<Image src={logoSrc} alt="" aria-hidden="true" priority width={160} height={160} quality={65} className="brand-image brand-image-img" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}}/>}</span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
