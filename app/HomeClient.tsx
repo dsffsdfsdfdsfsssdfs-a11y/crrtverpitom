@@ -12,11 +12,20 @@ function HeroContactIcon({type}:{type:HeroContactIconType}){
 export default function HomeClient({initialContent}:{initialContent:any}) {
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
+  const [pageReady,setPageReady]=useState(false);
   const [heroReady,setHeroReady]=useState(false);
   const heroImageRef=useRef<HTMLImageElement>(null);
   const [c,setContent]=useState<any>(initialContent);
   useEffect(()=>{const receive=(event:MessageEvent)=>{if(event.origin===window.location.origin&&event.data?.type==='crr-preview'&&event.data.content)setContent(event.data.content)};window.addEventListener('message',receive);if(window.parent!==window)window.parent.postMessage({type:'crr-preview-ready'},window.location.origin);return()=>window.removeEventListener('message',receive)},[]);
-  useEffect(()=>{setHeroReady(false);const img=heroImageRef.current;if(img?.complete&&img.naturalWidth>0)setHeroReady(true)},[c.hero.image]);
+  useEffect(()=>{setHeroReady(false);setPageReady(false);const img=heroImageRef.current;if(img?.complete&&img.naturalWidth>0)setHeroReady(true)},[c.hero.image]);
+  useEffect(()=>{
+    if(!heroReady)return;
+    let active=true;
+    const finish=()=>{if(active)setPageReady(true)};
+    if(document.fonts?.ready) document.fonts.ready.then(finish).catch(finish);
+    else finish();
+    return()=>{active=false};
+  },[heroReady]);
   const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
   const clamp=(v:number,min:number,max:number)=>Math.min(max,Math.max(min,v));
   const logoSize=clamp(num(c.header.logoSize,53),28,105);
@@ -32,6 +41,23 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const logoSrc=c.header.logoImage;
   const contactPeople=(c.contacts||[]).filter((x:{phone?:string})=>Boolean((x.phone||'').trim()));
   return <>
+    <div
+      className={`site-loading-cover ${pageReady?'is-ready':''}`}
+      aria-hidden="true"
+      style={{
+        position:'fixed',
+        inset:0,
+        zIndex:99999,
+        background:'#f3eee4',
+        opacity:pageReady?0:1,
+        visibility:pageReady?'hidden':'visible',
+        transition:'opacity .22s ease, visibility .22s ease',
+        pointerEvents:pageReady?'none':'auto'
+      }}
+    >
+      <span className="site-loading-mark">ЦЕНТР РАЗМНОЖЕНИЯ РАСТЕНИЙ</span>
+      <span className="site-loading-line"/>
+    </div>
     <div className="overscroll-bottom-backdrop" aria-hidden="true"/>
     <div className="overscroll-top-header" aria-hidden="true"/>
     <main style={fontStyles}>
