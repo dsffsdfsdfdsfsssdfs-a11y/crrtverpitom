@@ -178,3 +178,81 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
       0 0 16px rgba(185,137,57,.08);
   }
 }
+
+
+/* Animated warm highlight inside the existing desktop glass navigation. */
+@media(min-width:761px){
+  .topbar nav a{
+    overflow:hidden;
+    isolation:isolate;
+  }
+
+  .topbar nav a::after{
+    content:'';
+    position:absolute;
+    z-index:-1;
+    top:-.7rem;
+    bottom:-.7rem;
+    left:-42%;
+    width:34%;
+    pointer-events:none;
+    opacity:0;
+    transform:translateX(-180%) skewX(-18deg);
+    background:linear-gradient(
+      90deg,
+      rgba(210,170,95,0) 0%,
+      rgba(224,189,121,.10) 28%,
+      rgba(236,207,148,.42) 50%,
+      rgba(224,189,121,.10) 72%,
+      rgba(210,170,95,0) 100%
+    );
+    filter:blur(1px);
+  }
+
+  .topbar nav a:hover::before{
+    animation:navGoldBreath 1.8s ease-in-out infinite alternate;
+  }
+
+  .topbar nav a:hover::after{
+    opacity:1;
+    animation:navGoldSweep 1.15s cubic-bezier(.2,.75,.25,1) 1;
+  }
+
+  @keyframes navGoldSweep{
+    0%{
+      transform:translateX(-180%) skewX(-18deg);
+      opacity:0;
+    }
+    18%{opacity:.75}
+    70%{opacity:.9}
+    100%{
+      transform:translateX(520%) skewX(-18deg);
+      opacity:0;
+    }
+  }
+
+  @keyframes navGoldBreath{
+    from{
+      background:linear-gradient(
+        90deg,
+        rgba(187,143,69,.05) 0%,
+        rgba(213,174,104,.13) 50%,
+        rgba(187,143,69,.05) 100%
+      );
+      box-shadow:
+        inset 0 0 12px rgba(205,165,94,.08),
+        0 0 10px rgba(185,137,57,.04);
+    }
+    to{
+      background:linear-gradient(
+        90deg,
+        rgba(187,143,69,.10) 0%,
+        rgba(224,186,112,.24) 50%,
+        rgba(187,143,69,.10) 100%
+      );
+      box-shadow:
+        inset 0 0 20px rgba(214,174,101,.16),
+        0 0 18px rgba(185,137,57,.08);
+    }
+  }
+}
