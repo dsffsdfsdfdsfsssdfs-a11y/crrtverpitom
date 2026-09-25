@@ -252,7 +252,7 @@ export default function Admin(){
   const current=content;
   const groups=useMemo(()=>Array.from(new Set(LAYERS.map(x=>x.group))),[]);
 
-  if(!content)return <main className="ve-login"><div className="ve-login-backdrop"/><form onSubmit={login} className="ve-login-card"><div className="ve-login-logo-wrap"><img className="ve-login-logo" src="/uploads/1790294762962-fgf.webp?v=1790294762845" alt="Центр размножения растений"/></div><h1>РЕДАКТОР САЙТА</h1><p>Центр размножения растений</p><div className="ve-login-field"><span className="ve-login-lock" aria-hidden="true"></span><input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Пароль"/></div><button className="ve-login-submit">ВОЙТИ</button>{message&&<small>{message}</small>}</form></main>;
+  if(!content)return <main className="ve-login"><div className="ve-login-backdrop"/><form onSubmit={login} className="ve-login-card"><div className="ve-login-logo-wrap"><img className="ve-login-logo" src="/uploads/1790294762962-fgf.webp?v=1790294762845" alt="Центр размножения растений"/></div><h1>РЕДАКТОР САЙТА</h1><p>Центр размножения растений</p><div className="ve-login-field"><span className="ve-login-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 11V8a5 5 0 0 1 10 0v3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><rect x="5" y="11" width="14" height="10" rx="2.5" stroke="currentColor" strokeWidth="2"/></svg></span><input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Пароль"/></div><button className="ve-login-submit">ВОЙТИ</button>{message&&<small>{message}</small>}</form></main>;
 
   return <main className="ve-app">
     <header className="ve-top">
