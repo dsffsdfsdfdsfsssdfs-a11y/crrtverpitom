@@ -33,8 +33,8 @@ const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
 const clamp=(n:number,min:number,max:number)=>Math.max(min,Math.min(max,n));
 
 const META:Record<LayerKey,{x?:string;y?:string;size?:string;font?:string;text?:string;min?:number;max?:number}> = {
-  logo:{x:'header.logoX',y:'header.logoY',size:'header.logoSize',min:28,max:160},
-  brandText:{x:'header.textX',y:'header.textY',size:'header.textSize',min:60,max:220},
+  logo:{x:'header.logoX',y:'header.logoY',size:'header.logoSize',min:28,max:180},
+  brandText:{x:'header.textX',y:'header.textY',size:'header.textSize',font:'header.textFont',min:50,max:260},
   heroImage:{x:'hero.imageX',y:'hero.imageY',size:'hero.imageScale',min:100,max:180},
   line1:{x:'hero.line1X',y:'hero.line1Y',size:'hero.line1Size',font:'hero.line1Font',text:'hero.title',min:35,max:240},
   line2:{x:'hero.line2X',y:'hero.line2Y',size:'hero.line2Size',font:'hero.line2Font',text:'hero.title2',min:35,max:240},
@@ -79,10 +79,14 @@ export default function Admin(){
   const [device,setDevice]=useState<'desktop'|'tablet'|'mobile'>('desktop');
   const [dirty,setDirty]=useState(false);
   const iframeRef=useRef<HTMLIFrameElement>(null);
+  const stageRef=useRef<HTMLDivElement>(null);
   const contentRef=useRef<Content|null>(null);
   const dragRef=useRef<any>(null);
+  const [fitScale,setFitScale]=useState(1);
 
-  const previewWidth=device==='desktop'?1440:device==='tablet'?900:390;
+  const viewport=device==='desktop'?{w:1440,h:900,label:'Desktop'}:device==='tablet'?{w:820,h:1180,label:'Tablet'}:{w:390,h:844,label:'Mobile'};
+  const previewWidth=viewport.w;
+  const previewHeight=viewport.h;
 
   const sendPreview=(next:Content|null=contentRef.current)=>{
     if(next) iframeRef.current?.contentWindow?.postMessage({type:'crr-preview',content:next},window.location.origin);
@@ -181,6 +185,22 @@ export default function Admin(){
     return()=>window.removeEventListener('message',ready);
   },[selected]);
 
+  useEffect(()=>{
+    const stage=stageRef.current;
+    if(!stage)return;
+    const updateScale=()=>{
+      const rect=stage.getBoundingClientRect();
+      const availableW=Math.max(200,rect.width-28);
+      const availableH=Math.max(200,rect.height-28);
+      setFitScale(Math.min(1,availableW/previewWidth,availableH/previewHeight));
+    };
+    updateScale();
+    const ro=new ResizeObserver(updateScale);
+    ro.observe(stage);
+    window.addEventListener('resize',updateScale);
+    return()=>{ro.disconnect();window.removeEventListener('resize',updateScale)};
+  },[device,previewWidth,previewHeight]);
+
   async function login(e:FormEvent){
     e.preventDefault();
     const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});
@@ -238,10 +258,12 @@ export default function Admin(){
       </aside>
 
       <section className="ve-canvas">
-        <div className="canvas-head"><span>{previewWidth}px</span><b>{device==='desktop'?'Компьютер':device==='tablet'?'Планшет':'Телефон'}</b></div>
-        <div className="canvas-stage">
-          <div className="device-frame" style={{width:Math.min(previewWidth,1440)}}>
-            <iframe key={device} ref={iframeRef} src="/?preview=1" title="Предпросмотр" onLoad={()=>{sendPreview();setTimeout(decorateFrame,120)}} style={{width:previewWidth}}/>
+        <div className="canvas-stage" ref={stageRef}>
+          <div className="viewport-badge">{viewport.label} · {previewWidth} × {previewHeight}</div>
+          <div className="device-frame" style={{width:previewWidth*fitScale,height:previewHeight*fitScale}}>
+            <div className="device-scale" style={{width:previewWidth,height:previewHeight,transform:`scale(${fitScale})`}}>
+              <iframe key={device} ref={iframeRef} src="/?preview=1" title="Предпросмотр" onLoad={()=>{sendPreview();setTimeout(decorateFrame,120)}} style={{width:previewWidth,height:previewHeight}}/>
+            </div>
           </div>
         </div>
       </section>
