@@ -87,3 +87,73 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
     line-height:1;
   }
 }
+
+
+/* Desktop nav interaction: focused glass chip + dimmed siblings. */
+@media(min-width:761px){
+  .topbar nav{
+    overflow:visible;
+  }
+
+  .topbar nav a{
+    position:relative;
+    z-index:0;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:.42rem .72rem;
+    border-radius:999px;
+    transform:scale(1);
+    opacity:.9;
+    transition:
+      transform .24s cubic-bezier(.2,.8,.2,1),
+      opacity .22s ease,
+      color .22s ease;
+    will-change:transform,opacity;
+  }
+
+  .topbar nav a::before{
+    content:'';
+    position:absolute;
+    inset:-.08rem -.12rem;
+    z-index:-1;
+    border-radius:999px;
+    background:rgba(255,255,255,0);
+    border:1px solid rgba(255,255,255,0);
+    box-shadow:0 0 0 rgba(70,55,38,0);
+    -webkit-backdrop-filter:blur(0);
+    backdrop-filter:blur(0);
+    transform:scale(.88);
+    opacity:0;
+    transition:
+      transform .24s cubic-bezier(.2,.8,.2,1),
+      opacity .22s ease,
+      background .22s ease,
+      border-color .22s ease,
+      box-shadow .22s ease,
+      -webkit-backdrop-filter .22s ease,
+      backdrop-filter .22s ease;
+  }
+
+  .topbar nav:hover a{
+    opacity:.46;
+  }
+
+  .topbar nav a:hover{
+    opacity:1;
+    transform:scale(1.055);
+    color:#425044!important;
+  }
+
+  .topbar nav a:hover::before{
+    opacity:1;
+    transform:scale(1);
+    background:rgba(255,255,255,.42);
+    border-color:rgba(255,255,255,.72);
+    box-shadow:
+      0 6px 18px rgba(71,58,43,.12),
+      inset 0 1px 0 rgba(255,255,255,.78);
+    -webkit-backdrop-filter:blur(12px) saturate(118%);
+    backdrop-filter:blur(12px) saturate(118%);
+  }
+}
