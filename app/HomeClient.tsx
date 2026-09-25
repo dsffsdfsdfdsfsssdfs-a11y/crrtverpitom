@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // Hero contact dock is intentionally kept on the first screen.
 type HeroContactIconType='phone'|'mail'|'pin';
@@ -13,8 +13,10 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
   const [heroReady,setHeroReady]=useState(false);
+  const heroImageRef=useRef<HTMLImageElement>(null);
   const [c,setContent]=useState<any>(initialContent);
   useEffect(()=>{const receive=(event:MessageEvent)=>{if(event.origin===window.location.origin&&event.data?.type==='crr-preview'&&event.data.content)setContent(event.data.content)};window.addEventListener('message',receive);if(window.parent!==window)window.parent.postMessage({type:'crr-preview-ready'},window.location.origin);return()=>window.removeEventListener('message',receive)},[]);
+  useEffect(()=>{setHeroReady(false);const img=heroImageRef.current;if(img?.complete&&img.naturalWidth>0)setHeroReady(true)},[c.hero.image]);
   const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
   const clamp=(v:number,min:number,max:number)=>Math.min(max,Math.max(min,v));
   const logoSize=clamp(num(c.header.logoSize,53),28,105);
@@ -48,9 +50,9 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       <button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
     <section className={`hero hero-contacts ${heroReady?'hero-ready':'hero-loading'}`} id="top">
-      <img className="hero-bg hero-bg-image" src={c.hero.image} alt="" aria-hidden="true" fetchPriority="high" decoding="async" onLoad={()=>setHeroReady(true)} onError={()=>setHeroReady(true)} style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
-      <div className="hero-overlay"/>
-      <div className="hero-contact-layout">
+      <img ref={heroImageRef} className="hero-bg hero-bg-image" src={c.hero.image} alt="" aria-hidden="true" fetchPriority="high" decoding="async" onLoad={()=>setHeroReady(true)} onError={()=>setHeroReady(true)} style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`,opacity:heroReady?1:0}}/>
+      <div className="hero-overlay" style={{opacity:heroReady?1:0,visibility:heroReady?'visible':'hidden'}}/>
+      <div className="hero-contact-layout" style={{opacity:heroReady?1:0,visibility:heroReady?'visible':'hidden'}}> 
         <div className="hero-contact-main">
           <p className="eyebrow">{c.hero.eyebrow}</p>
           <h1>Центр размножения<br/><em>растений</em></h1>
