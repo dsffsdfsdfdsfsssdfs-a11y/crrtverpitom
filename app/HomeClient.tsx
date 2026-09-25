@@ -6,16 +6,6 @@ function ContactIcon({type}:{type:ContactIconType}){
   if(type==='phone')return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 3.5 9.8 7l-1.7 2.1c1.2 2.4 3.1 4.3 5.5 5.5l2.1-1.7 3.5 2.6c.5.4.7 1.1.4 1.7l-1 2.2c-.3.7-1 1.1-1.8 1-7.1-.8-12.8-6.5-13.6-13.6-.1-.8.3-1.5 1-1.8l2.2-1c.6-.3 1.3-.1 1.7.4Z"/></svg>;
   return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4.5 7 7.5 6 7.5-6"/></svg>;
 }
-function YandexMapIcon(){
-  return <span className="yandex-pin-logo" aria-hidden="true">
-    <svg viewBox="0 0 24 30">
-      <path d="M12 28c4.9-5.8 8-10.3 8-16A8 8 0 1 0 4 12c0 5.7 3.1 10.2 8 16Z"/>
-      <circle cx="12" cy="12" r="4.2"/>
-    </svg>
-    <b>Я</b>
-  </span>;
-}
-
 export default function HomeClient({initialContent}:{initialContent:any}) {
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
@@ -62,8 +52,6 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           </defs>
         </svg>
         <aside className="hero-contact-card">
-          <span className="contact-glow" aria-hidden="true"/>
-          <span className="contact-gloss" aria-hidden="true"/>
           <div className="contact-card-title"><p className="eyebrow gold">КОНТАКТЫ</p></div>
 
           <div className="contact-people">
@@ -86,7 +74,6 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
             </div>
 
             <div className="contact-detail contact-detail-address">
-              <a className="contact-glyph contact-map-link" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78" aria-label="Открыть питомник в Яндекс Картах" title="Открыть в Яндекс Картах"><YandexMapIcon/></a>
               <div className="contact-detail-copy">
                 <small>Адрес</small>
                 <a className="contact-address-link" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78" title="Открыть в Яндекс Картах">{c.address}</a>
