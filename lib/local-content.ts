@@ -17,8 +17,11 @@ async function ensureStorage() {
 }
 
 export async function readContent() {
-  await ensureStorage();
-  return JSON.parse(await fs.readFile(contentFile, 'utf8'));
+  try {
+    return JSON.parse(await fs.readFile(contentFile, 'utf8'));
+  } catch {
+    return JSON.parse(await fs.readFile(fallbackFile, 'utf8'));
+  }
 }
 
 export async function saveContent(content: unknown) {
