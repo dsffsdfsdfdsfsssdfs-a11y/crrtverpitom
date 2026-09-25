@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 // Hero contact dock is intentionally kept on the first screen.
 type HeroContactIconType='phone'|'mail'|'pin';
@@ -14,6 +14,14 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
   const [c,setContent]=useState<any>(initialContent);
+  useLayoutEffect(()=>{
+    if('scrollRestoration' in history) history.scrollRestoration='manual';
+    if(window.location.hash) history.replaceState(null,'',window.location.pathname+window.location.search);
+    window.scrollTo(0,0);
+    requestAnimationFrame(()=>window.scrollTo(0,0));
+    const t=window.setTimeout(()=>window.scrollTo(0,0),80);
+    return()=>window.clearTimeout(t);
+  },[]);
   useEffect(()=>{const receive=(event:MessageEvent)=>{if(event.origin===window.location.origin&&event.data?.type==='crr-preview'&&event.data.content)setContent(event.data.content)};window.addEventListener('message',receive);if(window.parent!==window)window.parent.postMessage({type:'crr-preview-ready'},window.location.origin);return()=>window.removeEventListener('message',receive)},[]);
   const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
   const clamp=(v:number,min:number,max:number)=>Math.min(max,Math.max(min,v));
@@ -52,7 +60,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       <div className="hero-overlay"/>
       <div className="hero-contact-layout">
         <div className="hero-contact-main">
-          <h1 className="hero-title"><span>Центр</span><span>размножения</span><em>растений</em></h1>
+          <h1 className="hero-title"><span className="hero-title-line hero-title-first">Центр</span><span className="hero-title-line hero-title-second">размножения</span><em className="hero-title-line hero-title-accent">растений</em></h1>
           <p className="intro">{c.hero.intro}</p>
           <div className="actions"><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
         </div>
