@@ -61,6 +61,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       <div className="hero-contact-layout">
         <div className="hero-contact-main">
           <h1 className="hero-title"><span className="hero-title-line hero-title-first">Выращиваем</span><span className="hero-title-line hero-title-second">растения для</span><em className="hero-title-line hero-title-accent">красивых садов</em></h1>
+          <p className="hero-subtitle">Хвойные и лиственные растения собственного производства</p>
           <p className="intro">{c.hero.intro}</p>
           <div className="actions"><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
         </div>
