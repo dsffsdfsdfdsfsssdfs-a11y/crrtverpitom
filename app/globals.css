@@ -52,14 +52,15 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 /* First screen: nursery contacts */
 .hero-contacts{padding:150px clamp(1.5rem,7vw,8rem) 72px;align-items:center}
 .hero-contact-layout{position:relative;z-index:2;width:min(1380px,100%);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(330px,390px);gap:clamp(1.6rem,4vw,4.5rem);align-items:end}
-.hero-contact-main{max-width:760px;min-width:0}
-.hero-contact-main h1{font-size:clamp(3.8rem,5.6vw,6.4rem);line-height:.88;letter-spacing:-.055em;max-width:760px;margin:0}
-.hero-title{display:grid!important;grid-template-columns:1fr!important;justify-items:start!important;align-items:start!important;gap:.01em!important;width:max-content;max-width:100%}
+.hero-contact-main{max-width:900px;min-width:0}
+.hero-contact-main h1{font-size:clamp(4.6rem,6.8vw,7.6rem);line-height:.86;letter-spacing:-.058em;max-width:900px;margin:0}
+.hero-title{display:grid!important;grid-template-columns:1fr!important;justify-items:start!important;align-items:start!important;gap:.005em!important;width:max-content;max-width:100%}
 .hero-title-line{display:block!important;width:auto!important;white-space:nowrap}
-.hero-title-first{font-size:.78em}
-.hero-title-second{font-size:.86em}
-.hero-title-accent{font-size:.72em;line-height:.92;margin-top:.10em;color:var(--gold);font-weight:500}
-.hero-contact-main .intro{max-width:560px;margin-top:1.75rem}
+.hero-title-first{font-size:.79em}
+.hero-title-second{font-size:.88em}
+.hero-title-accent{font-size:.74em;line-height:.9;margin-top:.09em;color:var(--gold);font-weight:500}
+.hero-subtitle{margin:1.7rem 0 0;max-width:650px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.78rem;line-height:1.55;letter-spacing:.11em;text-transform:uppercase;color:#efe2cf}
+.hero-contact-main .intro{max-width:560px;margin-top:1.45rem}
 .hero-contact-dock{position:relative;isolation:isolate;overflow:visible;width:100%;justify-self:end;align-self:end;padding:1rem;border:1px solid rgba(255,255,255,.18);border-radius:26px;background:linear-gradient(180deg,rgba(42,37,31,.42),rgba(34,30,25,.34));box-shadow:0 18px 42px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.08);-webkit-backdrop-filter:blur(16px) saturate(108%);backdrop-filter:blur(16px) saturate(108%)}
 .hero-contact-dock:before{content:'';position:absolute;z-index:-3;inset:-70px;border-radius:70px;pointer-events:none;background:radial-gradient(circle at 12% 22%,rgba(255,248,224,.95) 0 2px,rgba(245,210,142,.55) 6px,transparent 30px),radial-gradient(circle at 84% 18%,rgba(255,245,214,.90) 0 2px,rgba(235,188,104,.52) 6px,transparent 28px),radial-gradient(circle at 16% 80%,rgba(255,241,205,.82) 0 2px,rgba(232,185,102,.42) 6px,transparent 28px),radial-gradient(circle at 80% 78%,rgba(255,238,198,.88) 0 2px,rgba(226,176,93,.45) 6px,transparent 30px),radial-gradient(ellipse at 22% 32%,rgba(255,226,166,.34),transparent 48%),radial-gradient(ellipse at 78% 24%,rgba(239,188,102,.30),transparent 46%),radial-gradient(ellipse at 32% 82%,rgba(255,236,195,.22),transparent 42%),radial-gradient(ellipse at 76% 76%,rgba(224,171,88,.24),transparent 44%),radial-gradient(circle at 50% 50%,rgba(255,215,140,.10),transparent 70%);filter:blur(26px);opacity:1;transform:scale(1);animation:contactDustOuter 5.2s ease-in-out infinite;will-change:opacity,transform,filter}
 .hero-contact-dock:after{content:'';position:absolute;z-index:-2;inset:-36px;border-radius:50px;pointer-events:none;background:radial-gradient(circle at 18% 28%,rgba(255,251,235,.46) 0 1px,transparent 10px),radial-gradient(circle at 72% 26%,rgba(255,241,206,.40) 0 1px,transparent 9px),radial-gradient(circle at 44% 84%,rgba(240,201,132,.36) 0 1px,transparent 9px),radial-gradient(circle at 84% 66%,rgba(255,246,222,.42) 0 1px,transparent 10px),radial-gradient(circle at 30% 58%,rgba(255,231,180,.18) 0 1px,transparent 12px),radial-gradient(circle at 66% 72%,rgba(233,184,102,.18) 0 1px,transparent 12px);filter:blur(12px);opacity:.82;animation:contactDustInner 3.8s ease-in-out infinite;will-change:opacity,transform}
@@ -143,12 +144,13 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 }
 @media(max-width:760px){
   .hero-contacts{padding:108px 1.3rem 48px;min-height:auto}
-  .hero-contact-main h1{font-size:clamp(2.7rem,11.5vw,4.15rem);line-height:.92}
+  .hero-contact-main h1{font-size:clamp(3rem,12.5vw,4.65rem);line-height:.91}
   .hero-title{width:100%;max-width:100%}
   .hero-title-first{font-size:.8em}
   .hero-title-second{font-size:.88em}
-  .hero-title-accent{font-size:.72em;white-space:normal;max-width:100%}
-  .hero-contact-main .intro{font-size:.88rem;line-height:1.65;margin-top:1.45rem}
+  .hero-title-accent{font-size:.74em;white-space:normal;max-width:100%}
+  .hero-subtitle{font-size:.66rem;line-height:1.5;letter-spacing:.09em;max-width:92%;margin-top:1.35rem}
+  .hero-contact-main .intro{font-size:.88rem;line-height:1.65;margin-top:1.15rem}
   .hero-contact-card{padding:1.25rem;-webkit-clip-path:url(#contactCardClip);clip-path:url(#contactCardClip)}
   .contact-people{grid-template-columns:1fr}
   .contact-person{padding:.78rem 0}
