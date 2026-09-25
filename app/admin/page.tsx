@@ -252,11 +252,11 @@ export default function Admin(){
   const current=content;
   const groups=useMemo(()=>Array.from(new Set(LAYERS.map(x=>x.group))),[]);
 
-  if(!content)return <main className="ve-login"><form onSubmit={login}><div className="ve-logo">ЦР</div><h1>Visual Editor</h1><p>Центр размножения растений</p><input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Пароль"/><button>Открыть редактор</button>{message&&<small>{message}</small>}</form></main>;
+  if(!content)return <main className="ve-login"><form onSubmit={login}><img className="ve-login-logo" src="/uploads/1790294762962-fgf.webp?v=1790294762845" alt="Центр размножения растений"/><h1>Visual Editor</h1><p>Центр размножения растений</p><input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Пароль"/><button>Открыть редактор</button>{message&&<small>{message}</small>}</form></main>;
 
   return <main className="ve-app">
     <header className="ve-top">
-      <div className="ve-brand"><a href="/" target="_blank">← Сайт</a><b>CRR Visual Editor</b><span>{dirty?'Есть несохранённые изменения':'Все изменения сохранены'}</span></div>
+      <div className="ve-brand"><a href="/" target="_blank">Сайт</a><b>CRR Visual Editor</b><span>{dirty?'Есть несохранённые изменения':'Все изменения сохранены'}</span></div>
       <div className="ve-device">
         <button className={device==='desktop'?'active':''} onClick={()=>setDevice('desktop')}>Desktop</button>
         <button className={device==='tablet'?'active':''} onClick={()=>setDevice('tablet')}>Tablet</button>
