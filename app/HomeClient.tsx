@@ -60,7 +60,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       <div className="hero-overlay"/>
       <div className="hero-contact-layout">
         <div className="hero-contact-main">
-          <h1 className="hero-title"><span className="hero-title-line hero-title-first">Центр</span><span className="hero-title-line hero-title-second">размножения</span><em className="hero-title-line hero-title-accent">растений</em></h1>
+          <h1 className="hero-title"><span className="hero-title-line hero-title-first">Выращиваем</span><span className="hero-title-line hero-title-second">растения для</span><em className="hero-title-line hero-title-accent">красивых садов</em></h1>
           <p className="intro">{c.hero.intro}</p>
           <div className="actions"><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
         </div>
