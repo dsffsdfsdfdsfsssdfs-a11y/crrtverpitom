@@ -207,13 +207,14 @@ export default function Admin(){
     ro.observe(stage);
     window.addEventListener('resize',updateScale);
     return()=>{cancelAnimationFrame(raf1);cancelAnimationFrame(raf2);timers.forEach(clearTimeout);ro.disconnect();window.removeEventListener('resize',updateScale)};
-  },[device,previewWidth,previewHeight]);
+  },[device,previewWidth,previewHeight,Boolean(content)]);
 
   useEffect(()=>{
+    if(!content)return;
     setBadgeVisible(true);
     const t=window.setTimeout(()=>setBadgeVisible(false),1200);
     return()=>window.clearTimeout(t);
-  },[device]);
+  },[device,Boolean(content)]);
 
   async function login(e:FormEvent){
     e.preventDefault();
