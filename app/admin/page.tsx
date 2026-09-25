@@ -55,7 +55,9 @@ export default function Admin(){
   const [saving,setSaving]=useState(false);
   const [tab,setTab]=useState('main');
   const previewRef=useRef<HTMLIFrameElement>(null);
+  const previewBoxRef=useRef<HTMLDivElement>(null);
   const contentRef=useRef<Content|null>(null);
+  const [previewScale,setPreviewScale]=useState(.6);
 
   const sendPreview=(next:Content|null=contentRef.current)=>{
     if(next) previewRef.current?.contentWindow?.postMessage({type:'crr-preview',content:next},window.location.origin);
@@ -72,6 +74,17 @@ export default function Admin(){
     };
     window.addEventListener('message',ready);
     return()=>window.removeEventListener('message',ready);
+  },[]);
+
+  useEffect(()=>{
+    const box=previewBoxRef.current;
+    if(!box) return;
+    const update=()=>setPreviewScale(Math.min(1,box.clientWidth/1440));
+    update();
+    const observer=new ResizeObserver(update);
+    observer.observe(box);
+    window.addEventListener('resize',update);
+    return()=>{observer.disconnect();window.removeEventListener('resize',update)};
   },[]);
 
   const change=(path:string,value:any)=>setContent((old:Content)=>{
@@ -186,10 +199,19 @@ export default function Admin(){
         <div className="editor-scroll">
           {tab==='main'&&<>
             <Section title="Первый экран">
-              <Field label="Строка над заголовком"><input value={content.hero.eyebrow||''} onChange={e=>change('hero.eyebrow',e.target.value)}/></Field>
-              <Field label="Заголовок"><input value={content.hero.title||''} onChange={e=>change('hero.title',e.target.value)}/></Field>
-              <Field label="Золотая строка"><input value={content.hero.accent||''} onChange={e=>change('hero.accent',e.target.value)}/></Field>
-              <Field label="Описание"><textarea value={content.hero.intro||''} onChange={e=>change('hero.intro',e.target.value)}/></Field>
+              <Field label="Первая строка заголовка"><input value={content.hero.title||''} onChange={e=>change('hero.title',e.target.value)} placeholder="Выращиваем"/></Field>
+              <Field label="Вторая строка заголовка"><input value={content.hero.title2||''} onChange={e=>change('hero.title2',e.target.value)} placeholder="растения для"/></Field>
+              <Field label="Золотая строка"><input value={content.hero.accent||''} onChange={e=>change('hero.accent',e.target.value)} placeholder="красивых садов"/></Field>
+              <Field label="Подзаголовок"><textarea value={content.hero.subtitle||''} onChange={e=>change('hero.subtitle',e.target.value)} placeholder="Хвойные и лиственные растения собственного производства"/></Field>
+              <div className="field-two">
+                <Field label="Размер заголовка (%)"><input type="number" min="70" max="180" value={content.hero.titleSize||119} onChange={e=>change('hero.titleSize',e.target.value)}/></Field>
+                <Field label="Шрифт заголовка">
+                  <select value={content.hero.titleFont||content.appearance.headingFont||'Georgia'} onChange={e=>change('hero.titleFont',e.target.value)}>
+                    <option>Georgia</option><option>Playfair Display</option><option>Manrope</option><option>Arial</option>
+                  </select>
+                </Field>
+              </div>
+              <Field label="Дополнительное описание"><textarea value={content.hero.intro||''} onChange={e=>change('hero.intro',e.target.value)}/></Field>
               <Field label="Фоновое фото"><input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(0,e.target.files[0],'hero')}/></Field>
             </Section>
             <Section title="Шрифты">
@@ -316,7 +338,9 @@ export default function Admin(){
         </div>
         <div className="browser-frame">
           <div className="browser-bar"><span/><span/><span/></div>
-          <iframe ref={previewRef} src="/?preview=1" title="Предпросмотр сайта" onLoad={()=>sendPreview(content)}/>
+          <div className="preview-viewport" ref={previewBoxRef}>
+            <iframe ref={previewRef} src="/?preview=1" title="Предпросмотр сайта" onLoad={()=>sendPreview(content)} style={{width:'1440px',height:(100/previewScale)+'%',transform:'scale('+previewScale+')',transformOrigin:'top left'}}/>
+          </div>
         </div>
       </section>
     </div>
