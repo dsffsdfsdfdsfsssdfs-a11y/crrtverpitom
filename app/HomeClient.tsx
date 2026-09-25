@@ -46,51 +46,47 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <h1>Центр размножения<br/><em>растений</em></h1>
           <p className="intro">{c.hero.intro}</p>
           <div className="actions"><button className="gold-btn" onClick={()=>setOrder(true)}>Сделать заказ <span>↗</span></button><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
-
-          <div className="hero-contact-dock" aria-label="Контакты питомника">
-            <div className="hero-contact-dock-head">
-              <span>Контакты</span>
-            </div>
-
-            <div className="hero-contact-dock-grid">
-              <a className="hero-contact-tile" href="tel:+79167964460">
-                <span className="hero-contact-tile-icon"><HeroContactIcon type="phone"/></span>
-                <span className="hero-contact-tile-copy">
-                  <small>Наталья Никулина</small>
-                  <b>+7 (916) 796-44-60</b>
-                </span>
-                <span className="hero-contact-tile-arrow">↗</span>
-              </a>
-
-              <a className="hero-contact-tile" href="tel:+79206834460">
-                <span className="hero-contact-tile-icon"><HeroContactIcon type="phone"/></span>
-                <span className="hero-contact-tile-copy">
-                  <small>Дарья Живанович</small>
-                  <b>+7 (920) 683-44-60</b>
-                </span>
-                <span className="hero-contact-tile-arrow">↗</span>
-              </a>
-
-              <a className="hero-contact-tile" href={'mailto:'+c.email}>
-                <span className="hero-contact-tile-icon"><HeroContactIcon type="mail"/></span>
-                <span className="hero-contact-tile-copy">
-                  <small>Почта</small>
-                  <b>{c.email}</b>
-                </span>
-                <span className="hero-contact-tile-arrow">↗</span>
-              </a>
-
-              <a className="hero-contact-tile hero-contact-tile-address" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78">
-                <span className="hero-contact-tile-icon"><HeroContactIcon type="pin"/></span>
-                <span className="hero-contact-tile-copy">
-                  <small>Адрес</small>
-                  <b>Тверская область, деревня Козино</b>
-                </span>
-                <span className="hero-contact-tile-arrow">↗</span>
-              </a>
-            </div>
-          </div>
         </div>
+
+        <aside className="hero-contact-dock" aria-label="Контакты питомника">
+          <div className="hero-contact-dock-head">
+            <span>Контакты</span>
+          </div>
+
+          <div className="hero-contact-dock-list">
+            <a className="hero-contact-item" href="tel:+79167964460">
+              <span className="hero-contact-item-icon"><HeroContactIcon type="phone"/></span>
+              <span className="hero-contact-item-copy">
+                <small>Наталья Никулина</small>
+                <b>+7 (916) 796-44-60</b>
+              </span>
+            </a>
+
+            <a className="hero-contact-item" href="tel:+79206834460">
+              <span className="hero-contact-item-icon"><HeroContactIcon type="phone"/></span>
+              <span className="hero-contact-item-copy">
+                <small>Дарья Живанович</small>
+                <b>+7 (920) 683-44-60</b>
+              </span>
+            </a>
+
+            <a className="hero-contact-item" href={'mailto:'+c.email}>
+              <span className="hero-contact-item-icon"><HeroContactIcon type="mail"/></span>
+              <span className="hero-contact-item-copy">
+                <small>Почта</small>
+                <b>{c.email}</b>
+              </span>
+            </a>
+
+            <a className="hero-contact-item hero-contact-item-address" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78">
+              <span className="hero-contact-item-icon"><HeroContactIcon type="pin"/></span>
+              <span className="hero-contact-item-copy">
+                <small>Адрес</small>
+                <b>Тверская область, деревня Козино</b>
+              </span>
+            </a>
+          </div>
+        </aside>
       </div>
     </section>
     <section className="numbers"><div><b>6 га</b><span>маточных насаждений</span></div><div><b>144–96</b><span>ячеек в кассетах</span></div><div><b>Р9</b><span>готовые растения</span></div><div><b>Тверь</b><span>выращиваем с душой</span></div></section>
