@@ -302,3 +302,28 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
     100%{transform:translateX(650%) skewX(-16deg);opacity:0}
   }
 }
+
+
+/* Richer hover without extra pill: gold text, hairline reveal, lift + repeating sweep. */
+@media(min-width:761px){
+  .topbar nav a{
+    background-image:linear-gradient(90deg, rgba(180,130,45,.18), rgba(222,174,82,.95), rgba(180,130,45,.18));
+    background-repeat:no-repeat;
+    background-position:50% calc(100% - 1px);
+    background-size:0 1px;
+    letter-spacing:0;
+    transition:
+      transform .24s cubic-bezier(.2,.8,.2,1),
+      opacity .20s ease,
+      color .20s ease,
+      letter-spacing .24s ease,
+      background-size .28s cubic-bezier(.2,.8,.2,1);
+  }
+
+  .topbar nav a:hover{
+    color:#8a672f!important;
+    transform:translateY(-1px) scale(1.06);
+    letter-spacing:.012em;
+    background-size:72% 1px;
+  }
+}
