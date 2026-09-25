@@ -12,9 +12,8 @@ export default function RootLayout({children}:{children:React.ReactNode}) {
   return (
     <html lang="ru">
       <head>
-        <link rel="icon" type="image/png" sizes="64x64" href="/favicon-v16.png?v=16" />
-        <link rel="shortcut icon" href="/favicon.ico?v=16" />
-        <link rel="apple-touch-icon" href="/favicon-v16.png?v=16" />
+        <link rel="icon" type="image/png" sizes="64x64" href="/favicon-v17.png?v=17" />
+        <link rel="apple-touch-icon" href="/favicon-v17.png?v=17" />
         <link rel="preload" as="image" href="/repo-assets/1790256146854-lyjh500c3dfczzpumdyigwunksyimztdsbhjlv1khcud4udhjd8rer980wfvtjt44dhpo1kcp-jgsej5jfmdaso7.jpg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
