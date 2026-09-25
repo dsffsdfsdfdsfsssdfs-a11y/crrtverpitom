@@ -34,7 +34,14 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
     <header className="topbar">
       <a className="brand header-brand" href="/" aria-label="Обновить страницу" onClick={(e)=>{e.preventDefault();window.location.reload()}}><span className="brand-logo-slot" style={{width:logoSlot}}><span aria-label="Логотип" className="brand-image brand-image-bg" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`,backgroundImage:`url("${logoSrc||"/favicon-v17.png?v=17"}"),url("/favicon-v17.png?v=17")`}}/></span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
       <nav className={menu?'open':''}><a href="#about">{c.header.nav[0]}</a><a href="#assortment">{c.header.nav[1]}</a><a href="#gallery">{c.header.nav[2]}</a><a href="#knowledge">{c.header.nav[3]}</a></nav>
-      <span className="header-spacer desktop" aria-hidden="true"/>
+      <div className="header-socials" aria-label="Социальные сети питомника">
+        <a className="header-social header-social-vk" href="https://vk.ru/crr.tver" target="_blank" rel="noreferrer" aria-label="ВКонтакте" title="ВКонтакте">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.1 6.4h3.1c.3 0 .5.2.6.5.6 1.6 1.5 3 2.7 4.2.2.2.5.1.5-.2V7.2c0-.5.3-.8.8-.8h2.5c.5 0 .8.3.8.8v2.6c0 .4.3.5.6.2 1.1-1.1 2-2.3 2.6-3.6h3c.6 0 .9.5.6 1-.8 1.5-1.8 2.9-3 4.1-.3.3-.3.6 0 .9 1.3 1.1 2.4 2.5 3.3 4 .3.5 0 1-.6 1h-3.2c-.4 0-.7-.2-.9-.5-.7-1.1-1.6-2-2.6-2.8-.3-.3-.6-.2-.6.2v2.2c0 .5-.3.8-.8.8h-1.1c-4.2 0-7.5-2.7-9.3-8.1-.2-.5.2-.8.7-.8Z"/></svg>
+        </a>
+        <a className="header-social header-social-tg" href="https://t.me/crrtver" target="_blank" rel="noreferrer" aria-label="Telegram" title="Telegram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 4.1 3.8 10.5c-.8.3-.8 1.4.1 1.6l4.1 1 1.6 4.9c.3.8 1.3 1 1.8.3l2.5-3 4 3c.7.5 1.7.1 1.8-.8l1.7-12.3c.1-.8-.5-1.4-1.2-1.1Z"/><path d="m8.1 13.1 8.8-5.7-6.6 7.3-.7 3.3"/></svg>
+        </a>
+      </div>
       <button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
     <section className="hero hero-contacts" id="top">
