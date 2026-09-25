@@ -221,8 +221,6 @@ export default function Admin(){
 
   async function login(e:FormEvent){
     e.preventDefault();
-    setLoginError(false);
-    setLoginSuccess(false);
     const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});
     if(!r.ok){
       setMessage('Неверный пароль');
@@ -234,9 +232,9 @@ export default function Admin(){
       }));
       return;
     }
-    const fresh=await fetch('/api/admin/content?ts='+Date.now(),{cache:'no-store'}).then(x=>x.json());
     setMessage('Успешно');
     setLoginSuccess(true);
+    const fresh=await fetch('/api/admin/content?ts='+Date.now(),{cache:'no-store'}).then(x=>x.json());
     window.setTimeout(()=>{setContent(fresh);setDirty(false)},520);
   }
 
