@@ -87,6 +87,14 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
               </span>
             </a>
 
+            <a className="hero-contact-item" href="tel:+79201557717">
+              <span className="hero-contact-item-icon"><HeroContactIcon type="phone"/></span>
+              <span className="hero-contact-item-copy">
+                <small>Алла Жарняк</small>
+                <b>+7 (920) 155-77-17</b>
+              </span>
+            </a>
+
             <a className="hero-contact-item" href={'mailto:'+c.email}>
               <span className="hero-contact-item-icon"><HeroContactIcon type="mail"/></span>
               <span className="hero-contact-item-copy">
