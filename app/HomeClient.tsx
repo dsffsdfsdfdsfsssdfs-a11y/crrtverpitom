@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Hero contact dock is intentionally kept on the first screen.
 type HeroContactIconType='phone'|'mail'|'pin';
@@ -12,20 +12,8 @@ function HeroContactIcon({type}:{type:HeroContactIconType}){
 export default function HomeClient({initialContent}:{initialContent:any}) {
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
-  const [pageReady,setPageReady]=useState(false);
-  const [heroReady,setHeroReady]=useState(false);
-  const heroImageRef=useRef<HTMLImageElement>(null);
   const [c,setContent]=useState<any>(initialContent);
   useEffect(()=>{const receive=(event:MessageEvent)=>{if(event.origin===window.location.origin&&event.data?.type==='crr-preview'&&event.data.content)setContent(event.data.content)};window.addEventListener('message',receive);if(window.parent!==window)window.parent.postMessage({type:'crr-preview-ready'},window.location.origin);return()=>window.removeEventListener('message',receive)},[]);
-  useEffect(()=>{setHeroReady(false);setPageReady(false);const img=heroImageRef.current;if(img?.complete&&img.naturalWidth>0)setHeroReady(true)},[c.hero.image]);
-  useEffect(()=>{
-    if(!heroReady)return;
-    let active=true;
-    const finish=()=>{if(active)setPageReady(true)};
-    if(document.fonts?.ready) document.fonts.ready.then(finish).catch(finish);
-    else finish();
-    return()=>{active=false};
-  },[heroReady]);
   const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
   const clamp=(v:number,min:number,max:number)=>Math.min(max,Math.max(min,v));
   const logoSize=clamp(num(c.header.logoSize,53),28,105);
@@ -41,28 +29,11 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const logoSrc=c.header.logoImage;
   const contactPeople=(c.contacts||[]).filter((x:{phone?:string})=>Boolean((x.phone||'').trim()));
   return <>
-    <div
-      className={`site-loading-cover ${pageReady?'is-ready':''}`}
-      aria-hidden="true"
-      style={{
-        position:'fixed',
-        inset:0,
-        zIndex:99999,
-        background:'#f3eee4',
-        opacity:pageReady?0:1,
-        visibility:pageReady?'hidden':'visible',
-        transition:'opacity .22s ease, visibility .22s ease',
-        pointerEvents:pageReady?'none':'auto'
-      }}
-    >
-      <span className="site-loading-mark">ЦЕНТР РАЗМНОЖЕНИЯ РАСТЕНИЙ</span>
-      <span className="site-loading-line"/>
-    </div>
     <div className="overscroll-bottom-backdrop" aria-hidden="true"/>
     <div className="overscroll-top-header" aria-hidden="true"/>
     <main style={fontStyles}>
     <header className="topbar">
-      <a className="brand header-brand" href="/" aria-label="Обновить страницу" onClick={(e)=>{e.preventDefault();window.location.reload()}}><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc&&<img src={logoSrc} alt="" aria-hidden="true" fetchPriority="high" decoding="async" className="brand-image brand-image-img" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}}/>}</span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
+      <a className="brand header-brand" href="/" aria-label="Обновить страницу" onClick={(e)=>{e.preventDefault();window.location.reload()}}><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc&&<img src={logoSrc} alt="" aria-hidden="true" fetchPriority="high" decoding="sync" loading="eager" className="brand-image brand-image-img" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}}/>}</span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
       <nav className={menu?'open':''}><a href="#about">{c.header.nav[0]}</a><a href="#assortment">{c.header.nav[1]}</a><a href="#gallery">{c.header.nav[2]}</a><a href="#knowledge">{c.header.nav[3]}</a></nav>
       <div className="header-socials" aria-label="Социальные сети питомника">
         <a className="header-social header-social-vk" href="https://vk.ru/crr.tver" target="_blank" rel="noreferrer" aria-label="ВКонтакте" title="ВКонтакте">
@@ -75,10 +46,10 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
       <button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
-    <section className={`hero hero-contacts ${heroReady?'hero-ready':'hero-loading'}`} id="top" style={{background:'#2a221d',opacity:heroReady?1:0,transition:'opacity .18s ease'}}> 
-      <img ref={heroImageRef} className="hero-bg hero-bg-image" src={c.hero.image} alt="" aria-hidden="true" fetchPriority="high" decoding="async" onLoad={()=>setHeroReady(true)} onError={()=>setHeroReady(true)} style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`,opacity:heroReady?1:0}}/>
-      <div className="hero-overlay" style={{opacity:heroReady?1:0,visibility:heroReady?'visible':'hidden'}}/>
-      <div className="hero-contact-layout" style={{opacity:heroReady?1:0,visibility:heroReady?'visible':'hidden'}}> 
+    <section className="hero hero-contacts" id="top">
+      <img className="hero-bg hero-bg-image" src={c.hero.image} alt="" aria-hidden="true" fetchPriority="high" decoding="sync" loading="eager" style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
+      <div className="hero-overlay"/>
+      <div className="hero-contact-layout">
         <div className="hero-contact-main">
           <p className="eyebrow">{c.hero.eyebrow}</p>
           <h1>Центр размножения<br/><em>растений</em></h1>
