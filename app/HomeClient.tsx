@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+// Hero contact dock is intentionally kept on the first screen.
 type HeroContactIconType='phone'|'mail'|'pin';
 function HeroContactIcon({type}:{type:HeroContactIconType}){
   if(type==='phone') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.1 3.8 9.6 7l-1.5 2c1.2 2.5 3.1 4.4 5.6 5.6l2-1.5 3.2 2.5c.6.4.8 1.2.5 1.8l-.9 2c-.3.7-1 1.1-1.8 1-7-.8-12.6-6.4-13.4-13.4-.1-.8.3-1.5 1-1.8l2-.9c.6-.3 1.4-.1 1.8.5Z"/></svg>;
