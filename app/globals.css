@@ -402,3 +402,12 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
     background-size:72% 1px;
   }
 }
+
+/* Prevent incomplete first-screen flash while the current hero image is loading */
+.hero{background:#2a221d}
+.hero-bg-image{object-fit:cover;opacity:0;transition:opacity .22s ease}
+.hero-ready .hero-bg-image{opacity:1}
+.hero-contact-layout,.hero-overlay,.hero:before{transition:opacity .18s ease}
+.hero-loading .hero-contact-layout,.hero-loading .hero-overlay,.hero-loading:before{opacity:0}
+.hero-ready .hero-contact-layout,.hero-ready .hero-overlay,.hero-ready:before{opacity:1}
+.brand-image-img{display:block;object-fit:contain}
