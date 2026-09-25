@@ -28,35 +28,6 @@ export default function Admin(){
  const sendPreview=(next:Content|null=contentRef.current)=>{if(next)previewRef.current?.contentWindow?.postMessage({type:'crr-preview',content:next},window.location.origin)};
  useEffect(()=>{contentRef.current=content;if(content){requestAnimationFrame(()=>sendPreview(content))}},[content]);
  useEffect(()=>{const ready=(event:MessageEvent)=>{if(event.origin===window.location.origin&&event.data?.type==='crr-preview-ready')sendPreview()};window.addEventListener('message',ready);return()=>window.removeEventListener('message',ready)},[]);
- useEffect(()=>{
-  let raf=0;
-  const syncPreviewScroll=()=>{
-   cancelAnimationFrame(raf);
-   raf=requestAnimationFrame(()=>{
-    const frame=previewRef.current;
-    const win=frame?.contentWindow;
-    if(!frame||!win)return;
-    try{
-     const doc=win.document.documentElement;
-     const pageMax=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
-     const previewMax=Math.max(0,doc.scrollHeight-frame.clientHeight);
-     const ratio=Math.min(1,Math.max(0,window.scrollY/pageMax));
-     win.scrollTo({top:previewMax*ratio,behavior:'auto'});
-    }catch{}
-   });
-  };
-  window.addEventListener('scroll',syncPreviewScroll,{passive:true});
-  window.addEventListener('resize',syncPreviewScroll);
-  const frame=previewRef.current;
-  frame?.addEventListener('load',syncPreviewScroll);
-  syncPreviewScroll();
-  return()=>{
-   cancelAnimationFrame(raf);
-   window.removeEventListener('scroll',syncPreviewScroll);
-   window.removeEventListener('resize',syncPreviewScroll);
-   frame?.removeEventListener('load',syncPreviewScroll);
-  };
- },[]);
  const change=(path:string,value:string)=>setContent((old:Content)=>{const copy=structuredClone(old);setPath(copy,path,value);return copy});
  async function login(e:FormEvent){e.preventDefault();const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});if(!r.ok){setMessage((await r.json()).error);return}setContent(await fetch('/api/admin/content?ts='+Date.now(),{cache:'no-store'}).then(x=>x.json()))}
  async function save(){if(uploading){setMessage('Фото ещё загружается — подожди пару секунд.');return}if(saving||!content)return;setSaving(true);setMessage('Сохраняю…');try{const r=await fetch('/api/admin/save',{method:'POST',headers:{'Content-Type':'application/json','Cache-Control':'no-cache'},cache:'no-store',body:JSON.stringify(content)});const data=await r.json();if(!r.ok)throw new Error(data.error||'Ошибка сохранения');const fresh=await fetch('/api/admin/content?ts='+Date.now(),{cache:'no-store'}).then(x=>{if(!x.ok)throw new Error('Не удалось проверить сохранение');return x.json()});setContent(fresh);contentRef.current=fresh;sendPreview(fresh);setMessage('Сохранено. Изменения записаны на сервер и уже видны на сайте.')}catch(error){setMessage(error instanceof Error?error.message:'Ошибка сохранения')}finally{setSaving(false)}}
