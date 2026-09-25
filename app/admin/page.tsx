@@ -1,10 +1,26 @@
 'use client';
 import './admin.css';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 
-type Content = any;
+type Content=any;
+type LayerKey='logo'|'brandText'|'heroImage'|'line1'|'line2'|'accent'|'subtitle'|'contactDock';
 
-const FONT_OPTIONS=['Georgia','Playfair Display','Manrope','Montserrat','Roboto','Open Sans','Lora','Merriweather','PT Serif','PT Sans','Raleway','Cormorant Garamond','Cormorant','Noto Serif','Noto Sans','Ubuntu','Rubik','Oswald','Fira Sans','Fira Sans Condensed','IBM Plex Sans','IBM Plex Serif','Source Sans 3','Source Serif 4','Alegreya','Alegreya Sans','Old Standard TT','Spectral','Prata','Vollkorn','Philosopher','Tenor Sans','Forum','Marck Script','Bad Script','Caveat','Comfortaa','Poiret One','Yeseva One','Russo One','Unbounded','Golos Text','Neucha','Pacifico','Lobster','Kelly Slab','Jura','Exo 2','Play','Roboto Slab'];
+const FONTS=[
+  'Cormorant Garamond','Prata','Playfair Display','Lora','Spectral','Forum',
+  'Tenor Sans','Manrope','Montserrat','Raleway','Golos Text','Unbounded',
+  'Yeseva One','Old Standard TT','Vollkorn','Philosopher','PT Serif','Roboto Slab'
+];
+
+const LAYERS:{key:LayerKey;label:string;group:string}[]=[
+  {key:'logo',label:'Логотип',group:'Шапка'},
+  {key:'brandText',label:'Название в шапке',group:'Шапка'},
+  {key:'heroImage',label:'Фоновое фото',group:'Первый экран'},
+  {key:'line1',label:'Первая строка',group:'Первый экран'},
+  {key:'line2',label:'Вторая строка',group:'Первый экран'},
+  {key:'accent',label:'Золотая строка',group:'Первый экран'},
+  {key:'subtitle',label:'Подзаголовок',group:'Первый экран'},
+  {key:'contactDock',label:'Карточка контактов',group:'Первый экран'}
+];
 
 const setPath=(o:any,path:string,value:any)=>{
   const parts=path.split('.');
@@ -12,57 +28,71 @@ const setPath=(o:any,path:string,value:any)=>{
   for(let i=0;i<parts.length-1;i++) x=x[parts[i]];
   x[parts[parts.length-1]]=value;
 };
-
 const getPath=(o:any,path:string)=>path.split('.').reduce((v:any,k)=>v?.[k],o);
+const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
+const clamp=(n:number,min:number,max:number)=>Math.max(min,Math.min(max,n));
 
-const readDataUrl=(file:Blob)=>new Promise<string>((resolve,reject)=>{
-  const r=new FileReader();
-  r.onload=()=>resolve(String(r.result));
-  r.onerror=reject;
-  r.readAsDataURL(file);
+const META:Record<LayerKey,{x?:string;y?:string;size?:string;font?:string;text?:string;min?:number;max?:number}> = {
+  logo:{x:'header.logoX',y:'header.logoY',size:'header.logoSize',min:28,max:160},
+  brandText:{x:'header.textX',y:'header.textY',size:'header.textSize',min:60,max:220},
+  heroImage:{x:'hero.imageX',y:'hero.imageY',size:'hero.imageScale',min:100,max:180},
+  line1:{x:'hero.line1X',y:'hero.line1Y',size:'hero.line1Size',font:'hero.line1Font',text:'hero.title',min:35,max:240},
+  line2:{x:'hero.line2X',y:'hero.line2Y',size:'hero.line2Size',font:'hero.line2Font',text:'hero.title2',min:35,max:240},
+  accent:{x:'hero.accentX',y:'hero.accentY',size:'hero.accentSize',font:'hero.accentFont',text:'hero.accent',min:35,max:240},
+  subtitle:{x:'hero.subtitleX',y:'hero.subtitleY',size:'hero.subtitleSize',font:'hero.subtitleFont',text:'hero.subtitle',min:35,max:220},
+  contactDock:{x:'hero.contactX',y:'hero.contactY',size:'hero.contactScale',min:70,max:140}
+};
+
+const readDataUrl=(file:Blob)=>new Promise<string>((ok,bad)=>{
+  const r=new FileReader(); r.onload=()=>ok(String(r.result)); r.onerror=bad; r.readAsDataURL(file);
 });
-
 async function optimizeImage(file:File){
-  if(!file.type.startsWith('image/')||file.type==='image/svg+xml') return file;
+  if(!file.type.startsWith('image/')||file.type==='image/svg+xml')return file;
   try{
     const bitmap=await createImageBitmap(file);
-    const maxSide=1800;
-    const scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
+    const maxSide=1800, scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
     const canvas=document.createElement('canvas');
     canvas.width=Math.max(1,Math.round(bitmap.width*scale));
     canvas.height=Math.max(1,Math.round(bitmap.height*scale));
-    const ctx=canvas.getContext('2d');
-    if(!ctx){bitmap.close();return file}
-    ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
-    bitmap.close();
+    const ctx=canvas.getContext('2d'); if(!ctx){bitmap.close();return file}
+    ctx.drawImage(bitmap,0,0,canvas.width,canvas.height); bitmap.close();
     const blob=await new Promise<Blob|null>(ok=>canvas.toBlob(ok,'image/webp',.82));
-    if(!blob||blob.size>=file.size) return file;
+    if(!blob||blob.size>=file.size)return file;
     return new File([blob],file.name.replace(/\.[^.]+$/,'')+'.webp',{type:'image/webp'});
   }catch{return file}
 }
 
-function Section({title,children}:{title:string,children:React.ReactNode}){
-  return <section className="editor-card"><div className="editor-card-title"><h2>{title}</h2></div>{children}</section>
-}
-
-function Field({label,children,hint}:{label:string,children:React.ReactNode,hint?:string}){
-  return <label className="editor-field"><span>{label}</span>{hint&&<small>{hint}</small>}{children}</label>
+function Slider({label,value,min,max,step=1,onChange}:{label:string;value:number;min:number;max:number;step?:number;onChange:(v:number)=>void}){
+  return <div className="prop">
+    <div className="prop-head"><span>{label}</span><input type="number" value={value} onChange={e=>onChange(Number(e.target.value))}/></div>
+    <input className="range" type="range" min={min} max={max} step={step} value={value} onChange={e=>onChange(Number(e.target.value))}/>
+  </div>
 }
 
 export default function Admin(){
   const [password,setPassword]=useState('');
   const [content,setContent]=useState<Content|null>(null);
+  const [selected,setSelected]=useState<LayerKey>('line1');
   const [message,setMessage]=useState('');
-  const [uploading,setUploading]=useState(0);
   const [saving,setSaving]=useState(false);
-  const [tab,setTab]=useState('main');
-  const previewRef=useRef<HTMLIFrameElement>(null);
-  const previewBoxRef=useRef<HTMLDivElement>(null);
+  const [uploading,setUploading]=useState(false);
+  const [device,setDevice]=useState<'desktop'|'tablet'|'mobile'>('desktop');
+  const [dirty,setDirty]=useState(false);
+  const iframeRef=useRef<HTMLIFrameElement>(null);
   const contentRef=useRef<Content|null>(null);
-  const [previewScale,setPreviewScale]=useState(.6);
+  const dragRef=useRef<any>(null);
+
+  const previewWidth=device==='desktop'?1440:device==='tablet'?900:390;
 
   const sendPreview=(next:Content|null=contentRef.current)=>{
-    if(next) previewRef.current?.contentWindow?.postMessage({type:'crr-preview',content:next},window.location.origin);
+    if(next) iframeRef.current?.contentWindow?.postMessage({type:'crr-preview',content:next},window.location.origin);
+  };
+
+  const update=(path:string,value:any)=>{
+    setDirty(true);
+    setContent((old:Content)=>{
+      const copy=structuredClone(old); setPath(copy,path,value); return copy;
+    });
   };
 
   useEffect(()=>{
@@ -70,287 +100,180 @@ export default function Admin(){
     if(content) requestAnimationFrame(()=>sendPreview(content));
   },[content]);
 
+  const decorateFrame=()=>{
+    const frame=iframeRef.current;
+    if(!frame)return;
+    try{
+      const doc=frame.contentDocument; if(!doc)return;
+      const all=Array.from(doc.querySelectorAll<HTMLElement>('[data-editor-key]'));
+      all.forEach(el=>{
+        el.style.cursor='grab';
+        el.style.outline=el.dataset.editorKey===selected?'2px solid #d9b16f':'';
+        el.style.outlineOffset=el.dataset.editorKey===selected?'5px':'';
+      });
+      const select=(ev:Event)=>{
+        const target=(ev.target as HTMLElement).closest<HTMLElement>('[data-editor-key]');
+        if(!target)return;
+        ev.preventDefault(); ev.stopPropagation();
+        const key=target.dataset.editorKey as LayerKey;
+        if(key){setSelected(key)}
+      };
+      const down=(ev:PointerEvent)=>{
+        const target=(ev.target as HTMLElement).closest<HTMLElement>('[data-editor-key]');
+        if(!target)return;
+        const key=target.dataset.editorKey as LayerKey;
+        const meta=META[key]; if(!meta?.x||!meta?.y)return;
+        ev.preventDefault(); ev.stopPropagation();
+        setSelected(key);
+        const c=contentRef.current;
+        dragRef.current={
+          key,startClientX:ev.clientX,startClientY:ev.clientY,
+          startX:num(getPath(c,meta.x),key==='heroImage'?50:0),
+          startY:num(getPath(c,meta.y),key==='heroImage'?50:0)
+        };
+        target.setPointerCapture?.(ev.pointerId);
+        target.style.cursor='grabbing';
+      };
+      const move=(ev:PointerEvent)=>{
+        const d=dragRef.current;if(!d)return;
+        const meta=META[d.key as LayerKey]; if(!meta?.x||!meta?.y)return;
+        const dx=ev.clientX-d.startClientX,dy=ev.clientY-d.startClientY;
+        if(d.key==='heroImage'){
+          const nx=clamp(d.startX+dx/8,0,100),ny=clamp(d.startY+dy/8,0,100);
+          setContent((old:Content)=>{const copy=structuredClone(old);setPath(copy,meta.x!,String(Math.round(nx)));setPath(copy,meta.y!,String(Math.round(ny)));return copy});
+        }else{
+          setContent((old:Content)=>{const copy=structuredClone(old);setPath(copy,meta.x!,String(Math.round(d.startX+dx)));setPath(copy,meta.y!,String(Math.round(d.startY+dy)));return copy});
+        }
+        setDirty(true);
+      };
+      const up=()=>{dragRef.current=null};
+      doc.addEventListener('click',select,true);
+      doc.addEventListener('pointerdown',down,true);
+      doc.addEventListener('pointermove',move,true);
+      doc.addEventListener('pointerup',up,true);
+      (frame as any)._editorCleanup=()=>{
+        doc.removeEventListener('click',select,true);
+        doc.removeEventListener('pointerdown',down,true);
+        doc.removeEventListener('pointermove',move,true);
+        doc.removeEventListener('pointerup',up,true);
+      };
+      sendPreview();
+    }catch{}
+  };
+
+  useEffect(()=>{
+    const frame=iframeRef.current;
+    if(!frame)return;
+    try{
+      const doc=frame.contentDocument;
+      doc?.querySelectorAll<HTMLElement>('[data-editor-key]').forEach(el=>{
+        el.style.outline=el.dataset.editorKey===selected?'2px solid #d9b16f':'';
+        el.style.outlineOffset=el.dataset.editorKey===selected?'5px':'';
+      });
+    }catch{}
+  },[selected,content]);
+
   useEffect(()=>{
     const ready=(event:MessageEvent)=>{
-      if(event.origin===window.location.origin&&event.data?.type==='crr-preview-ready') sendPreview();
+      if(event.origin===window.location.origin&&event.data?.type==='crr-preview-ready'){sendPreview();setTimeout(decorateFrame,80)}
     };
     window.addEventListener('message',ready);
     return()=>window.removeEventListener('message',ready);
-  },[]);
-
-  useEffect(()=>{
-    const box=previewBoxRef.current;
-    if(!box) return;
-    const update=()=>setPreviewScale(Math.min(1,box.clientWidth/1440));
-    update();
-    const observer=new ResizeObserver(update);
-    observer.observe(box);
-    window.addEventListener('resize',update);
-    return()=>{observer.disconnect();window.removeEventListener('resize',update)};
-  },[]);
-
-  const change=(path:string,value:any)=>setContent((old:Content)=>{
-    const copy=structuredClone(old);
-    setPath(copy,path,value);
-    return copy;
-  });
+  },[selected]);
 
   async function login(e:FormEvent){
     e.preventDefault();
-    setMessage('');
     const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});
-    if(!r.ok){setMessage((await r.json()).error||'Неверный пароль');return}
+    if(!r.ok){setMessage('Неверный пароль');return}
     const fresh=await fetch('/api/admin/content?ts='+Date.now(),{cache:'no-store'}).then(x=>x.json());
-    setContent(fresh);
+    setContent(fresh); setDirty(false);
   }
 
   async function save(){
-    if(!content||saving||uploading) return;
-    setSaving(true);
-    setMessage('Сохраняю изменения…');
+    if(!content||saving)return;
+    setSaving(true);setMessage('Сохраняю…');
     try{
-      const r=await fetch('/api/admin/save',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','Cache-Control':'no-cache'},
-        cache:'no-store',
-        body:JSON.stringify(content)
-      });
-      const data=await r.json();
-      if(!r.ok) throw new Error(data.error||'Ошибка сохранения');
-      const fresh=await fetch('/api/admin/content?ts='+Date.now(),{cache:'no-store'}).then(x=>x.json());
-      setContent(fresh);
-      contentRef.current=fresh;
-      sendPreview(fresh);
-      setMessage('Сохранено. Изменения опубликованы.');
-    }catch(err){
-      setMessage(err instanceof Error?err.message:'Ошибка сохранения');
-    }finally{setSaving(false)}
+      const r=await fetch('/api/admin/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(content)});
+      if(!r.ok)throw new Error('Ошибка сохранения');
+      setDirty(false);setMessage('Сохранено');
+    }catch{setMessage('Ошибка сохранения')}
+    finally{setSaving(false);setTimeout(()=>setMessage(''),1800)}
   }
 
-  async function upload(index:number,file:File,target?:string){
-    if(!content) return;
-    const path=index===-1?'header.logoImage':target?target+'.image':'galleryImages.'+index;
-    const previous=getPath(content,path);
-    const localUrl=URL.createObjectURL(file);
-    change(path,localUrl);
-    setUploading(v=>v+1);
-    setMessage('Загружаю изображение…');
+  async function upload(file:File,path:string){
+    if(!content)return;
+    setUploading(true);
     try{
       const optimized=await optimizeImage(file);
       const dataUrl=await readDataUrl(optimized);
-      const r=await fetch('/api/admin/upload',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({name:optimized.name,base64:dataUrl.split(',')[1]})
-      });
+      const r=await fetch('/api/admin/upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:optimized.name,base64:dataUrl.split(',')[1]})});
       const data=await r.json();
-      if(!r.ok||!data.url) throw new Error(data.error||'Ошибка загрузки');
-      change(path,data.url+'?v='+Date.now());
-      setMessage('Фото загружено.');
-    }catch(err){
-      change(path,previous||'');
-      setMessage(err instanceof Error?err.message:'Ошибка загрузки');
-    }finally{
-      setUploading(v=>Math.max(0,v-1));
-      setTimeout(()=>URL.revokeObjectURL(localUrl),4000);
-    }
+      if(!r.ok||!data.url)throw new Error();
+      update(path,data.url+'?v='+Date.now());
+    }finally{setUploading(false)}
   }
 
-  if(!content){
-    return <main className="new-admin-login">
-      <form onSubmit={login} className="new-login-card">
-        <div className="login-mark">ЦР</div>
-        <h1>Редактор сайта</h1>
-        <p>Вход для владельца сайта</p>
-        <input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Пароль" required autoFocus/>
-        <button type="submit">Войти</button>
-        {message&&<small>{message}</small>}
-      </form>
-    </main>
-  }
+  const meta=META[selected];
+  const current=content;
+  const groups=useMemo(()=>Array.from(new Set(LAYERS.map(x=>x.group))),[]);
 
-  const tabs=[
-    ['main','Первый экран'],
-    ['header','Шапка'],
-    ['contacts','Контакты'],
-    ['content','Контент'],
-    ['media','Фото и видео'],
-    ['position','Размеры']
-  ];
+  if(!content)return <main className="ve-login"><form onSubmit={login}><div className="ve-logo">ЦР</div><h1>Visual Editor</h1><p>Центр размножения растений</p><input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Пароль"/><button>Открыть редактор</button>{message&&<small>{message}</small>}</form></main>;
 
-  return <main className="new-admin">
-    <header className="new-admin-head">
-      <div className="new-admin-brand">
-        <a href="/" target="_blank" rel="noreferrer">← Сайт</a>
-        <div><b>Редактор сайта</b><span>Центр размножения растений</span></div>
+  return <main className="ve-app">
+    <header className="ve-top">
+      <div className="ve-brand"><a href="/" target="_blank">← Сайт</a><b>CRR Visual Editor</b><span>{dirty?'Есть несохранённые изменения':'Все изменения сохранены'}</span></div>
+      <div className="ve-device">
+        <button className={device==='desktop'?'active':''} onClick={()=>setDevice('desktop')}>Desktop</button>
+        <button className={device==='tablet'?'active':''} onClick={()=>setDevice('tablet')}>Tablet</button>
+        <button className={device==='mobile'?'active':''} onClick={()=>setDevice('mobile')}>Mobile</button>
       </div>
-      <div className="new-admin-actions">
-        {message&&<span className="save-status">{message}</span>}
-        <button className="save-button" onClick={save} disabled={saving||uploading>0}>
-          {uploading ? 'Загрузка ('+uploading+')' : saving ? 'Сохраняю…' : 'Сохранить'}
-        </button>
-      </div>
+      <div className="ve-actions"><span>{message}</span><button className="ve-save" onClick={save} disabled={saving}>{saving?'Сохраняю…':'Сохранить'}</button></div>
     </header>
 
-    <div className="new-editor">
-      <aside className="editor-sidebar">
-        <nav className="editor-tabs">
-          {tabs.map(([id,label])=><button key={id} className={tab===id?'active':''} onClick={()=>setTab(id)}>{label}</button>)}
-        </nav>
-
-        <div className="editor-scroll">
-          {tab==='main'&&<>
-            <Section title="Первый экран">
-              {[
-                ['Первая строка','hero.title','line1'],
-                ['Вторая строка','hero.title2','line2'],
-                ['Золотая строка','hero.accent','accent'],
-                ['Подзаголовок','hero.subtitle','subtitle']
-              ].map(([label,path,key])=><div className="hero-line-editor" key={key}>
-                <Field label={label}><input value={getPath(content,path)||''} onChange={e=>change(path,e.target.value)}/></Field>
-                <div className="hero-line-controls">
-                  <Field label="Размер (%)"><input type="number" min="35" max="240" value={content.hero[key+'Size']??(key==='line2'?112:key==='accent'?95:100)} onChange={e=>change('hero.'+key+'Size',e.target.value)}/></Field>
-                  <Field label="X"><input type="number" min="-500" max="500" value={content.hero[key+'X']??0} onChange={e=>change('hero.'+key+'X',e.target.value)}/></Field>
-                  <Field label="Y"><input type="number" min="-300" max="300" value={content.hero[key+'Y']??0} onChange={e=>change('hero.'+key+'Y',e.target.value)}/></Field>
-                </div>
-                <Field label="Шрифт">
-                  <select value={content.hero[key+'Font']|| (key==='subtitle'?'Manrope':'Georgia')} onChange={e=>change('hero.'+key+'Font',e.target.value)}>
-                    {FONT_OPTIONS.map(font=><option key={font} value={font}>{font}</option>)}
-                  </select>
-                </Field>
-              </div>)}
-              <Field label="Дополнительное описание"><textarea value={content.hero.intro||''} onChange={e=>change('hero.intro',e.target.value)}/></Field>
-              <Field label="Фоновое фото"><input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(0,e.target.files[0],'hero')}/></Field>
-            </Section>
-            <Section title="Шрифты">
-              <Field label="Шрифт заголовков">
-                <select value={content.appearance.headingFont} onChange={e=>change('appearance.headingFont',e.target.value)}>
-                  {FONT_OPTIONS.map(font=><option key={font} value={font}>{font}</option>)}
-                </select>
-              </Field>
-              <Field label="Основной шрифт">
-                <select value={content.appearance.bodyFont} onChange={e=>change('appearance.bodyFont',e.target.value)}>
-                  {FONT_OPTIONS.map(font=><option key={font} value={font}>{font}</option>)}
-                </select>
-              </Field>
-            </Section>
-          </>}
-
-          {tab==='header'&&<Section title="Шапка сайта">
-            <Field label="Название"><input value={content.header.title||''} onChange={e=>change('header.title',e.target.value)}/></Field>
-            <Field label="Подпись"><input value={content.header.subtitle||''} onChange={e=>change('header.subtitle',e.target.value)}/></Field>
-            <Field label="Логотип"><input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(-1,e.target.files[0])}/></Field>
-            {(content.header.nav||[]).map((x:string,i:number)=><Field key={i} label={'Пункт меню '+(i+1)}><input value={x} onChange={e=>change('header.nav.'+i,e.target.value)}/></Field>)}
-          </Section>}
-
-          {tab==='contacts'&&<>
-            <Section title="Основные контакты">
-              <Field label="Телефон"><input value={content.phone||''} onChange={e=>change('phone',e.target.value)}/></Field>
-              <Field label="Номер для звонка"><input value={content.phoneLink||''} onChange={e=>change('phoneLink',e.target.value)}/></Field>
-              <Field label="Почта"><input value={content.email||''} onChange={e=>change('email',e.target.value)}/></Field>
-              <Field label="Адрес"><input value={content.address||''} onChange={e=>change('address',e.target.value)}/></Field>
-            </Section>
-            <Section title="Люди">
-              {(content.contacts||[]).map((x:any,i:number)=><div className="contact-row" key={i}>
-                <b>Контакт {i+1}</b>
-                <input value={x.name||''} onChange={e=>change('contacts.'+i+'.name',e.target.value)} placeholder="Имя"/>
-                <input value={x.label||''} onChange={e=>change('contacts.'+i+'.label',e.target.value)} placeholder="Номер на сайте"/>
-                <input value={x.phone||''} onChange={e=>change('contacts.'+i+'.phone',e.target.value)} placeholder="Только цифры"/>
-              </div>)}
-              <button className="secondary-button" onClick={()=>setContent((o:Content)=>({...o,contacts:[...(o.contacts||[]),{name:'',label:'',phone:''}]}))}>+ Добавить контакт</button>
-            </Section>
-          </>}
-
-          {tab==='content'&&<>
-            <Section title="Специализация">
-              <Field label="Заголовок"><input value={content.specialty.title||''} onChange={e=>change('specialty.title',e.target.value)}/></Field>
-              <Field label="Текст 1"><textarea value={content.specialty.paragraph1||''} onChange={e=>change('specialty.paragraph1',e.target.value)}/></Field>
-              <Field label="Текст 2"><textarea value={content.specialty.paragraph2||''} onChange={e=>change('specialty.paragraph2',e.target.value)}/></Field>
-            </Section>
-            <Section title="Теплицы">
-              <Field label="Заголовок"><input value={content.greenhouse.title||''} onChange={e=>change('greenhouse.title',e.target.value)}/></Field>
-              <Field label="Акцент"><input value={content.greenhouse.accent||''} onChange={e=>change('greenhouse.accent',e.target.value)}/></Field>
-              <Field label="Описание"><textarea value={content.greenhouse.text||''} onChange={e=>change('greenhouse.text',e.target.value)}/></Field>
-              <Field label="Фото"><input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(0,e.target.files[0],'greenhouse')}/></Field>
-            </Section>
-            <Section title="Маточник">
-              <Field label="Заголовок"><input value={content.mother.title||''} onChange={e=>change('mother.title',e.target.value)}/></Field>
-              <Field label="Акцент"><input value={content.mother.accent||''} onChange={e=>change('mother.accent',e.target.value)}/></Field>
-              <Field label="Описание"><textarea value={content.mother.text||''} onChange={e=>change('mother.text',e.target.value)}/></Field>
-              <Field label="Фото"><input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(0,e.target.files[0],'mother')}/></Field>
-            </Section>
-            <Section title="Ассортимент">
-              {(content.assortment||[]).map((x:string,i:number)=><Field key={i} label={'Позиция '+(i+1)}><input value={x} onChange={e=>change('assortment.'+i,e.target.value)}/></Field>)}
-            </Section>
-          </>}
-
-          {tab==='media'&&<>
-            <Section title="Галерея">
-              <div className="gallery-edit-grid">
-                {(content.galleryImages||[]).map((url:string,i:number)=><div className="gallery-edit" key={i}>
-                  <div className="gallery-thumb" style={{backgroundImage:'url('+url+')'}}/>
-                  <input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(i,e.target.files[0])}/>
-                  <div className="triple">
-                    <label>Масштаб<input type="number" value={content.galleryImageSettings?.[i]?.scale??100} onChange={e=>change('galleryImageSettings.'+i+'.scale',Number(e.target.value))}/></label>
-                    <label>X<input type="number" value={content.galleryImageSettings?.[i]?.x??50} onChange={e=>change('galleryImageSettings.'+i+'.x',Number(e.target.value))}/></label>
-                    <label>Y<input type="number" value={content.galleryImageSettings?.[i]?.y??50} onChange={e=>change('galleryImageSettings.'+i+'.y',Number(e.target.value))}/></label>
-                  </div>
-                </div>)}
-              </div>
-              <button className="secondary-button" onClick={()=>setContent((o:Content)=>({...o,galleryImages:[...(o.galleryImages||[]),''],galleryImageSettings:[...(o.galleryImageSettings||[]),{scale:100,x:50,y:50}]}))}>+ Добавить фото</button>
-            </Section>
-            <Section title="Видео">
-              {(content.videos||[]).map((v:any,i:number)=><div className="contact-row" key={i}>
-                <input value={v.title||''} onChange={e=>change('videos.'+i+'.title',e.target.value)} placeholder="Название"/>
-                <input value={v.url||''} onChange={e=>change('videos.'+i+'.url',e.target.value)} placeholder="YouTube ссылка"/>
-              </div>)}
-              <button className="secondary-button" onClick={()=>setContent((o:Content)=>({...o,videos:[...(o.videos||[]),{title:'',url:''}]}))}>+ Добавить видео</button>
-            </Section>
-            <Section title="Полезные ссылки">
-              {(content.resources||[]).map((x:any,i:number)=><div className="contact-row" key={i}>
-                <input value={x.title||''} onChange={e=>change('resources.'+i+'.title',e.target.value)} placeholder="Название"/>
-                <input value={x.url||''} onChange={e=>change('resources.'+i+'.url',e.target.value)} placeholder="Ссылка"/>
-              </div>)}
-            </Section>
-          </>}
-
-          {tab==='position'&&<>
-            <Section title="Шапка — размер и положение">
-              {[
-                ['Размер логотипа','header.logoSize'],
-                ['Логотип X','header.logoX'],
-                ['Логотип Y','header.logoY'],
-                ['Размер текста шапки (%)','header.textSize'],
-                ['Текст шапки X','header.textX'],
-                ['Текст шапки Y','header.textY']
-              ].map(([label,path])=><Field key={path} label={label}><input type="number" value={getPath(content,path)??0} onChange={e=>change(path,e.target.value)}/></Field>)}
-            </Section>
-            <Section title="Первый экран — размер и положение">
-              {[
-                ['Размер заголовка (%)','hero.titleSize'],
-                ['Текст X','hero.textX'],
-                ['Текст Y','hero.textY'],
-                ['Масштаб фото (%)','hero.imageScale'],
-                ['Фото X (%)','hero.imageX'],
-                ['Фото Y (%)','hero.imageY']
-              ].map(([label,path])=><Field key={path} label={label}><input type="number" value={getPath(content,path)??0} onChange={e=>change(path,e.target.value)}/></Field>)}
-            </Section>
-          </>}
-        </div>
+    <div className="ve-workspace">
+      <aside className="ve-layers">
+        <div className="panel-title"><span>Слои</span><small>Кликни элемент на сайте или выбери здесь</small></div>
+        {groups.map(group=><div className="layer-group" key={group}><b>{group}</b>{LAYERS.filter(x=>x.group===group).map(x=><button key={x.key} className={selected===x.key?'active':''} onClick={()=>setSelected(x.key)}><i/><span>{x.label}</span></button>)}</div>)}
+        <div className="ve-tip"><b>Как редактировать</b><p>Выбери элемент и тащи его мышкой прямо на макете. Размер и точные значения меняются справа.</p></div>
       </aside>
 
-      <section className="editor-preview">
-        <div className="preview-top">
-          <div><i/><b>Предпросмотр</b></div>
-          <span>изменения видны сразу</span>
-        </div>
-        <div className="browser-frame">
-          <div className="browser-bar"><span/><span/><span/></div>
-          <div className="preview-viewport" ref={previewBoxRef}>
-            <iframe ref={previewRef} src="/?preview=1" title="Предпросмотр сайта" onLoad={()=>sendPreview(content)} style={{width:'1440px',height:(100/previewScale)+'%',transform:'scale('+previewScale+')',transformOrigin:'top left'}}/>
+      <section className="ve-canvas">
+        <div className="canvas-head"><span>{previewWidth}px</span><b>{device==='desktop'?'Компьютер':device==='tablet'?'Планшет':'Телефон'}</b></div>
+        <div className="canvas-stage">
+          <div className="device-frame" style={{width:Math.min(previewWidth,1440)}}>
+            <iframe key={device} ref={iframeRef} src="/?preview=1" title="Предпросмотр" onLoad={()=>{sendPreview();setTimeout(decorateFrame,120)}} style={{width:previewWidth}}/>
           </div>
         </div>
       </section>
+
+      <aside className="ve-inspector">
+        <div className="panel-title"><span>{LAYERS.find(x=>x.key===selected)?.label}</span><small>Свойства элемента</small></div>
+
+        {meta.text&&<div className="inspector-section"><label className="text-label">Текст<textarea value={getPath(current,meta.text)||''} onChange={e=>update(meta.text!,e.target.value)}/></label></div>}
+
+        {meta.font&&<div className="inspector-section"><label className="text-label">Шрифт<select value={getPath(current,meta.font)||'Georgia'} onChange={e=>update(meta.font!,e.target.value)}>{FONTS.map(font=><option key={font} style={{fontFamily:font}}>{font}</option>)}</select></label><div className="font-preview" style={{fontFamily:getPath(current,meta.font)||'Georgia'}}>Aa Бб — красивый сад</div></div>}
+
+        <div className="inspector-section">
+          <h3>Положение</h3>
+          {meta.x&&<Slider label="X" value={num(getPath(current,meta.x),selected==='heroImage'?50:0)} min={selected==='heroImage'?0:-500} max={selected==='heroImage'?100:500} onChange={v=>update(meta.x!,String(v))}/>}
+          {meta.y&&<Slider label="Y" value={num(getPath(current,meta.y),selected==='heroImage'?50:0)} min={selected==='heroImage'?0:-300} max={selected==='heroImage'?100:300} onChange={v=>update(meta.y!,String(v))}/>}
+        </div>
+
+        {meta.size&&<div className="inspector-section"><h3>Размер</h3><Slider label={selected==='logo'?'Размер, px':'Масштаб, %'} value={num(getPath(current,meta.size),100)} min={meta.min||35} max={meta.max||240} onChange={v=>update(meta.size!,String(v))}/></div>}
+
+        {selected==='brandText'&&<div className="inspector-section"><h3>Текст шапки</h3><label className="text-label">Название<input value={current.header.title||''} onChange={e=>update('header.title',e.target.value)}/></label><label className="text-label">Подпись<input value={current.header.subtitle||''} onChange={e=>update('header.subtitle',e.target.value)}/></label></div>}
+
+        {selected==='logo'&&<div className="inspector-section"><h3>Логотип</h3><label className="upload-btn">{uploading?'Загрузка…':'Заменить логотип'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'header.logoImage')}/></label></div>}
+
+        {selected==='heroImage'&&<div className="inspector-section"><h3>Фоновое фото</h3><label className="upload-btn">{uploading?'Загрузка…':'Заменить фотографию'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'hero.image')}/></label></div>}
+
+        {selected==='contactDock'&&<div className="inspector-section"><h3>Контакты</h3><p className="muted">Карточку можно двигать мышкой и менять её масштаб. Тексты контактов редактируются через данные сайта.</p></div>}
+
+        <button className="reset-btn" onClick={()=>{
+          const defaults:any={logo:[0,0,80],brandText:[0,0,125],heroImage:[50,50,105],line1:[0,0,100],line2:[0,0,112],accent:[0,0,95],subtitle:[0,0,100],contactDock:[0,0,100]};
+          const d=defaults[selected]; if(meta.x)update(meta.x,String(d[0])); if(meta.y)update(meta.y,String(d[1])); if(meta.size)update(meta.size,String(d[2]));
+        }}>Сбросить положение и размер</button>
+      </aside>
     </div>
   </main>
 }
