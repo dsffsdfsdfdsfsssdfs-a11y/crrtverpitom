@@ -51,7 +51,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   return <>
     <main style={fontStyles}>
     <header className="topbar">
-      <a className="brand header-brand" href="/" aria-label="Обновить страницу" onClick={(e)=>{e.preventDefault();window.location.reload()}}><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc&&<Image src={logoSrc} alt="" aria-hidden="true" priority width={160} height={160} quality={65} className="brand-image brand-image-img" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}}/>}</span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
+      <a className="brand header-brand" href="/" aria-label="Обновить страницу" onClick={(e)=>{e.preventDefault();window.location.reload()}}><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc&&<span data-editor-key="logo"><Image src={logoSrc} alt="" aria-hidden="true" priority width={160} height={160} quality={65} className="brand-image brand-image-img" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}}/></span>}</span><span data-editor-key="brandText" className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
       <nav className={menu?'open':''}><a href="#about">{c.header.nav[0]}</a><a href="#assortment">{c.header.nav[1]}</a><a href="#gallery">{c.header.nav[2]}</a><a href="#knowledge">{c.header.nav[3]}</a></nav>
       <div className="header-socials" aria-label="Социальные сети питомника">
         <a className="header-social header-social-vk" href="https://vk.ru/crr.tver" target="_blank" rel="noreferrer" aria-label="ВКонтакте" title="ВКонтакте">
@@ -65,21 +65,21 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       <button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
     <section className="hero hero-contacts" id="top">
-      <Image className="hero-bg hero-bg-image" src={heroSrc} alt="" aria-hidden="true" priority fill quality={65} sizes="100vw" style={{objectFit:'cover',objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
+      <span data-editor-key="heroImage" className="hero-bg-editor"><Image className="hero-bg hero-bg-image" src={heroSrc} alt="" aria-hidden="true" priority fill quality={65} sizes="100vw" style={{objectFit:'cover',objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/></span>
       <div className="hero-overlay"/>
       <div className="hero-contact-layout">
         <div className="hero-contact-main">
           <h1 className="hero-title">
-            {heroTitle1!==''&&<span className="hero-title-line hero-title-first" style={heroLineStyle('line1',{size:100,x:0,y:0,font:'Georgia'})}>{heroTitle1}</span>}
-            {heroTitle2!==''&&<span className="hero-title-line hero-title-second" style={heroLineStyle('line2',{size:112,x:0,y:0,font:'Georgia'})}>{heroTitle2}</span>}
-            {heroAccent!==''&&<em className="hero-title-line hero-title-accent" style={heroLineStyle('accent',{size:95,x:0,y:0,font:'Georgia'})}>{heroAccent}</em>}
+            {heroTitle1!==''&&<span data-editor-key="line1" className="hero-title-line hero-title-first" style={heroLineStyle('line1',{size:100,x:0,y:0,font:'Georgia'})}>{heroTitle1}</span>}
+            {heroTitle2!==''&&<span data-editor-key="line2" className="hero-title-line hero-title-second" style={heroLineStyle('line2',{size:112,x:0,y:0,font:'Georgia'})}>{heroTitle2}</span>}
+            {heroAccent!==''&&<em data-editor-key="accent" className="hero-title-line hero-title-accent" style={heroLineStyle('accent',{size:95,x:0,y:0,font:'Georgia'})}>{heroAccent}</em>}
           </h1>
-          {heroSubtitle!==''&&<p className="hero-subtitle" style={heroLineStyle('subtitle',{size:100,x:0,y:0,font:'Manrope'})}>{heroSubtitle}</p>}
+          {heroSubtitle!==''&&<p data-editor-key="subtitle" className="hero-subtitle" style={heroLineStyle('subtitle',{size:100,x:0,y:0,font:'Manrope'})}>{heroSubtitle}</p>}
           <p className="intro">{c.hero.intro}</p>
           <div className="actions"><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
         </div>
 
-        <aside className="hero-contact-dock" aria-label="Контакты питомника">
+        <aside data-editor-key="contactDock" className="hero-contact-dock" aria-label="Контакты питомника" style={{transform:`translate(${Number(c.hero.contactX||0)}px,${Number(c.hero.contactY||0)}px) scale(${Number(c.hero.contactScale||100)/100})`,transformOrigin:'center'}}> 
           <div className="hero-contact-dock-head">
             <span>Контакты</span>
           </div>
