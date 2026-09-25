@@ -40,8 +40,8 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .hero-contact-main{max-width:760px}
 .hero-contact-main h1{font-size:clamp(3.8rem,6.5vw,7rem)}
 .hero-contact-main .intro{max-width:610px}
-.hero-contact-dock{position:relative;isolation:isolate;width:100%;justify-self:end;align-self:end;padding:1rem;border:1px solid rgba(255,255,255,.18);border-radius:26px;background:linear-gradient(180deg,rgba(243,238,228,.22),rgba(243,238,228,.10));box-shadow:0 18px 42px rgba(0,0,0,.20),0 0 26px rgba(227,190,128,.12),inset 0 1px 0 rgba(255,255,255,.14),inset 0 0 22px rgba(255,243,220,.05);-webkit-backdrop-filter:blur(22px) saturate(118%);backdrop-filter:blur(22px) saturate(118%);animation:contactDockGlow 4.8s ease-in-out infinite}
-.hero-contact-dock:before{content:'';position:absolute;z-index:-1;inset:-14px;border-radius:34px;background:radial-gradient(circle at 18% 24%,rgba(255,239,205,.28),transparent 28%),radial-gradient(circle at 82% 28%,rgba(226,181,108,.24),transparent 30%),radial-gradient(circle at 30% 82%,rgba(255,248,229,.18),transparent 27%),radial-gradient(circle at 76% 78%,rgba(223,174,99,.22),transparent 31%);filter:blur(18px);opacity:.58;transform:scale(.985);animation:contactDockAura 4.8s ease-in-out infinite;pointer-events:none}
+.hero-contact-dock{position:relative;isolation:isolate;width:100%;justify-self:end;align-self:end;padding:1rem;border:1px solid rgba(255,255,255,.18);border-radius:26px;background:linear-gradient(180deg,rgba(243,238,228,.22),rgba(243,238,228,.10));box-shadow:0 18px 42px rgba(0,0,0,.20),0 0 34px rgba(227,190,128,.18),0 0 74px rgba(227,190,128,.10),inset 0 1px 0 rgba(255,255,255,.14),inset 0 0 22px rgba(255,243,220,.05);-webkit-backdrop-filter:blur(22px) saturate(118%);backdrop-filter:blur(22px) saturate(118%);animation:contactDockGlow 4.8s ease-in-out infinite}
+.hero-contact-dock:before{content:'';position:absolute;z-index:-1;inset:-26px;border-radius:44px;background:radial-gradient(circle at 18% 24%,rgba(255,239,205,.40),transparent 34%),radial-gradient(circle at 82% 28%,rgba(226,181,108,.34),transparent 36%),radial-gradient(circle at 30% 82%,rgba(255,248,229,.26),transparent 33%),radial-gradient(circle at 76% 78%,rgba(223,174,99,.31),transparent 37%);filter:blur(28px);opacity:.72;transform:scale(.98);animation:contactDockAura 4.8s ease-in-out infinite;pointer-events:none}
 .hero-contact-dock:after{content:'';position:absolute;z-index:0;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(ellipse at center,rgba(255,248,229,.10) 0%,rgba(255,232,192,.035) 42%,transparent 72%);box-shadow:inset 0 0 24px rgba(255,244,218,.07);opacity:.52;animation:contactDockInnerGlow 4.8s ease-in-out infinite}
 .hero-contact-dock-head,.hero-contact-dock-list{position:relative;z-index:1}
 .hero-contact-dock-head{display:flex;justify-content:center;align-items:center;text-align:center;padding:.05rem .15rem .8rem;border-bottom:1px solid rgba(255,255,255,.12)}
@@ -58,12 +58,12 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .hero-contact-item-copy b{font-family:'DM Mono',monospace;font-size:.76rem;line-height:1.36;font-weight:500;color:#fff8ef;overflow-wrap:anywhere}
 .hero-contact-item-address .hero-contact-item-copy b{font-family:var(--bodyFont);font-size:.73rem}
 @keyframes contactDockGlow{
-  0%,100%{box-shadow:0 18px 42px rgba(0,0,0,.20),0 0 22px rgba(227,190,128,.10),0 0 44px rgba(227,190,128,.07),inset 0 1px 0 rgba(255,255,255,.14),inset 0 0 20px rgba(255,243,220,.045)}
-  50%{box-shadow:0 20px 46px rgba(0,0,0,.22),0 0 38px rgba(244,211,153,.28),0 0 82px rgba(232,190,119,.18),inset 0 1px 0 rgba(255,255,255,.20),inset 0 0 34px rgba(255,246,226,.11)}
+  0%,100%{box-shadow:0 18px 42px rgba(0,0,0,.20),0 0 32px rgba(227,190,128,.18),0 0 72px rgba(227,190,128,.11),inset 0 1px 0 rgba(255,255,255,.14),inset 0 0 20px rgba(255,243,220,.045)}
+  50%{box-shadow:0 20px 46px rgba(0,0,0,.22),0 0 56px rgba(244,211,153,.42),0 0 120px rgba(232,190,119,.26),inset 0 1px 0 rgba(255,255,255,.20),inset 0 0 34px rgba(255,246,226,.11)}
 }
 @keyframes contactDockAura{
-  0%,100%{opacity:.42;transform:scale(.985)}
-  50%{opacity:.92;transform:scale(1.035)}
+  0%,100%{opacity:.58;transform:scale(.98)}
+  50%{opacity:1;transform:scale(1.07)}
 }
 @keyframes contactDockInnerGlow{
   0%,100%{opacity:.32;filter:brightness(1)}
