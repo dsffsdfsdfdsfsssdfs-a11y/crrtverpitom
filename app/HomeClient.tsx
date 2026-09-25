@@ -50,7 +50,6 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <div className="hero-contact-dock" aria-label="Контакты питомника">
             <div className="hero-contact-dock-head">
               <span>Контакты</span>
-              <small>Связаться с питомником</small>
             </div>
 
             <div className="hero-contact-dock-grid">
