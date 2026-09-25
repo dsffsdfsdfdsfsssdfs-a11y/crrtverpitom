@@ -67,3 +67,5 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
   .hero-contact-item{grid-template-columns:1fr;gap:.3rem;align-items:start}
   .hero-contact-meta{grid-template-columns:1fr}
 }
+
+.brand-image-bg{display:block;flex:0 0 auto;border-radius:50%;background-repeat:no-repeat,no-repeat;background-position:center,center;background-size:contain,contain}
