@@ -38,12 +38,15 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const mediaSrc=(url:string)=>url?.startsWith('/uploads/')?'https://crr-tver.ru'+url:url;
   const logoSrc=mediaSrc(c.header.logoImage);
   const heroSrc=mediaSrc(c.hero.image);
-  const heroTitleSize=clamp(num(c.hero.titleSize,119),70,180);
-  const heroTitleFont=c.hero.titleFont||c.appearance.headingFont||'Georgia';
-  const heroTitle1=c.hero.title||'Выращиваем';
-  const heroTitle2=c.hero.title2||'растения для';
-  const heroAccent=c.hero.accent||'красивых садов';
-  const heroSubtitle=c.hero.subtitle||'Хвойные и лиственные растения собственного производства';
+  const heroTitle1=c.hero.title??'';
+  const heroTitle2=c.hero.title2??'';
+  const heroAccent=c.hero.accent??'';
+  const heroSubtitle=c.hero.subtitle??'';
+  const heroLineStyle=(key:string,defaults:{size:number,x:number,y:number,font:string})=>({
+    fontFamily:`${c.hero[key+'Font']||defaults.font}, Georgia, serif`,
+    fontSize:`${clamp(num(c.hero[key+'Size'],defaults.size),35,240)}%`,
+    transform:`translate(${clamp(num(c.hero[key+'X'],defaults.x),-500,500)}px,${clamp(num(c.hero[key+'Y'],defaults.y),-300,300)}px)`
+  } as React.CSSProperties);
   const contactPeople=(c.contacts||[]).filter((x:{phone?:string})=>Boolean((x.phone||'').trim()));
   return <>
     <main style={fontStyles}>
@@ -66,8 +69,12 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       <div className="hero-overlay"/>
       <div className="hero-contact-layout">
         <div className="hero-contact-main">
-          <h1 className="hero-title" style={{fontFamily:`${heroTitleFont}, Georgia, serif`,fontSize:`calc(clamp(5.8rem,8.4vw,9.6rem) * ${heroTitleSize/119})`}}><span className="hero-title-line hero-title-first">{heroTitle1}</span><span className="hero-title-line hero-title-second">{heroTitle2}</span><em className="hero-title-line hero-title-accent">{heroAccent}</em></h1>
-          <p className="hero-subtitle">{heroSubtitle}</p>
+          <h1 className="hero-title">
+            {heroTitle1!==''&&<span className="hero-title-line hero-title-first" style={heroLineStyle('line1',{size:100,x:0,y:0,font:'Georgia'})}>{heroTitle1}</span>}
+            {heroTitle2!==''&&<span className="hero-title-line hero-title-second" style={heroLineStyle('line2',{size:112,x:0,y:0,font:'Georgia'})}>{heroTitle2}</span>}
+            {heroAccent!==''&&<em className="hero-title-line hero-title-accent" style={heroLineStyle('accent',{size:95,x:0,y:0,font:'Georgia'})}>{heroAccent}</em>}
+          </h1>
+          {heroSubtitle!==''&&<p className="hero-subtitle" style={heroLineStyle('subtitle',{size:100,x:0,y:0,font:'Manrope'})}>{heroSubtitle}</p>}
           <p className="intro">{c.hero.intro}</p>
           <div className="actions"><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
         </div>
