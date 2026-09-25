@@ -12,6 +12,7 @@ function HeroContactIcon({type}:{type:HeroContactIconType}){
 export default function HomeClient({initialContent}:{initialContent:any}) {
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
+  const [heroReady,setHeroReady]=useState(false);
   const [c,setContent]=useState<any>(initialContent);
   useEffect(()=>{const receive=(event:MessageEvent)=>{if(event.origin===window.location.origin&&event.data?.type==='crr-preview'&&event.data.content)setContent(event.data.content)};window.addEventListener('message',receive);if(window.parent!==window)window.parent.postMessage({type:'crr-preview-ready'},window.location.origin);return()=>window.removeEventListener('message',receive)},[]);
   const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
@@ -33,7 +34,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
     <div className="overscroll-top-header" aria-hidden="true"/>
     <main style={fontStyles}>
     <header className="topbar">
-      <a className="brand header-brand" href="/" aria-label="Обновить страницу" onClick={(e)=>{e.preventDefault();window.location.reload()}}><span className="brand-logo-slot" style={{width:logoSlot}}><span aria-label="Логотип" className="brand-image brand-image-bg" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`,backgroundImage:logoSrc?`url("${logoSrc}")`:'none'}}/></span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
+      <a className="brand header-brand" href="/" aria-label="Обновить страницу" onClick={(e)=>{e.preventDefault();window.location.reload()}}><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc&&<img src={logoSrc} alt="" aria-hidden="true" fetchPriority="high" decoding="async" className="brand-image brand-image-img" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}}/>}</span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
       <nav className={menu?'open':''}><a href="#about">{c.header.nav[0]}</a><a href="#assortment">{c.header.nav[1]}</a><a href="#gallery">{c.header.nav[2]}</a><a href="#knowledge">{c.header.nav[3]}</a></nav>
       <div className="header-socials" aria-label="Социальные сети питомника">
         <a className="header-social header-social-vk" href="https://vk.ru/crr.tver" target="_blank" rel="noreferrer" aria-label="ВКонтакте" title="ВКонтакте">
@@ -46,8 +47,8 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
       <button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
-    <section className="hero hero-contacts" id="top">
-      <div className="hero-bg" aria-hidden="true" style={{backgroundImage:`url("${c.hero.image}")`,backgroundSize:'cover',backgroundPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,backgroundRepeat:'no-repeat',transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
+    <section className={`hero hero-contacts ${heroReady?'hero-ready':'hero-loading'}`} id="top">
+      <img className="hero-bg hero-bg-image" src={c.hero.image} alt="" aria-hidden="true" fetchPriority="high" decoding="async" onLoad={()=>setHeroReady(true)} onError={()=>setHeroReady(true)} style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
       <div className="hero-overlay"/>
       <div className="hero-contact-layout">
         <div className="hero-contact-main">
