@@ -7,9 +7,12 @@ function ContactIcon({type}:{type:ContactIconType}){
   return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4.5 7 7.5 6 7.5-6"/></svg>;
 }
 function YandexMapIcon(){
-  return <span className="yandex-map-mark" aria-hidden="true">
-    <svg viewBox="0 0 28 28"><path d="M5 7.2 11 4l6 2.8L23 4v16.8L17 24l-6-2.8L5 24Z"/><path d="M11 4v17.2M17 6.8V24"/></svg>
-    <span>Я</span>
+  return <span className="yandex-pin-logo" aria-hidden="true">
+    <svg viewBox="0 0 24 30">
+      <path d="M12 28c4.9-5.8 8-10.3 8-16A8 8 0 1 0 4 12c0 5.7 3.1 10.2 8 16Z"/>
+      <circle cx="12" cy="12" r="4.2"/>
+    </svg>
+    <b>Я</b>
   </span>;
 }
 
@@ -61,24 +64,25 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <div className="contact-card-title"><p className="eyebrow gold">КОНТАКТЫ</p></div>
 
           <div className="contact-people">
-            {c.contacts.map((x:{name:string,label:string,phone:string},i:number)=><div className="contact-person" key={x.name||i}>
-              <span className="contact-person-icon"><ContactIcon type="phone"/></span>
-              <div className="contact-person-copy">
+            {c.contacts.map((x:{name:string,label:string,phone:string},i:number)=>{
+              const shownLabel=i===0?(x.label||'').replace(/^8(?=\s*\()/,'+7'):x.label;
+              return <div className="contact-person" key={x.name||i}>
+                <span className="contact-glyph"><ContactIcon type="phone"/></span>
                 <small>{i===0?'Наталья Никулина':i===1?'Дарья Живанович':x.name}</small>
-                {x.phone?<a href={phoneHref(x.phone)}>{x.label}</a>:<span>{x.label||'Уточняется'}</span>}
+                <div className="contact-person-value">{x.phone?<a href={phoneHref(x.phone)}>{shownLabel}</a>:<span>{x.label||'Уточняется'}</span>}</div>
               </div>
-            </div>)}
+            })}
           </div>
 
           <div className="contact-details">
             <div className="contact-detail">
-              <span className="contact-detail-icon"><ContactIcon type="mail"/></span>
-              <div><small>Почта</small><a href={'mailto:'+c.email}>{c.email}</a></div>
+              <span className="contact-glyph"><ContactIcon type="mail"/></span>
+              <div className="contact-detail-copy"><small>Почта</small><a href={'mailto:'+c.email}>{c.email}</a></div>
             </div>
 
             <div className="contact-detail contact-detail-address">
-              <a className="contact-map-link" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78" aria-label="Открыть питомник в Яндекс Картах" title="Открыть в Яндекс Картах"><YandexMapIcon/></a>
-              <div><small>Адрес</small><span>{c.address}</span></div>
+              <a className="contact-glyph contact-map-link" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78" aria-label="Открыть питомник в Яндекс Картах" title="Открыть в Яндекс Картах"><YandexMapIcon/></a>
+              <div className="contact-detail-copy"><small>Адрес</small><span>{c.address}</span></div>
             </div>
           </div>
         </aside>
