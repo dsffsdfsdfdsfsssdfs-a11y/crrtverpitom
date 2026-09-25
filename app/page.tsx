@@ -1,7 +1,8 @@
 import HomeClient from './HomeClient';
 import { readContent } from '@/lib/local-content';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 function localizeRepoAssets(value: any): any {
   if (typeof value === 'string') {
