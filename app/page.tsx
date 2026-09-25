@@ -6,6 +6,9 @@ export const revalidate = 0;
 
 function localizeRepoAssets(value: any): any {
   if (typeof value === 'string') {
+    if (value.startsWith('/uploads/1790339947673-cqh1vagodcf1qaiyvos_lfakf5iyjnikxncox5a1oq3svz13itpa62lbc0v59d6vxd4_jqdvhl68dwnqxv_uuwsz.webp')) {
+      return '/hero-current-optimized.jpg?v=1';
+    }
     const match = value.match(/^https:\/\/raw\.githubusercontent\.com\/dsffsdfsdfdsfsssdfs-a11y\/crrtverpitom\/[^/]+\/public\/(.+)$/i);
     if (!match) return value;
     const file = match[1].replace(/^uploads\//,'');
