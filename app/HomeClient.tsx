@@ -1,6 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+type ContactIconType='phone'|'mail'|'pin';
+function ContactIcon({type}:{type:ContactIconType}){
+  if(type==='phone')return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 3.5 9.8 7l-1.7 2.1c1.2 2.4 3.1 4.3 5.5 5.5l2.1-1.7 3.5 2.6c.5.4.7 1.1.4 1.7l-1 2.2c-.3.7-1 1.1-1.8 1-7.1-.8-12.8-6.5-13.6-13.6-.1-.8.3-1.5 1-1.8l2.2-1c.6-.3 1.3-.1 1.7.4Z"/></svg>;
+  if(type==='mail')return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4.5 7 7.5 6 7.5-6"/></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>;
+}
+
 export default function HomeClient({initialContent}:{initialContent:any}) {
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
@@ -39,15 +46,23 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <div className="actions"><button className="gold-btn" onClick={()=>setOrder(true)}>Сделать заказ <span>↗</span></button><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
         </div>
         <aside className="hero-contact-card">
-          <p className="eyebrow gold">КОНТАКТЫ</p>
+          <div className="contact-card-title"><p className="eyebrow gold">КОНТАКТЫ</p><span>Связаться с питомником</span></div>
           <div className="hero-contact-list">
-            {c.contacts.map((x:{name:string,label:string,phone:string},i:number)=><div className="hero-contact-item" key={x.name||i}><small>{i===0?'Наталья Никулина':i===1?'Дарья Живанович':x.name}</small>{x.phone?<a href={phoneHref(x.phone)}>{x.label}</a>:<span>{x.label||'Телефон уточняется'}</span>}</div>)}
+            {c.contacts.map((x:{name:string,label:string,phone:string},i:number)=><div className="hero-contact-item" key={x.name||i}>
+              <span className="contact-icon"><ContactIcon type="phone"/></span>
+              <div className="contact-copy"><small>{i===0?'Наталья Никулина':i===1?'Дарья Живанович':x.name}</small>{x.phone?<a href={phoneHref(x.phone)}>{x.label}</a>:<span>{x.label||'Телефон уточняется'}</span>}</div>
+            </div>)}
           </div>
           <div className="hero-contact-meta">
-            <div><small>Почта</small><a href={'mailto:'+c.email}>{c.email}</a></div>
-            <div><small>Адрес</small><span>{c.address}</span></div>
+            <div className="contact-meta-item"><span className="contact-icon"><ContactIcon type="mail"/></span><div><small>Почта</small><a href={'mailto:'+c.email}>{c.email}</a></div></div>
+            <div className="contact-meta-item"><span className="contact-icon"><ContactIcon type="pin"/></span><div><small>Адрес</small><span>{c.address}</span></div></div>
           </div>
-          <a className="hero-map-btn" target="_blank" rel="noreferrer" href={'https://yandex.ru/maps/?text='+encodeURIComponent(c.address)}>Открыть точку в Яндекс Картах <span>↗</span></a>
+          <div className="contact-map-row">
+            <span className="contact-map-caption">Питомник на карте</span>
+            <a className="yandex-map-icon" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78" aria-label="Открыть Центр размножения растений в Яндекс Картах" title="Открыть в Яндекс Картах">
+              <span className="yandex-map-pin"><ContactIcon type="pin"/><b>Я</b></span>
+            </a>
+          </div>
         </aside>
       </div>
     </section>
