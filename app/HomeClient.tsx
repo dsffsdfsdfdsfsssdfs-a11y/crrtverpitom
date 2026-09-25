@@ -52,8 +52,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       <div className="hero-overlay"/>
       <div className="hero-contact-layout">
         <div className="hero-contact-main">
-          <p className="eyebrow">{c.hero.eyebrow}</p>
-          <h1>Центр размножения<br/><em>растений</em></h1>
+          <h1 className="hero-title"><span>Центр</span><span>размножения</span><em>растений</em></h1>
           <p className="intro">{c.hero.intro}</p>
           <div className="actions"><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
         </div>
