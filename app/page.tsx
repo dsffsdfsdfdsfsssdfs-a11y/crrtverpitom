@@ -10,7 +10,7 @@ function localizeRepoAssets(value: any): any {
     if (!match) return value;
     const file = match[1].replace(/^uploads\//,'');
     if (file === '1790256543018-exlrj7ztuvop63wgjqkui7dsw_mc9mymnfcpw4fm_zeilo7u3mi8bbao1oj8hcepd43-chytw7r8ryrifxbfzw9k.jpg') {
-      return '/favicon-v16.png?v=16';
+      return '/favicon-v17.png?v=17';
     }
     return '/repo-assets/' + file;
   }
