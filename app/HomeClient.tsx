@@ -1,11 +1,16 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-type ContactIconType='phone'|'mail'|'map';
+type ContactIconType='phone'|'mail';
 function ContactIcon({type}:{type:ContactIconType}){
   if(type==='phone')return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 3.5 9.8 7l-1.7 2.1c1.2 2.4 3.1 4.3 5.5 5.5l2.1-1.7 3.5 2.6c.5.4.7 1.1.4 1.7l-1 2.2c-.3.7-1 1.1-1.8 1-7.1-.8-12.8-6.5-13.6-13.6-.1-.8.3-1.5 1-1.8l2.2-1c.6-.3 1.3-.1 1.7.4Z"/></svg>;
-  if(type==='mail')return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4.5 7 7.5 6 7.5-6"/></svg>;
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3.5 6.8 5-2.3 7 2.8 5-2.3v12.2l-5 2.3-7-2.8-5 2.3Z"/><path d="M8.5 4.5v12.2M15.5 7.3v12.2"/><circle cx="12" cy="11" r="1.8"/></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4.5 7 7.5 6 7.5-6"/></svg>;
+}
+function YandexMapIcon(){
+  return <span className="yandex-map-mark" aria-hidden="true">
+    <svg viewBox="0 0 28 28"><path d="M5 7.2 11 4l6 2.8L23 4v16.8L17 24l-6-2.8L5 24Z"/><path d="M11 4v17.2M17 6.8V24"/></svg>
+    <span>Я</span>
+  </span>;
 }
 
 export default function HomeClient({initialContent}:{initialContent:any}) {
@@ -54,20 +59,25 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
         </svg>
         <aside className="hero-contact-card">
           <div className="contact-card-title"><p className="eyebrow gold">КОНТАКТЫ</p></div>
-          <div className="hero-contact-list">
-            {c.contacts.map((x:{name:string,label:string,phone:string},i:number)=><div className="hero-contact-item" key={x.name||i}>
-              <span className="contact-icon"><ContactIcon type="phone"/></span>
-              <small>{i===0?'Наталья Никулина':i===1?'Дарья Живанович':x.name}</small>
-              <div className="hero-contact-value">{x.phone?<a href={phoneHref(x.phone)}>{x.label}</a>:<span>{x.label||'Уточняется'}</span>}</div>
+
+          <div className="contact-people">
+            {c.contacts.map((x:{name:string,label:string,phone:string},i:number)=><div className="contact-person" key={x.name||i}>
+              <span className="contact-person-icon"><ContactIcon type="phone"/></span>
+              <div className="contact-person-copy">
+                <small>{i===0?'Наталья Никулина':i===1?'Дарья Живанович':x.name}</small>
+                {x.phone?<a href={phoneHref(x.phone)}>{x.label}</a>:<span>{x.label||'Уточняется'}</span>}
+              </div>
             </div>)}
           </div>
-          <div className="hero-contact-meta">
-            <div className="contact-meta-item">
-              <span className="contact-icon"><ContactIcon type="mail"/></span>
+
+          <div className="contact-details">
+            <div className="contact-detail">
+              <span className="contact-detail-icon"><ContactIcon type="mail"/></span>
               <div><small>Почта</small><a href={'mailto:'+c.email}>{c.email}</a></div>
             </div>
-            <div className="contact-meta-item contact-meta-address">
-              <a className="contact-icon contact-map-link" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78" aria-label="Открыть питомник в Яндекс Картах" title="Открыть в Яндекс Картах"><ContactIcon type="map"/></a>
+
+            <div className="contact-detail contact-detail-address">
+              <a className="contact-map-link" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78" aria-label="Открыть питомник в Яндекс Картах" title="Открыть в Яндекс Картах"><YandexMapIcon/></a>
               <div><small>Адрес</small><span>{c.address}</span></div>
             </div>
           </div>
