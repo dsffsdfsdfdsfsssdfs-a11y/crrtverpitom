@@ -8,9 +8,9 @@ async function optimizeImage(file:File){
  if(!file.type.startsWith('image/')||file.type==='image/svg+xml')return file;
  try{
   const bitmap=await createImageBitmap(file);
-  const maxSide=2800;
+  const maxSide=1600;
   const scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
-  if(scale===1&&file.size<900000){bitmap.close();return file}
+  if(scale===1&&file.size<350000){bitmap.close();return file}
   const canvas=document.createElement('canvas');
   canvas.width=Math.max(1,Math.round(bitmap.width*scale));
   canvas.height=Math.max(1,Math.round(bitmap.height*scale));
@@ -18,7 +18,7 @@ async function optimizeImage(file:File){
   if(!ctx){bitmap.close();return file}
   ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
   bitmap.close();
-  const blob=await new Promise<Blob|null>(ok=>canvas.toBlob(ok,'image/webp',.92));
+  const blob=await new Promise<Blob|null>(ok=>canvas.toBlob(ok,'image/webp',.78));
   if(!blob||blob.size>=file.size)return file;
   return new File([blob],file.name.replace(/\.[^.]+$/,'')+'.webp',{type:'image/webp'});
  }catch{return file}
