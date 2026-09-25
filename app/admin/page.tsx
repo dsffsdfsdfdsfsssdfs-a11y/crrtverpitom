@@ -4,6 +4,8 @@ import { FormEvent, useEffect, useRef, useState } from 'react';
 
 type Content = any;
 
+const FONT_OPTIONS=['Georgia','Playfair Display','Manrope','Montserrat','Roboto','Open Sans','Lora','Merriweather','PT Serif','PT Sans','Raleway','Cormorant Garamond','Cormorant','Noto Serif','Noto Sans','Ubuntu','Rubik','Oswald','Fira Sans','Fira Sans Condensed','IBM Plex Sans','IBM Plex Serif','Source Sans 3','Source Serif 4','Alegreya','Alegreya Sans','Old Standard TT','Spectral','Prata','Vollkorn','Philosopher','Tenor Sans','Forum','Marck Script','Bad Script','Caveat','Comfortaa','Poiret One','Yeseva One','Russo One','Unbounded','Golos Text','Neucha','Pacifico','Lobster','Kelly Slab','Jura','Exo 2','Play','Roboto Slab'];
+
 const setPath=(o:any,path:string,value:any)=>{
   const parts=path.split('.');
   let x=o;
@@ -199,30 +201,36 @@ export default function Admin(){
         <div className="editor-scroll">
           {tab==='main'&&<>
             <Section title="Первый экран">
-              <Field label="Первая строка заголовка"><input value={content.hero.title||''} onChange={e=>change('hero.title',e.target.value)} placeholder="Выращиваем"/></Field>
-              <Field label="Вторая строка заголовка"><input value={content.hero.title2||''} onChange={e=>change('hero.title2',e.target.value)} placeholder="растения для"/></Field>
-              <Field label="Золотая строка"><input value={content.hero.accent||''} onChange={e=>change('hero.accent',e.target.value)} placeholder="красивых садов"/></Field>
-              <Field label="Подзаголовок"><textarea value={content.hero.subtitle||''} onChange={e=>change('hero.subtitle',e.target.value)} placeholder="Хвойные и лиственные растения собственного производства"/></Field>
-              <div className="field-two">
-                <Field label="Размер заголовка (%)"><input type="number" min="70" max="180" value={content.hero.titleSize||119} onChange={e=>change('hero.titleSize',e.target.value)}/></Field>
-                <Field label="Шрифт заголовка">
-                  <select value={content.hero.titleFont||content.appearance.headingFont||'Georgia'} onChange={e=>change('hero.titleFont',e.target.value)}>
-                    <option>Georgia</option><option>Playfair Display</option><option>Manrope</option><option>Arial</option>
+              {[
+                ['Первая строка','hero.title','line1'],
+                ['Вторая строка','hero.title2','line2'],
+                ['Золотая строка','hero.accent','accent'],
+                ['Подзаголовок','hero.subtitle','subtitle']
+              ].map(([label,path,key])=><div className="hero-line-editor" key={key}>
+                <Field label={label}><input value={getPath(content,path)||''} onChange={e=>change(path,e.target.value)}/></Field>
+                <div className="hero-line-controls">
+                  <Field label="Размер (%)"><input type="number" min="35" max="240" value={content.hero[key+'Size']??(key==='line2'?112:key==='accent'?95:100)} onChange={e=>change('hero.'+key+'Size',e.target.value)}/></Field>
+                  <Field label="X"><input type="number" min="-500" max="500" value={content.hero[key+'X']??0} onChange={e=>change('hero.'+key+'X',e.target.value)}/></Field>
+                  <Field label="Y"><input type="number" min="-300" max="300" value={content.hero[key+'Y']??0} onChange={e=>change('hero.'+key+'Y',e.target.value)}/></Field>
+                </div>
+                <Field label="Шрифт">
+                  <select value={content.hero[key+'Font']|| (key==='subtitle'?'Manrope':'Georgia')} onChange={e=>change('hero.'+key+'Font',e.target.value)}>
+                    {FONT_OPTIONS.map(font=><option key={font} value={font}>{font}</option>)}
                   </select>
                 </Field>
-              </div>
+              </div>)}
               <Field label="Дополнительное описание"><textarea value={content.hero.intro||''} onChange={e=>change('hero.intro',e.target.value)}/></Field>
               <Field label="Фоновое фото"><input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(0,e.target.files[0],'hero')}/></Field>
             </Section>
             <Section title="Шрифты">
               <Field label="Шрифт заголовков">
                 <select value={content.appearance.headingFont} onChange={e=>change('appearance.headingFont',e.target.value)}>
-                  <option>Georgia</option><option>Playfair Display</option><option>Manrope</option><option>Arial</option>
+                  {FONT_OPTIONS.map(font=><option key={font} value={font}>{font}</option>)}
                 </select>
               </Field>
               <Field label="Основной шрифт">
                 <select value={content.appearance.bodyFont} onChange={e=>change('appearance.bodyFont',e.target.value)}>
-                  <option>Georgia</option><option>Manrope</option><option>Arial</option>
+                  {FONT_OPTIONS.map(font=><option key={font} value={font}>{font}</option>)}
                 </select>
               </Field>
             </Section>
