@@ -49,7 +49,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
       <button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
-    <section className="hero hero-contacts" id="top" style={{background:'#2a221d'}}> 
+    <section className="hero hero-contacts" id="top">
       <Image className="hero-bg hero-bg-image" src={heroSrc} alt="" aria-hidden="true" priority fill quality={65} sizes="100vw" style={{objectFit:'cover',objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
       <div className="hero-overlay"/>
       <div className="hero-contact-layout">
