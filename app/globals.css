@@ -36,33 +36,34 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 
 /* First screen: nursery contacts */
 .hero-contacts{padding:150px clamp(1.5rem,7vw,8rem) 72px;align-items:center}
-.hero-contact-layout{position:relative;z-index:2;width:min(1380px,100%);margin:0 auto;display:grid;grid-template-columns:1fr;align-items:center}
-.hero-contact-main{max-width:900px}
+.hero-contact-layout{position:relative;z-index:2;width:min(1380px,100%);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(330px,390px);gap:clamp(1.6rem,4vw,4.5rem);align-items:end}
+.hero-contact-main{max-width:760px}
 .hero-contact-main h1{font-size:clamp(3.8rem,6.5vw,7rem)}
 .hero-contact-main .intro{max-width:610px}
-.hero-contact-dock{width:min(100%,780px);margin-top:1.55rem;padding:1.05rem 1.1rem 1.1rem;border:1px solid rgba(220,184,128,.22);border-radius:24px;background:linear-gradient(145deg,rgba(29,20,15,.68),rgba(47,31,22,.48));box-shadow:0 18px 44px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.06);-webkit-backdrop-filter:blur(16px) saturate(112%);backdrop-filter:blur(16px) saturate(112%)}
-.hero-contact-dock-head{display:flex;align-items:center;padding:.05rem .1rem .8rem}
-.hero-contact-dock-head>span{font-family:var(--headingFont);font-size:1.02rem;letter-spacing:.12em;text-transform:uppercase;color:#d9af70}
-.hero-contact-dock-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(225,194,148,.16)}
-.hero-contact-tile{position:relative;min-width:0;display:grid;grid-template-columns:38px minmax(0,1fr) 18px;align-items:center;gap:.78rem;padding:1rem .95rem;color:#f4ede4;text-decoration:none;border-bottom:1px solid rgba(225,194,148,.12);transition:background .2s ease,color .2s ease,transform .2s ease}
-.hero-contact-tile:nth-child(odd){border-right:1px solid rgba(225,194,148,.12)}
-.hero-contact-tile:nth-child(n+3){border-bottom:0}
-.hero-contact-tile:hover{background:rgba(255,255,255,.045);transform:translateY(-1px)}
-.hero-contact-tile:focus-visible{outline:2px solid #d3a663;outline-offset:-2px}
-.hero-contact-tile-icon{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#d7a85f;background:rgba(215,168,95,.08);border:1px solid rgba(215,168,95,.32)}
-.hero-contact-tile-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
-.hero-contact-tile-copy{min-width:0;display:flex;flex-direction:column;gap:.18rem}
-.hero-contact-tile-copy small{font-size:.56rem;line-height:1.25;letter-spacing:.09em;text-transform:uppercase;color:#bba58e}
-.hero-contact-tile-copy b{font-family:'DM Mono',monospace;font-size:.76rem;line-height:1.35;font-weight:500;color:#f4ede4;overflow-wrap:anywhere}
-.hero-contact-tile-address .hero-contact-tile-copy b{font-family:var(--bodyFont);font-size:.74rem}
-.hero-contact-tile-arrow{font-size:.88rem;line-height:1;color:#d7a85f;opacity:.5;transition:transform .2s ease,opacity .2s ease}
-.hero-contact-tile:hover .hero-contact-tile-arrow{transform:translate(2px,-2px);opacity:1}
+.hero-contact-dock{width:100%;justify-self:end;align-self:end;padding:1rem;border:1px solid rgba(255,255,255,.16);border-radius:26px;background:linear-gradient(180deg,rgba(243,238,228,.22),rgba(243,238,228,.10));box-shadow:0 18px 42px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.14);-webkit-backdrop-filter:blur(22px) saturate(118%);backdrop-filter:blur(22px) saturate(118%)}
+.hero-contact-dock-head{padding:.05rem .15rem .8rem;border-bottom:1px solid rgba(255,255,255,.12)}
+.hero-contact-dock-head>span{font-family:var(--headingFont);font-size:.98rem;letter-spacing:.12em;text-transform:uppercase;color:#f0d7b0}
+.hero-contact-dock-list{display:flex;flex-direction:column}
+.hero-contact-item{min-width:0;display:grid;grid-template-columns:42px minmax(0,1fr);gap:.82rem;align-items:center;padding:.92rem .1rem;text-decoration:none;color:#f4ede4;border-bottom:1px solid rgba(255,255,255,.09);transition:background .2s ease,transform .2s ease,color .2s ease}
+.hero-contact-item:last-child{border-bottom:0}
+.hero-contact-item:hover{background:rgba(255,255,255,.04);transform:translateY(-1px)}
+.hero-contact-item:focus-visible{outline:2px solid rgba(220,184,128,.85);outline-offset:3px}
+.hero-contact-item-icon{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;color:#e1b777;background:rgba(243,238,228,.08);border:1px solid rgba(235,213,181,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.hero-contact-item-icon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.hero-contact-item-copy{min-width:0;display:flex;flex-direction:column;gap:.18rem}
+.hero-contact-item-copy small{font-size:.56rem;line-height:1.2;letter-spacing:.09em;text-transform:uppercase;color:#cfbda7}
+.hero-contact-item-copy b{font-family:'DM Mono',monospace;font-size:.76rem;line-height:1.36;font-weight:500;color:#fff8ef;overflow-wrap:anywhere}
+.hero-contact-item-address .hero-contact-item-copy b{font-family:var(--bodyFont);font-size:.73rem}
+@media(max-width:980px){
+  .hero-contact-layout{grid-template-columns:1fr;gap:1.5rem;align-items:start}
+  .hero-contact-main{max-width:720px}
+  .hero-contact-dock{justify-self:start;width:min(100%,430px)}
+}
 @media(max-width:760px){
-  .hero-contact-dock{width:100%;padding:.9rem;border-radius:20px;margin-top:1.2rem}
-  .hero-contact-dock-head{padding:.05rem .05rem .65rem}
-  .hero-contact-dock-grid{grid-template-columns:1fr}
-  .hero-contact-tile{grid-template-columns:38px minmax(0,1fr) 18px;padding:.82rem .45rem;border-right:0!important;border-bottom:1px solid rgba(225,194,148,.12)!important}
-  .hero-contact-tile:last-child{border-bottom:0!important}
+  .hero-contact-dock{width:100%;padding:.85rem;border-radius:22px}
+  .hero-contact-dock-head{padding:.05rem .1rem .68rem}
+  .hero-contact-item{grid-template-columns:40px minmax(0,1fr);gap:.72rem;padding:.8rem .05rem}
+  .hero-contact-item-icon{width:38px;height:38px;border-radius:13px}
 }
 .contact-clip-defs{position:absolute;width:0;height:0;overflow:hidden}
 .hero-contact-card{position:relative;isolation:isolate;justify-self:end;width:min(100%,560px);color:#29372f;padding:1.55rem 1.6rem 1.42rem;filter:drop-shadow(0 18px 36px rgba(20,11,7,.16)) drop-shadow(0 0 20px rgba(218,174,108,.30)) drop-shadow(0 0 48px rgba(218,174,108,.18));-webkit-clip-path:url(#contactCardClip);clip-path:url(#contactCardClip);overflow:hidden;animation:contactContourGlow 5.6s ease-in-out infinite}
