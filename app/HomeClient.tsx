@@ -25,7 +25,8 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
     <header className="topbar">
       <a className="brand header-brand" href="#top"><span className="brand-logo-slot" style={{width:logoSlot}}><span aria-label="Логотип" className="brand-image brand-image-bg" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`,backgroundImage:`url("${logoSrc||"/favicon-v17.png?v=17"}"),url("/favicon-v17.png?v=17")`}}/></span><span className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
       <nav className={menu?'open':''}><a href="#about">{c.header.nav[0]}</a><a href="#assortment">{c.header.nav[1]}</a><a href="#gallery">{c.header.nav[2]}</a><a href="#knowledge">{c.header.nav[3]}</a></nav>
-      <a className="phone desktop" href={'tel:+'+c.phoneLink}>{c.phone}</a><button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
+      <span className="header-spacer desktop" aria-hidden="true"/>
+      <button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
     <section className="hero hero-contacts" id="top">
       <div className="hero-bg" aria-hidden="true" style={{backgroundImage:`url("${c.hero.image}"),url("/repo-assets/1790256146854-lyjh500c3dfczzpumdyigwunksyimztdsbhjlv1khcud4udhjd8rer980wfvtjt44dhpo1kcp-jgsej5jfmdaso7.jpg")`,backgroundSize:'cover',backgroundPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,backgroundRepeat:'no-repeat',transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
