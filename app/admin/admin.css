@@ -6,12 +6,12 @@
 .preview-panel{padding:1.45rem;background:radial-gradient(circle at 90% 0,#513827,#211510 58%);border-left:1px solid #6b4b35}.preview-label{margin-bottom:1.1rem;padding:.15rem .2rem;font-size:.72rem;color:#fff}.preview-label span:before{content:'';display:inline-block;width:.48rem;height:.48rem;margin-right:.5rem;border-radius:50%;background:#74be80;box-shadow:0 0 0 4px #74be8026}.preview-label small{padding:.3rem .55rem;border:1px solid #ffffff2e;border-radius:999px;color:#e6bd7d}.preview-frame{border:7px solid #0f0c0a;border-radius:18px 18px 8px 8px;box-shadow:0 24px 60px #0009}.preview-frame:before{content:'';position:absolute;z-index:2;left:50%;top:9px;transform:translateX(-50%);width:55px;height:5px;border-radius:99px;background:#282421}.preview-frame iframe{border-radius:10px 10px 0 0}
 @media(max-width:1150px){.editor-layout{background:#f4ede3}.editor-layout .admin-wrap{justify-self:auto;max-width:960px;margin:auto}.preview-panel{border-left:0;border-top:1px solid #6b4b35}}@media(max-width:760px){.admin-head{min-height:66px}.admin-head>div{gap:.45rem}.admin-head .gold-btn{padding:.7rem .85rem;border-radius:9px}.editor-layout .admin-wrap{padding:1.4rem 1rem 3rem}.admin-message{font-size:.78rem}.admin-wrap section{padding:1.35rem 1.1rem 1.45rem;border-radius:12px}.admin-wrap section:before{top:1.2rem;bottom:1.2rem}.admin-wrap h2{font-size:1.75rem}.preview-panel{height:500px;padding:.9rem}.preview-frame{border-width:5px}.upload{height:132px!important}}
 
-/* Keep the site preview visible while scrolling through the editor. */
-.preview-frame{position:relative;height:calc(100% - 2.4rem)!important}
+/* Preview is part of normal page flow and moves together with the editor. */
+.preview-frame{position:relative}
 @media(min-width:901px){
   .editor-layout{grid-template-columns:minmax(520px,1fr) minmax(420px,42vw)!important;align-items:start!important}
-  .preview-panel{position:sticky!important;top:78px!important;height:calc(100vh - 88px)!important;align-self:start!important;overflow:hidden!important}
-  .preview-frame{height:calc(100% - 2.4rem)!important}
+  .preview-panel{position:relative!important;top:auto!important;height:auto!important;min-height:calc(100vh - 78px)!important;align-self:start!important;overflow:visible!important}
+  .preview-frame{height:calc(100vh - 135px)!important}
 }
 @media(max-width:900px){
   .editor-layout{grid-template-columns:1fr!important;background:#f4ede3!important}
