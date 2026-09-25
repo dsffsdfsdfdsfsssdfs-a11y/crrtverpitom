@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-type ContactIconType='phone'|'mail'|'pin';
+type ContactIconType='phone'|'mail'|'map';
 function ContactIcon({type}:{type:ContactIconType}){
   if(type==='phone')return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 3.5 9.8 7l-1.7 2.1c1.2 2.4 3.1 4.3 5.5 5.5l2.1-1.7 3.5 2.6c.5.4.7 1.1.4 1.7l-1 2.2c-.3.7-1 1.1-1.8 1-7.1-.8-12.8-6.5-13.6-13.6-.1-.8.3-1.5 1-1.8l2.2-1c.6-.3 1.3-.1 1.7.4Z"/></svg>;
   if(type==='mail')return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4.5 7 7.5 6 7.5-6"/></svg>;
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3.5 6.8 5-2.3 7 2.8 5-2.3v12.2l-5 2.3-7-2.8-5 2.3Z"/><path d="M8.5 4.5v12.2M15.5 7.3v12.2"/><circle cx="12" cy="11" r="1.8"/></svg>;
 }
 
 export default function HomeClient({initialContent}:{initialContent:any}) {
@@ -45,23 +45,31 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <p className="intro">{c.hero.intro}</p>
           <div className="actions"><button className="gold-btn" onClick={()=>setOrder(true)}>Сделать заказ <span>↗</span></button><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
         </div>
+        <svg className="contact-clip-defs" width="0" height="0" aria-hidden="true" focusable="false">
+          <defs>
+            <clipPath id="contactCardClip" clipPathUnits="objectBoundingBox">
+              <path d="M .045 0 H .785 C .81 0 .825 .008 .842 .025 L .978 .185 C .993 .203 1 .222 1 .248 V .952 C 1 .982 .982 1 .952 1 H .19 C .155 1 .128 .99 .101 .971 L .026 .921 C .008 .908 0 .89 0 .865 V .052 C 0 .02 .02 0 .045 0 Z"/>
+            </clipPath>
+          </defs>
+        </svg>
         <aside className="hero-contact-card">
-          <div className="contact-card-title"><p className="eyebrow gold">КОНТАКТЫ</p><span>Связаться с питомником</span></div>
+          <div className="contact-card-title"><p className="eyebrow gold">КОНТАКТЫ</p></div>
           <div className="hero-contact-list">
             {c.contacts.map((x:{name:string,label:string,phone:string},i:number)=><div className="hero-contact-item" key={x.name||i}>
               <span className="contact-icon"><ContactIcon type="phone"/></span>
-              <div className="contact-copy"><small>{i===0?'Наталья Никулина':i===1?'Дарья Живанович':x.name}</small>{x.phone?<a href={phoneHref(x.phone)}>{x.label}</a>:<span>{x.label||'Телефон уточняется'}</span>}</div>
+              <small>{i===0?'Наталья Никулина':i===1?'Дарья Живанович':x.name}</small>
+              <div className="hero-contact-value">{x.phone?<a href={phoneHref(x.phone)}>{x.label}</a>:<span>{x.label||'Уточняется'}</span>}</div>
             </div>)}
           </div>
           <div className="hero-contact-meta">
-            <div className="contact-meta-item"><span className="contact-icon"><ContactIcon type="mail"/></span><div><small>Почта</small><a href={'mailto:'+c.email}>{c.email}</a></div></div>
-            <div className="contact-meta-item"><span className="contact-icon"><ContactIcon type="pin"/></span><div><small>Адрес</small><span>{c.address}</span></div></div>
-          </div>
-          <div className="contact-map-row">
-            <span className="contact-map-caption">Питомник на карте</span>
-            <a className="yandex-map-icon" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78" aria-label="Открыть Центр размножения растений в Яндекс Картах" title="Открыть в Яндекс Картах">
-              <span className="yandex-map-pin"><ContactIcon type="pin"/><b>Я</b></span>
-            </a>
+            <div className="contact-meta-item">
+              <span className="contact-icon"><ContactIcon type="mail"/></span>
+              <div><small>Почта</small><a href={'mailto:'+c.email}>{c.email}</a></div>
+            </div>
+            <div className="contact-meta-item contact-meta-address">
+              <a className="contact-icon contact-map-link" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78" aria-label="Открыть питомник в Яндекс Картах" title="Открыть в Яндекс Картах"><ContactIcon type="map"/></a>
+              <div><small>Адрес</small><span>{c.address}</span></div>
+            </div>
           </div>
         </aside>
       </div>
