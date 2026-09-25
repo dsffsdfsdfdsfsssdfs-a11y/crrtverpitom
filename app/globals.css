@@ -411,3 +411,11 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .hero-loading .hero-contact-layout,.hero-loading .hero-overlay,.hero-loading:before{opacity:0}
 .hero-ready .hero-contact-layout,.hero-ready .hero-overlay,.hero-ready:before{opacity:1}
 .brand-image-img{display:block;object-fit:contain}
+
+
+/* Full-screen cover prevents any incomplete first render from flashing */
+.site-loading-cover{display:grid;place-items:center;align-content:center;gap:14px}
+.site-loading-mark{font-family:Arial,sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.16em;color:#4f5a4c;text-transform:uppercase}
+.site-loading-line{width:96px;height:2px;border-radius:99px;overflow:hidden;background:rgba(79,90,76,.12);position:relative}
+.site-loading-line:after{content:'';position:absolute;inset:0;width:42%;border-radius:inherit;background:#8b6a42;animation:siteLoadLine 1s ease-in-out infinite}
+@keyframes siteLoadLine{0%{transform:translateX(-120%)}50%{transform:translateX(95%)}100%{transform:translateX(250%)}}
