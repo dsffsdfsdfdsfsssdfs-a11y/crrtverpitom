@@ -78,6 +78,7 @@ export default function Admin(){
   const [uploading,setUploading]=useState(false);
   const [device,setDevice]=useState<'desktop'|'tablet'|'mobile'>('desktop');
   const [dirty,setDirty]=useState(false);
+  const [badgeVisible,setBadgeVisible]=useState(true);
   const iframeRef=useRef<HTMLIFrameElement>(null);
   const stageRef=useRef<HTMLDivElement>(null);
   const contentRef=useRef<Content|null>(null);
@@ -188,6 +189,8 @@ export default function Admin(){
   useEffect(()=>{
     const stage=stageRef.current;
     if(!stage)return;
+    let raf1=0,raf2=0;
+    const timers:number[]=[];
     const updateScale=()=>{
       const rect=stage.getBoundingClientRect();
       const availableW=Math.max(200,rect.width-28);
@@ -195,11 +198,22 @@ export default function Admin(){
       setFitScale(Math.min(1,availableW/previewWidth,availableH/previewHeight));
     };
     updateScale();
+    raf1=requestAnimationFrame(()=>{updateScale();raf2=requestAnimationFrame(updateScale)});
+    timers.push(window.setTimeout(updateScale,120));
+    timers.push(window.setTimeout(updateScale,350));
+    timers.push(window.setTimeout(updateScale,800));
+    if(document.fonts?.ready) document.fonts.ready.then(updateScale).catch(()=>{});
     const ro=new ResizeObserver(updateScale);
     ro.observe(stage);
     window.addEventListener('resize',updateScale);
-    return()=>{ro.disconnect();window.removeEventListener('resize',updateScale)};
+    return()=>{cancelAnimationFrame(raf1);cancelAnimationFrame(raf2);timers.forEach(clearTimeout);ro.disconnect();window.removeEventListener('resize',updateScale)};
   },[device,previewWidth,previewHeight]);
+
+  useEffect(()=>{
+    setBadgeVisible(true);
+    const t=window.setTimeout(()=>setBadgeVisible(false),1200);
+    return()=>window.clearTimeout(t);
+  },[device]);
 
   async function login(e:FormEvent){
     e.preventDefault();
@@ -259,7 +273,7 @@ export default function Admin(){
 
       <section className="ve-canvas">
         <div className="canvas-stage" ref={stageRef}>
-          <div className="viewport-badge">{viewport.label} · {previewWidth} × {previewHeight}</div>
+          <div className={'viewport-badge '+(badgeVisible?'show':'hide')}>{viewport.label} · {previewWidth} × {previewHeight}</div>
           <div className="device-frame" style={{width:previewWidth*fitScale,height:previewHeight*fitScale}}>
             <div className="device-scale" style={{width:previewWidth,height:previewHeight,transform:`scale(${fitScale})`}}>
               <iframe key={device} ref={iframeRef} src="/?preview=1" title="Предпросмотр" onLoad={()=>{sendPreview();setTimeout(decorateFrame,120)}} style={{width:previewWidth,height:previewHeight}}/>
