@@ -30,7 +30,6 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const mediaSrc=(url:string)=>url?.startsWith('/uploads/')?'https://crr-tver.ru'+url:url;
   const logoSrc=mediaSrc(c.header.logoImage);
   const heroSrc=mediaSrc(c.hero.image);
-  const heroPlaceholder=heroSrc?`/_next/image?url=${encodeURIComponent(heroSrc)}&w=64&q=65`:'';
   const contactPeople=(c.contacts||[]).filter((x:{phone?:string})=>Boolean((x.phone||'').trim()));
   return <>
     <div className="overscroll-bottom-backdrop" aria-hidden="true"/>
@@ -50,7 +49,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
       <button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
-    <section className="hero hero-contacts" id="top" style={{background:heroPlaceholder?`#2a221d url("${heroPlaceholder}") center/cover no-repeat`:'#2a221d'}}> 
+    <section className="hero hero-contacts" id="top" style={{background:'#2a221d'}}> 
       <Image className="hero-bg hero-bg-image" src={heroSrc} alt="" aria-hidden="true" priority fill quality={65} sizes="100vw" style={{objectFit:'cover',objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
       <div className="hero-overlay"/>
       <div className="hero-contact-layout">
