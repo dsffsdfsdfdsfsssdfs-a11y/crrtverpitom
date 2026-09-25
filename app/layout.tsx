@@ -14,12 +14,6 @@ export default function RootLayout({children}:{children:React.ReactNode}) {
       <head>
         <link rel="icon" type="image/png" sizes="64x64" href="/favicon-v17.png?v=17" />
         <link rel="apple-touch-icon" href="/favicon-v17.png?v=17" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=DM+Mono&family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap"
-        />
       </head>
       <body>{children}</body>
     </html>
