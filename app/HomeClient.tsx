@@ -38,6 +38,12 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const mediaSrc=(url:string)=>url?.startsWith('/uploads/')?'https://crr-tver.ru'+url:url;
   const logoSrc=mediaSrc(c.header.logoImage);
   const heroSrc=mediaSrc(c.hero.image);
+  const heroTitleSize=clamp(num(c.hero.titleSize,119),70,180);
+  const heroTitleFont=c.hero.titleFont||c.appearance.headingFont||'Georgia';
+  const heroTitle1=c.hero.title||'Выращиваем';
+  const heroTitle2=c.hero.title2||'растения для';
+  const heroAccent=c.hero.accent||'красивых садов';
+  const heroSubtitle=c.hero.subtitle||'Хвойные и лиственные растения собственного производства';
   const contactPeople=(c.contacts||[]).filter((x:{phone?:string})=>Boolean((x.phone||'').trim()));
   return <>
     <main style={fontStyles}>
@@ -60,8 +66,8 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       <div className="hero-overlay"/>
       <div className="hero-contact-layout">
         <div className="hero-contact-main">
-          <h1 className="hero-title"><span className="hero-title-line hero-title-first">Выращиваем</span><span className="hero-title-line hero-title-second">растения для</span><em className="hero-title-line hero-title-accent">красивых садов</em></h1>
-          <p className="hero-subtitle">Хвойные и лиственные растения собственного производства</p>
+          <h1 className="hero-title" style={{fontFamily:`${heroTitleFont}, Georgia, serif`,fontSize:`calc(clamp(5.8rem,8.4vw,9.6rem) * ${heroTitleSize/119})`}}><span className="hero-title-line hero-title-first">{heroTitle1}</span><span className="hero-title-line hero-title-second">{heroTitle2}</span><em className="hero-title-line hero-title-accent">{heroAccent}</em></h1>
+          <p className="hero-subtitle">{heroSubtitle}</p>
           <p className="intro">{c.hero.intro}</p>
           <div className="actions"><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
         </div>
