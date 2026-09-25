@@ -47,15 +47,17 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 @media(max-width:1100px) and (min-width:761px){.topbar{grid-template-columns:minmax(260px,1fr) auto auto}.header-socials{margin-left:.35rem}.topbar nav{gap:1.05rem}.header-order-btn{min-width:126px;padding:0 .8rem;font-size:.59rem}}
 @media(max-width:760px){.header-socials{margin-left:auto;gap:.35rem}.header-social{width:32px;height:32px}.header-social svg{width:16px;height:16px}.header-order-btn{height:34px;min-width:108px;padding:0 .64rem;margin-left:.05rem;border-radius:12px;font-size:.52rem;letter-spacing:.055em}.header-order-btn:before{border-radius:10px}}
 
+.gallery,.knowledge,.order,footer{content-visibility:auto;contain-intrinsic-size:auto 650px}
+
 /* First screen: nursery contacts */
 .hero-contacts{padding:150px clamp(1.5rem,7vw,8rem) 72px;align-items:center}
 .hero-contact-layout{position:relative;z-index:2;width:min(1380px,100%);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(330px,390px);gap:clamp(1.6rem,4vw,4.5rem);align-items:end}
 .hero-contact-main{max-width:760px}
 .hero-contact-main h1{font-size:clamp(3.8rem,6.5vw,7rem)}
 .hero-contact-main .intro{max-width:610px}
-.hero-contact-dock{position:relative;isolation:isolate;width:100%;justify-self:end;align-self:end;padding:1rem;border:1px solid rgba(255,255,255,.18);border-radius:26px;background:linear-gradient(180deg,rgba(243,238,228,.22),rgba(243,238,228,.10));box-shadow:0 18px 42px rgba(0,0,0,.20),0 0 34px rgba(227,190,128,.18),0 0 74px rgba(227,190,128,.10),inset 0 1px 0 rgba(255,255,255,.14),inset 0 0 22px rgba(255,243,220,.05);-webkit-backdrop-filter:blur(22px) saturate(118%);backdrop-filter:blur(22px) saturate(118%);animation:contactDockGlow 4.8s ease-in-out infinite}
-.hero-contact-dock:before{content:'';position:absolute;z-index:-1;inset:-26px;border-radius:44px;background:radial-gradient(circle at 18% 24%,rgba(255,239,205,.40),transparent 34%),radial-gradient(circle at 82% 28%,rgba(226,181,108,.34),transparent 36%),radial-gradient(circle at 30% 82%,rgba(255,248,229,.26),transparent 33%),radial-gradient(circle at 76% 78%,rgba(223,174,99,.31),transparent 37%);filter:blur(28px);opacity:.72;transform:scale(.98);animation:contactDockAura 4.8s ease-in-out infinite;pointer-events:none}
-.hero-contact-dock:after{content:'';position:absolute;z-index:0;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(ellipse at center,rgba(255,248,229,.10) 0%,rgba(255,232,192,.035) 42%,transparent 72%);box-shadow:inset 0 0 24px rgba(255,244,218,.07);opacity:.52;animation:contactDockInnerGlow 4.8s ease-in-out infinite}
+.hero-contact-dock{position:relative;isolation:isolate;width:100%;justify-self:end;align-self:end;padding:1rem;border:1px solid rgba(255,255,255,.18);border-radius:26px;background:linear-gradient(180deg,rgba(243,238,228,.22),rgba(243,238,228,.10));box-shadow:0 18px 42px rgba(0,0,0,.20),0 0 42px rgba(227,190,128,.20),0 0 82px rgba(227,190,128,.11),inset 0 1px 0 rgba(255,255,255,.14),inset 0 0 22px rgba(255,243,220,.05);-webkit-backdrop-filter:blur(22px) saturate(118%);backdrop-filter:blur(22px) saturate(118%)}
+.hero-contact-dock:before{content:'';position:absolute;z-index:-1;inset:-26px;border-radius:44px;background:radial-gradient(circle at 18% 24%,rgba(255,239,205,.40),transparent 34%),radial-gradient(circle at 82% 28%,rgba(226,181,108,.34),transparent 36%),radial-gradient(circle at 30% 82%,rgba(255,248,229,.26),transparent 33%),radial-gradient(circle at 76% 78%,rgba(223,174,99,.31),transparent 37%);filter:blur(28px);opacity:.72;transform:scale(.98);animation:contactDockAura 4.8s ease-in-out infinite;will-change:opacity,transform;pointer-events:none}
+.hero-contact-dock:after{content:'';position:absolute;z-index:0;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(ellipse at center,rgba(255,248,229,.10) 0%,rgba(255,232,192,.035) 42%,transparent 72%);box-shadow:inset 0 0 24px rgba(255,244,218,.07);opacity:.52;animation:contactDockInnerGlow 4.8s ease-in-out infinite;will-change:opacity}
 .hero-contact-dock-head,.hero-contact-dock-list{position:relative;z-index:1}
 .hero-contact-dock-head{display:flex;justify-content:center;align-items:center;text-align:center;padding:.05rem .15rem .8rem;border-bottom:1px solid rgba(255,255,255,.12)}
 .hero-contact-dock-head>span{font-family:var(--headingFont);font-size:.98rem;letter-spacing:.12em;text-transform:uppercase;color:#f0d7b0}
@@ -70,17 +72,13 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .hero-contact-item-copy small{font-size:.56rem;line-height:1.2;letter-spacing:.09em;text-transform:uppercase;color:#cfbda7}
 .hero-contact-item-copy b{font-family:'DM Mono',monospace;font-size:.76rem;line-height:1.36;font-weight:500;color:#fff8ef;overflow-wrap:anywhere}
 .hero-contact-item-address .hero-contact-item-copy b{font-family:var(--bodyFont);font-size:.73rem}
-@keyframes contactDockGlow{
-  0%,100%{box-shadow:0 18px 42px rgba(0,0,0,.20),0 0 32px rgba(227,190,128,.18),0 0 72px rgba(227,190,128,.11),inset 0 1px 0 rgba(255,255,255,.14),inset 0 0 20px rgba(255,243,220,.045)}
-  50%{box-shadow:0 20px 46px rgba(0,0,0,.22),0 0 56px rgba(244,211,153,.42),0 0 120px rgba(232,190,119,.26),inset 0 1px 0 rgba(255,255,255,.20),inset 0 0 34px rgba(255,246,226,.11)}
-}
 @keyframes contactDockAura{
   0%,100%{opacity:.58;transform:scale(.98)}
   50%{opacity:1;transform:scale(1.07)}
 }
 @keyframes contactDockInnerGlow{
-  0%,100%{opacity:.32;filter:brightness(1)}
-  50%{opacity:.82;filter:brightness(1.18)}
+  0%,100%{opacity:.34}
+  50%{opacity:.82}
 }
 @media(prefers-reduced-motion:reduce){.hero-contact-dock,.hero-contact-dock:before,.hero-contact-dock:after{animation:none}}
 @media(max-width:980px){
