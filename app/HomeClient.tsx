@@ -27,7 +27,9 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const videoSrc=(url:string)=>url.includes('watch?v=')?url.replace('watch?v=','embed/'):url;
   const optimizeImage=(url:string)=>url?.includes('images.unsplash.com')?url.replace(/w=\d+/,'w=1600').replace(/q=\d+/,'q=72'):url;
   const phoneHref=(phone:string)=>{const digits=(phone||'').replace(/\D/g,'');if(!digits)return '';return 'tel:'+(digits.startsWith('8')?'+7'+digits.slice(1):'+'+digits)};
-  const logoSrc=c.header.logoImage;
+  const mediaSrc=(url:string)=>url?.startsWith('/uploads/')?'https://crr-tver.ru'+url:url;
+  const logoSrc=mediaSrc(c.header.logoImage);
+  const heroSrc=mediaSrc(c.hero.image);
   const contactPeople=(c.contacts||[]).filter((x:{phone?:string})=>Boolean((x.phone||'').trim()));
   return <>
     <div className="overscroll-bottom-backdrop" aria-hidden="true"/>
@@ -48,7 +50,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       <button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
     <section className="hero hero-contacts" id="top">
-      <Image className="hero-bg hero-bg-image" src={c.hero.image} alt="" aria-hidden="true" priority fill quality={75} sizes="100vw" style={{objectFit:'cover',objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
+      <Image className="hero-bg hero-bg-image" src={heroSrc} alt="" aria-hidden="true" priority fill quality={75} sizes="100vw" style={{objectFit:'cover',objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`}}/>
       <div className="hero-overlay"/>
       <div className="hero-contact-layout">
         <div className="hero-contact-main">
