@@ -1,6 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+type HeroContactIconType='phone'|'mail'|'pin';
+function HeroContactIcon({type}:{type:HeroContactIconType}){
+  if(type==='phone') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.1 3.8 9.6 7l-1.5 2c1.2 2.5 3.1 4.4 5.6 5.6l2-1.5 3.2 2.5c.6.4.8 1.2.5 1.8l-.9 2c-.3.7-1 1.1-1.8 1-7-.8-12.6-6.4-13.4-13.4-.1-.8.3-1.5 1-1.8l2-.9c.6-.3 1.4-.1 1.8.5Z"/></svg>;
+  if(type==='mail') return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4.5 7 7.5 6 7.5-6"/></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>;
+}
+
 export default function HomeClient({initialContent}:{initialContent:any}) {
   const [menu,setMenu]=useState(false);
   const [order,setOrder]=useState(false);
@@ -38,6 +45,51 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <h1>Центр размножения<br/><em>растений</em></h1>
           <p className="intro">{c.hero.intro}</p>
           <div className="actions"><button className="gold-btn" onClick={()=>setOrder(true)}>Сделать заказ <span>↗</span></button><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
+
+          <div className="hero-contact-dock" aria-label="Контакты питомника">
+            <div className="hero-contact-dock-head">
+              <span>Контакты</span>
+              <small>Связаться с питомником</small>
+            </div>
+
+            <div className="hero-contact-dock-grid">
+              <a className="hero-contact-tile" href="tel:+79167964460">
+                <span className="hero-contact-tile-icon"><HeroContactIcon type="phone"/></span>
+                <span className="hero-contact-tile-copy">
+                  <small>Наталья Никулина</small>
+                  <b>+7 (916) 796-44-60</b>
+                </span>
+                <span className="hero-contact-tile-arrow">↗</span>
+              </a>
+
+              <a className="hero-contact-tile" href="tel:+79206834460">
+                <span className="hero-contact-tile-icon"><HeroContactIcon type="phone"/></span>
+                <span className="hero-contact-tile-copy">
+                  <small>Дарья Живанович</small>
+                  <b>+7 (920) 683-44-60</b>
+                </span>
+                <span className="hero-contact-tile-arrow">↗</span>
+              </a>
+
+              <a className="hero-contact-tile" href={'mailto:'+c.email}>
+                <span className="hero-contact-tile-icon"><HeroContactIcon type="mail"/></span>
+                <span className="hero-contact-tile-copy">
+                  <small>Почта</small>
+                  <b>{c.email}</b>
+                </span>
+                <span className="hero-contact-tile-arrow">↗</span>
+              </a>
+
+              <a className="hero-contact-tile hero-contact-tile-address" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78">
+                <span className="hero-contact-tile-icon"><HeroContactIcon type="pin"/></span>
+                <span className="hero-contact-tile-copy">
+                  <small>Адрес</small>
+                  <b>Тверская область, деревня Козино</b>
+                </span>
+                <span className="hero-contact-tile-arrow">↗</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
