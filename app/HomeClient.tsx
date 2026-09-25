@@ -62,6 +62,8 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           </defs>
         </svg>
         <aside className="hero-contact-card">
+          <span className="contact-glow" aria-hidden="true"/>
+          <span className="contact-gloss" aria-hidden="true"/>
           <div className="contact-card-title"><p className="eyebrow gold">КОНТАКТЫ</p></div>
 
           <div className="contact-people">
@@ -85,7 +87,10 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
 
             <div className="contact-detail contact-detail-address">
               <a className="contact-glyph contact-map-link" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78" aria-label="Открыть питомник в Яндекс Картах" title="Открыть в Яндекс Картах"><YandexMapIcon/></a>
-              <div className="contact-detail-copy"><small>Адрес</small><span>{c.address}</span></div>
+              <div className="contact-detail-copy">
+                <small>Адрес</small>
+                <a className="contact-address-link" target="_blank" rel="noreferrer" href="https://yandex.ru/maps/org/tsentr_razmnozheniya_rasteniy/90072137290/?ll=35.662543%2C56.933847&z=17.78" title="Открыть в Яндекс Картах">{c.address}</a>
+              </div>
             </div>
           </div>
         </aside>
