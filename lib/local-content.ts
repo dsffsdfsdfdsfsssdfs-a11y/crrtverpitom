@@ -16,9 +16,39 @@ async function ensureStorage() {
   }
 }
 
+let cleanedOnce = false;
+
+function collectUploadNames(value: unknown, names = new Set<string>()) {
+  if (typeof value === 'string' && value.startsWith('/uploads/')) {
+    names.add(path.basename(value.split('?')[0]));
+  } else if (Array.isArray(value)) {
+    for (const item of value) collectUploadNames(item, names);
+  } else if (value && typeof value === 'object') {
+    for (const item of Object.values(value as Record<string, unknown>)) collectUploadNames(item, names);
+  }
+  return names;
+}
+
+async function cleanupUnusedUploads(content: unknown) {
+  try {
+    const used = collectUploadNames(content);
+    const files = await fs.readdir(uploadsDir);
+    await Promise.all(
+      files
+        .filter(file => !used.has(file))
+        .map(file => fs.unlink(path.join(uploadsDir, file)).catch(() => undefined))
+    );
+  } catch {}
+}
+
 export async function readContent() {
   try {
-    return JSON.parse(await fs.readFile(contentFile, 'utf8'));
+    const content = JSON.parse(await fs.readFile(contentFile, 'utf8'));
+    if (!cleanedOnce) {
+      cleanedOnce = true;
+      await cleanupUnusedUploads(content);
+    }
+    return content;
   } catch {
     return JSON.parse(await fs.readFile(fallbackFile, 'utf8'));
   }
@@ -29,6 +59,7 @@ export async function saveContent(content: unknown) {
   const temp = contentFile + '.tmp';
   await fs.writeFile(temp, JSON.stringify(content, null, 2) + '\n', 'utf8');
   await fs.rename(temp, contentFile);
+  await cleanupUnusedUploads(content);
 }
 
 export async function uploadFile(name: string, base64: string) {
@@ -59,15 +90,6 @@ export async function inlineImage(url: string, maxBytes = 2500000) {
   if (url.startsWith('data:image/')) return url;
 
   try {
-    const rawRepoUpload = url.match(/^https:\/\/raw\.githubusercontent\.com\/dsffsdfsdfdsfsssdfs-a11y\/crrtverpitom\/[^/]+\/public\/uploads\/([^?#]+)/i);
-    if (rawRepoUpload) {
-      const filename = path.basename(rawRepoUpload[1]);
-      const file = path.join(process.cwd(), 'public', 'uploads', filename);
-      const buf = await fs.readFile(file);
-      if (buf.length > maxBytes) return '';
-      return `data:${mimeFromName(filename)};base64,${buf.toString('base64')}`;
-    }
-
     if (url.startsWith('/uploads/')) {
       await ensureStorage();
       const filename = path.basename(url.split('?')[0]);
