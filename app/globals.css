@@ -40,20 +40,32 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .hero-contact-main{max-width:760px}
 .hero-contact-main h1{font-size:clamp(3.8rem,6.5vw,7rem)}
 .hero-contact-main .intro{max-width:610px}
-.hero-contact-card{background:#f3eee4f2;color:#394338;border:1px solid #d9cfc2;padding:2rem 2rem 1.7rem;box-shadow:0 24px 60px #140b0738;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);clip-path:polygon(0 0,calc(100% - 78px) 0,100% 78px,100% 100%,54px 100%,0 calc(100% - 30px));border-radius:24px}
-.hero-contact-card .eyebrow{margin-bottom:1.15rem}
-.hero-contact-list{display:grid;gap:.2rem}
-.hero-contact-item{display:grid;grid-template-columns:1fr auto;gap:1.2rem;align-items:end;padding:1rem 0;border-bottom:1px solid #d8cfc2}
-.hero-contact-item small,.hero-contact-meta small{font-size:.62rem;line-height:1.35;text-transform:uppercase;letter-spacing:.1em;color:#87735f}
-.hero-contact-item a,.hero-contact-item span{font-family:'DM Mono',monospace;font-size:.85rem;color:#425044;white-space:nowrap}
+.hero-contact-card{position:relative;isolation:isolate;color:#394338;padding:2rem 2rem 1.55rem;filter:drop-shadow(0 24px 42px #140b0730);clip-path:polygon(22px 0,calc(100% - 98px) 0,calc(100% - 84px) 4px,calc(100% - 72px) 14px,calc(100% - 12px) 74px,calc(100% - 4px) 88px,100% 102px,100% calc(100% - 22px),calc(100% - 4px) calc(100% - 10px),calc(100% - 12px) calc(100% - 3px),calc(100% - 24px) 100%,70px 100%,58px calc(100% - 3px),48px calc(100% - 8px),10px calc(100% - 29px),4px calc(100% - 39px),0 calc(100% - 52px),0 22px,4px 11px,11px 4px)}
+.hero-contact-card:before{content:'';position:absolute;z-index:-1;inset:0;background:linear-gradient(135deg,#d7c7b4 0%,#ece3d7 45%,#d7c7b4 100%)}
+.hero-contact-card:after{content:'';position:absolute;z-index:-1;inset:1px;background:rgba(243,238,228,.88);-webkit-backdrop-filter:blur(16px) saturate(112%);backdrop-filter:blur(16px) saturate(112%);clip-path:inherit}
+.contact-card-title{display:flex;align-items:end;justify-content:space-between;gap:1rem;padding-bottom:.9rem;border-bottom:1px solid rgba(135,115,95,.22)}
+.hero-contact-card .eyebrow{margin:0;font-size:.7rem}
+.contact-card-title>span{font-size:.6rem;line-height:1.3;text-transform:uppercase;letter-spacing:.08em;color:#9a8773}
+.hero-contact-list{display:grid}
+.hero-contact-item{display:grid;grid-template-columns:42px 1fr;gap:.85rem;align-items:center;padding:.9rem 0;border-bottom:1px solid rgba(135,115,95,.2)}
+.contact-icon{width:36px;height:36px;border:1px solid rgba(157,125,85,.55);border-radius:50%;display:grid;place-items:center;color:#8b6a42;background:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}
+.contact-icon svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.contact-copy{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;min-width:0}
+.hero-contact-item small,.hero-contact-meta small{font-size:.6rem;line-height:1.35;text-transform:uppercase;letter-spacing:.1em;color:#87735f}
+.hero-contact-item a,.hero-contact-item .contact-copy>span{font-family:'DM Mono',monospace;font-size:.78rem;color:#425044;white-space:nowrap}
 .hero-contact-item a:hover{color:#9a7139}
-.hero-contact-meta{display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding:1.15rem 0}
-.hero-contact-meta>div{display:flex;flex-direction:column;gap:.4rem}
-.hero-contact-meta a,.hero-contact-meta span{font-size:.82rem;line-height:1.45;color:#4a5549}
+.hero-contact-meta{display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding:1rem 0 .7rem}
+.contact-meta-item{display:grid;grid-template-columns:36px 1fr;gap:.75rem;align-items:start}
+.contact-meta-item>div{display:flex;flex-direction:column;gap:.35rem;min-width:0}
+.hero-contact-meta a,.hero-contact-meta .contact-meta-item span:not(.contact-icon){font-size:.76rem;line-height:1.45;color:#4a5549;overflow-wrap:anywhere}
 .hero-contact-meta a:hover{color:#9a7139}
-.hero-map-btn{display:flex;justify-content:space-between;align-items:center;width:100%;margin-top:.25rem;padding:.9rem 1rem;background:#4f5a4c;color:#fff;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;transition:.2s}
-.hero-map-btn:hover{background:#354035}
-.hero-map-btn span{font-size:1rem}
+.contact-map-row{display:flex;align-items:center;justify-content:flex-end;gap:.7rem;padding-top:.2rem}
+.contact-map-caption{font-size:.58rem;text-transform:uppercase;letter-spacing:.09em;color:#9a8773}
+.yandex-map-icon{width:48px;height:48px;border-radius:17px;display:grid;place-items:center;background:linear-gradient(145deg,#566351,#3f4b3f);border:1px solid rgba(181,143,81,.6);box-shadow:0 8px 20px rgba(54,64,53,.18),inset 0 1px 0 rgba(255,255,255,.16);transition:transform .2s ease,box-shadow .2s ease}
+.yandex-map-icon:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 12px 24px rgba(54,64,53,.24),0 0 0 3px rgba(181,143,81,.08)}
+.yandex-map-pin{position:relative;width:27px;height:30px;color:#e3bd78;display:grid;place-items:center}
+.yandex-map-pin svg{position:absolute;inset:0;width:27px;height:30px;fill:none;stroke:currentColor;stroke-width:1.5}
+.yandex-map-pin b{position:relative;z-index:1;font-family:Georgia,serif;font-size:.72rem;line-height:1;color:#f2dfbd;font-weight:600;transform:translateY(-2px)}
 @media(max-width:980px){
   .hero-contact-layout{grid-template-columns:1fr;gap:2rem}
   .hero-contact-main{max-width:720px}
@@ -63,9 +75,12 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
   .hero-contacts{padding:108px 1.3rem 48px;min-height:auto}
   .hero-contact-main h1{font-size:clamp(2.85rem,13vw,4.2rem)}
   .hero-contact-main .intro{font-size:.88rem;line-height:1.65}
-  .hero-contact-card{padding:1.35rem}
-  .hero-contact-item{grid-template-columns:1fr;gap:.3rem;align-items:start}
+  .hero-contact-card{padding:1.35rem;clip-path:polygon(18px 0,calc(100% - 72px) 0,calc(100% - 60px) 4px,calc(100% - 50px) 12px,calc(100% - 8px) 54px,calc(100% - 2px) 66px,100% 78px,100% calc(100% - 18px),calc(100% - 4px) calc(100% - 8px),calc(100% - 12px) 100%,54px 100%,44px calc(100% - 4px),8px calc(100% - 24px),2px calc(100% - 36px),0 calc(100% - 46px),0 18px,4px 9px,10px 3px)}
+  .contact-card-title>span{display:none}
+  .hero-contact-item{grid-template-columns:38px 1fr;gap:.7rem;align-items:center}
+  .contact-copy{flex-direction:column;align-items:flex-start;gap:.25rem}
   .hero-contact-meta{grid-template-columns:1fr}
+  .contact-map-row{justify-content:space-between}
 }
 
 .brand-image-bg{display:block;flex:0 0 auto;border-radius:50%;background-repeat:no-repeat,no-repeat;background-position:center,center;background-size:contain,contain}
