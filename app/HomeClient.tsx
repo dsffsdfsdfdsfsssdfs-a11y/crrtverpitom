@@ -25,11 +25,11 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   useEffect(()=>{const receive=(event:MessageEvent)=>{if(event.origin===window.location.origin&&event.data?.type==='crr-preview'&&event.data.content)setContent(event.data.content)};window.addEventListener('message',receive);if(window.parent!==window)window.parent.postMessage({type:'crr-preview-ready'},window.location.origin);return()=>window.removeEventListener('message',receive)},[]);
   const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
   const clamp=(v:number,min:number,max:number)=>Math.min(max,Math.max(min,v));
-  const logoSize=clamp(num(c.header.logoSize,53),28,105);
-  const logoX=clamp(num(c.header.logoX,0),-35,55);
-  const logoY=clamp(num(c.header.logoY,0),-20,20);
-  const textX=clamp(num(c.header.textX,0),-25,45);
-  const textY=clamp(num(c.header.textY,0),-20,20);
+  const logoSize=clamp(num(c.header.logoSize,53),28,180);
+  const logoX=clamp(num(c.header.logoX,0),-300,300);
+  const logoY=clamp(num(c.header.logoY,0),-160,160);
+  const textX=clamp(num(c.header.textX,0),-500,500);
+  const textY=clamp(num(c.header.textY,0),-200,200);
   const logoSlot=Math.max(68,logoSize+Math.abs(logoX)+16);
   const fontStyles={'--headingFont':`${c.appearance.headingFont}, Georgia, serif`,'--bodyFont':`${c.appearance.bodyFont}, Arial, sans-serif`} as React.CSSProperties;
   const videoSrc=(url:string)=>url.includes('watch?v=')?url.replace('watch?v=','embed/'):url;
@@ -51,7 +51,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   return <>
     <main style={fontStyles}>
     <header className="topbar">
-      <a className="brand header-brand" href="/" aria-label="Обновить страницу" onClick={(e)=>{e.preventDefault();window.location.reload()}}><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc&&<span data-editor-key="logo"><Image src={logoSrc} alt="" aria-hidden="true" priority width={160} height={160} quality={65} className="brand-image brand-image-img" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}}/></span>}</span><span data-editor-key="brandText" className="brand-copy" style={{fontSize:`${c.header.textSize}%`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
+      <a className="brand header-brand" href="/" aria-label="Обновить страницу" onClick={(e)=>{e.preventDefault();window.location.reload()}}><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc&&<span data-editor-key="logo"><Image src={logoSrc} alt="" aria-hidden="true" priority width={160} height={160} quality={65} className="brand-image brand-image-img" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}}/></span>}</span><span data-editor-key="brandText" className="brand-copy" style={{fontSize:`${c.header.textSize}%`,fontFamily:`${c.header.textFont||'Manrope'}, Arial, sans-serif`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
       <nav className={menu?'open':''}><a href="#about">{c.header.nav[0]}</a><a href="#assortment">{c.header.nav[1]}</a><a href="#gallery">{c.header.nav[2]}</a><a href="#knowledge">{c.header.nav[3]}</a></nav>
       <div className="header-socials" aria-label="Социальные сети питомника">
         <a className="header-social header-social-vk" href="https://vk.ru/crr.tver" target="_blank" rel="noreferrer" aria-label="ВКонтакте" title="ВКонтакте">
