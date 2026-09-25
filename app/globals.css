@@ -40,7 +40,7 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .hero-contact-main{max-width:760px}
 .hero-contact-main h1{font-size:clamp(3.8rem,6.5vw,7rem)}
 .hero-contact-main .intro{max-width:610px}
-.hero-contact-card{background:#f3eee4f2;color:#394338;border:1px solid #d9cfc2;padding:2rem 2rem 1.7rem;box-shadow:0 24px 60px #140b0738;backdrop-filter:blur(10px)}
+.hero-contact-card{background:#f3eee4f2;color:#394338;border:1px solid #d9cfc2;padding:2rem 2rem 1.7rem;box-shadow:0 24px 60px #140b0738;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);clip-path:polygon(0 0,calc(100% - 78px) 0,100% 78px,100% 100%,54px 100%,0 calc(100% - 30px));border-radius:24px}
 .hero-contact-card .eyebrow{margin-bottom:1.15rem}
 .hero-contact-list{display:grid;gap:.2rem}
 .hero-contact-item{display:grid;grid-template-columns:1fr auto;gap:1.2rem;align-items:end;padding:1rem 0;border-bottom:1px solid #d8cfc2}
