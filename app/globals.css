@@ -12,7 +12,7 @@
 .header-brand .brand-copy{display:block;position:relative;margin-left:.6rem;line-height:1.08;white-space:nowrap}
 .topbar nav{justify-self:center;white-space:nowrap}
 .topbar .phone{justify-self:end;white-space:nowrap}
-.hero{background-color:transparent}
+.hero{background-color:#2a221d}
 @media(max-width:1100px) and (min-width:761px){.topbar{grid-template-columns:minmax(300px,1fr) auto}.topbar .phone{display:none}.topbar nav{gap:1.35rem}}
 @media(max-width:760px){.topbar{display:flex}.brand-logo-slot{min-height:52px}.header-brand .brand-copy{white-space:normal}}
 
@@ -20,7 +20,7 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 
 
 
-.overscroll-bottom-backdrop{position:fixed;z-index:0;left:0;right:0;bottom:0;height:100vh;background:#1d1511;pointer-events:none}
+.overscroll-bottom-backdrop{display:none}
 
 .hero-top-extension{position:absolute;left:0;right:0;bottom:100%;height:100vh;overflow:hidden;pointer-events:none;z-index:0;background:#1d1511}
 .hero-top-extension img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:center}
@@ -32,7 +32,7 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .topbar nav a:hover{color:#8b6a42!important}
 .topbar .phone{color:#7a6047!important}
 .topbar .burger{color:#4f5a4c!important}
-.overscroll-top-header{position:fixed;z-index:0;left:0;right:0;top:0;height:320px;background:#f3eee4;pointer-events:none}
+.overscroll-top-header{display:none}
 .header-socials{justify-self:end;display:flex;align-items:center;gap:.55rem}
 .header-social{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#5a6758;background:rgba(255,255,255,.42);border:1px solid rgba(121,103,81,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.72);transition:transform .2s ease,border-color .2s ease,color .2s ease,background .2s ease,box-shadow .2s ease}
 .header-social:hover{transform:translateY(-2px);color:#9b7139;border-color:rgba(155,113,57,.42);background:rgba(255,255,255,.72);box-shadow:0 7px 16px rgba(70,55,38,.10),inset 0 1px 0 rgba(255,255,255,.86)}
