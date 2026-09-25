@@ -49,7 +49,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
       <button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
     </header>
-    <section className={`hero hero-contacts ${heroReady?'hero-ready':'hero-loading'}`} id="top">
+    <section className={`hero hero-contacts ${heroReady?'hero-ready':'hero-loading'}`} id="top" style={{background:'#2a221d',opacity:heroReady?1:0,transition:'opacity .18s ease'}}> 
       <img ref={heroImageRef} className="hero-bg hero-bg-image" src={c.hero.image} alt="" aria-hidden="true" fetchPriority="high" decoding="async" onLoad={()=>setHeroReady(true)} onError={()=>setHeroReady(true)} style={{objectPosition:`${c.hero.imageX}% ${c.hero.imageY}%`,transform:`scale(${Math.max(1,Number(c.hero.imageScale||100)/100)})`,opacity:heroReady?1:0}}/>
       <div className="hero-overlay" style={{opacity:heroReady?1:0,visibility:heroReady?'visible':'hidden'}}/>
       <div className="hero-contact-layout" style={{opacity:heroReady?1:0,visibility:heroReady?'visible':'hidden'}}> 
