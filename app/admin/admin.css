@@ -43,7 +43,7 @@ linear-gradient(180deg,rgba(11,10,8,.04),rgba(11,10,8,.20));pointer-events:none}
 
 .ve-login-field input{flex:1;height:100%;border:0;outline:0;background:transparent;color:#f6eee3;font:inherit;font-size:16px}
 .ve-login-field input::placeholder{color:rgba(235,228,217,.46)}
-.ve-login-submit{display:block;width:78%;height:52px;margin:16px auto 0;border:0;border-radius:15px;background:linear-gradient(180deg,#e5c987 0%,#d8ae63 100%);color:#22170f;font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:700;letter-spacing:.085em;cursor:pointer;box-shadow:0 12px 28px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.32);transition:transform .18s ease,filter .18s ease}
+.ve-login-submit{display:block;width:62%;height:46px;margin:15px auto 0;border:0;border-radius:14px;background:linear-gradient(180deg,#e5c987 0%,#d8ae63 100%);color:#22170f;font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:700;letter-spacing:.085em;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.30);transition:transform .18s ease,filter .18s ease}
 .ve-login-submit:hover{transform:translateY(-1px);filter:brightness(1.04)}
 .ve-login small{display:block;margin-top:14px;color:#efc495}
 @media(max-width:640px){.ve-login-card{width:min(92vw,480px);padding:32px 24px 28px;border-radius:23px}.ve-login-logo{width:118px;height:118px}.ve-login-logo-wrap{margin-bottom:20px}.ve-login h1{font-size:32px;white-space:normal}.ve-login p{margin-bottom:24px}.ve-login-field{height:57px}.ve-login-submit{height:55px;font-size:22px}}
