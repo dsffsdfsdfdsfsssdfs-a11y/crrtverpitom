@@ -145,40 +145,50 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
     </section>
     <section className="numbers"><div><b>6 га</b><span>маточных насаждений</span></div><div><b>144–96</b><span>ячеек в кассетах</span></div><div><b>Р9</b><span>готовые растения</span></div><div><b>Тверь</b><span>выращиваем с душой</span></div></section>
-    <section className="specialty-modern" id="about" data-editor-key="specialty">
-      <div className="specialty-ambient specialty-ambient-a"/>
-      <div className="specialty-ambient specialty-ambient-b"/>
-      <div className="specialty-grid-lines"/>
-      <div className="specialty-modern-inner">
-        <div className="specialty-modern-top">
-          <p data-editor-key="specialtyKicker" className="specialty-modern-kicker" style={editorTextStyle('specialtyKicker',100)}>{c.specialty.kicker||'НАША СПЕЦИАЛИЗАЦИЯ'}</p>
-          <span className="specialty-page-no">02</span>
+    <section className="specialty-editorial" id="about" data-editor-key="specialty">
+      <div className="specialty-editorial-orb specialty-editorial-orb-a"/>
+      <div className="specialty-editorial-orb specialty-editorial-orb-b"/>
+      <div className="specialty-editorial-shell">
+        <div className="specialty-editorial-head">
+          <p data-editor-key="specialtyKicker" className="specialty-editorial-kicker" style={editorTextStyle('specialtyKicker',100)}>{c.specialty.kicker||'НАША СПЕЦИАЛИЗАЦИЯ'}</p>
+          <span className="specialty-editorial-index">02 / ПРОИЗВОДСТВО</span>
         </div>
-        <div className="specialty-stage">
-          <div className="specialty-main-card">
-            <div className="specialty-card-glow"/>
-            <div className="specialty-main-copy">
-              <span data-editor-key="specialtyOverline" className="specialty-overline" style={editorTextStyle('specialtyOverline',100)}>{c.specialty.overline||'ПРОФЕССИОНАЛЬНОЕ ПРОИЗВОДСТВО'}</span>
-              <h2 data-editor-key="specialtyTitle" className="specialty-modern-title" style={editorTextStyle('specialtyTitle',100)}>{String(c.specialty.title||'Вегетативное\nразмножение').split('\n').map((line:string,i:number)=><span key={i}>{i===0?line:<em>{line}</em>}{i===0&&<br/>}</span>)}</h2>
-              <p data-editor-key="specialtyDesc" className="specialty-modern-subtitle" style={editorTextStyle('specialtyDesc',100)}>{c.specialty.paragraph1}</p>
-              <a data-editor-key="specialtyLink" className="specialty-modern-link" href="#assortment" style={editorTextStyle('specialtyLink',100)}>
-                <span>{c.specialty.linkText||'Посмотреть ассортимент'}</span>
-                <span className="specialty-cta-botanical" aria-hidden="true"><svg viewBox="0 0 260 150"><path d="M34 132C75 101 100 62 109 20C131 57 141 93 139 132"/><path d="M88 133C131 108 161 73 180 29C192 69 192 103 179 133"/><path d="M137 133C169 116 198 85 223 47C224 83 214 111 196 134"/></svg></span>
-                <i aria-hidden="true"><svg viewBox="0 0 72 34" role="presentation"><path d="M4 17H62"/><path d="M50 5L62 17L50 29"/></svg></i>
-              </a>
-            </div>
-            <div className="specialty-organic-mark" aria-hidden="true"><span/><span/><span/></div>
+
+        <div className="specialty-editorial-grid">
+          <div className="specialty-editorial-main">
+            <span data-editor-key="specialtyOverline" className="specialty-editorial-overline" style={editorTextStyle('specialtyOverline',100)}>{c.specialty.overline||'ПРОФЕССИОНАЛЬНОЕ ПРОИЗВОДСТВО'}</span>
+            <h2 data-editor-key="specialtyTitle" className="specialty-editorial-title" style={editorTextStyle('specialtyTitle',100)}>
+              {String(c.specialty.title||'Вегетативное\nразмножение').split('\n').map((line:string,i:number)=><span key={i}>{i===0?line:<em>{line}</em>}{i===0&&<br/>}</span>)}
+            </h2>
+            <p data-editor-key="specialtyDesc" className="specialty-editorial-desc" style={editorTextStyle('specialtyDesc',100)}>{c.specialty.paragraph1}</p>
+            <a data-editor-key="specialtyLink" className="specialty-editorial-link" href="#assortment" style={editorTextStyle('specialtyLink',100)}>
+              <span>{c.specialty.linkText||'Посмотреть ассортимент'}</span>
+              <svg viewBox="0 0 34 16" aria-hidden="true"><path d="M1 8h28"/><path d="m23 2 6 6-6 6"/></svg>
+            </a>
           </div>
-          <aside className="specialty-info-card">
-            <div className="specialty-info-head">
-              <span className="specialty-info-icon">✦</span>
-              <span className="specialty-info-caption">ФОРМАТЫ ПРОИЗВОДСТВА</span>
+
+          <aside className="specialty-process-panel">
+            <div className="specialty-process-top">
+              <span className="specialty-process-dot"/>
+              <span>ФОРМАТЫ ПРОИЗВОДСТВА</span>
             </div>
-            <span data-editor-key="specialtyNoteTitle" className="specialty-modern-note-title" style={editorTextStyle('specialtyNoteTitle',100)}>{c.specialty.noteTitle||'Выращиваем укоренённые черенки'}</span>
-            <p data-editor-key="specialtyNoteText" className="specialty-modern-note-text" style={editorTextStyle('specialtyNoteText',100)}>{c.specialty.paragraph2}</p>
-            <div className="specialty-modern-tags">{(c.specialty.formats||['144 ячеек','104 ячеек','96 ячеек','Р9']).map((x:string,i:number)=><span data-editor-key={'specialtyFormat'+(i+1)} style={editorTextStyle('specialtyFormat'+(i+1),100)} key={i}><b>{String(i+1).padStart(2,'0')}</b>{x}</span>)}</div>
-            <div className="specialty-info-foot"><span>Контроль качества</span><span>Собственное производство</span></div>
+            <span data-editor-key="specialtyNoteTitle" className="specialty-process-title" style={editorTextStyle('specialtyNoteTitle',100)}>{c.specialty.noteTitle||'Выращиваем укоренённые черенки'}</span>
+            <p data-editor-key="specialtyNoteText" className="specialty-process-text" style={editorTextStyle('specialtyNoteText',100)}>{c.specialty.paragraph2}</p>
+            <div className="specialty-process-formats">
+              {(c.specialty.formats||['144 ячеек','104 ячеек','96 ячеек','Р9']).map((x:string,i:number)=>
+                <div className="specialty-process-format" key={i}>
+                  <span className="specialty-process-format-no">{String(i+1).padStart(2,'0')}</span>
+                  <span data-editor-key={'specialtyFormat'+(i+1)} style={editorTextStyle('specialtyFormat'+(i+1),100)}>{x}</span>
+                </div>
+              )}
+            </div>
           </aside>
+        </div>
+
+        <div className="specialty-editorial-proof">
+          <div><span>01</span><b>Свой посадочный материал</b><small>Работаем с собственными маточными растениями</small></div>
+          <div><span>02</span><b>Контроль на каждом этапе</b><small>От черенка до готового к доращиванию растения</small></div>
+          <div><span>03</span><b>Форматы под задачу</b><small>Кассеты разной ёмкости и растения в Р9</small></div>
         </div>
       </div>
     </section>
