@@ -11,11 +11,13 @@
 .header-brand .brand-image{display:block;max-width:none;object-fit:contain}
 .header-brand .brand-copy{display:block;position:relative;margin-left:.6rem;line-height:1.08;white-space:nowrap}
 
-.header-brush-signature{display:flex;flex-direction:column;justify-content:center;min-width:250px;margin-left:1.15rem;margin-right:1.15rem;transform-origin:left center;color:#6f5337;font-family:'Bad Script',cursive!important;line-height:.8;font-style:normal!important;font-weight:400!important;letter-spacing:0;white-space:nowrap;text-shadow:none;opacity:.98}
-.header-brush-signature span:nth-child(2){margin-left:6.2rem;margin-top:.1rem;font-size:1.02em}
-@media(max-width:1250px) and (min-width:761px){.header-brush-signature{min-width:210px;margin-left:.7rem;margin-right:.5rem}.header-brush-signature span:nth-child(2){margin-left:4.6rem}}
-@media(max-width:900px) and (min-width:761px){.header-brush-signature{min-width:165px}.header-brush-signature span:nth-child(2){margin-left:3.2rem}}
-@media(max-width:760px){.header-brush-signature{min-width:0;margin-left:.4rem;margin-right:0}.header-brush-signature span:nth-child(2){margin-left:2.3rem;margin-top:.08rem}}
+.header-brush-signature-wrap{position:relative;display:block;min-width:250px;min-height:86px;margin-left:1.15rem;margin-right:1.15rem;flex:0 0 auto}
+.header-brush-signature{position:absolute;left:0;top:0;display:block;transform-origin:left top;color:#6f5337;font-family:'Bad Script',cursive!important;font-style:normal!important;font-weight:400!important;line-height:.9;white-space:nowrap;text-shadow:none;opacity:.98;pointer-events:auto}
+.header-brush-signature-1{z-index:2}
+.header-brush-signature-2{z-index:2}
+@media(max-width:1250px) and (min-width:761px){.header-brush-signature-wrap{min-width:205px;min-height:74px;margin-left:.7rem;margin-right:.5rem}}
+@media(max-width:900px) and (min-width:761px){.header-brush-signature-wrap{min-width:160px;min-height:64px}}
+@media(max-width:760px){.header-brush-signature-wrap{min-width:110px;min-height:48px;margin-left:.4rem;margin-right:0}}
 
 .topbar nav{justify-self:center;white-space:nowrap}
 .topbar .phone{justify-self:end;white-space:nowrap}
