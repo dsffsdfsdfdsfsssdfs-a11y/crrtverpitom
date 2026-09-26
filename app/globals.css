@@ -50,12 +50,12 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .gallery,.knowledge,.order,footer{content-visibility:auto;contain-intrinsic-size:auto 650px}
 
 /* First screen: nursery contacts */
-.hero-contacts{padding:150px clamp(1.5rem,7vw,8rem) 72px;align-items:center}
+.hero-contacts{padding:88px clamp(1.5rem,7vw,8rem) 72px;align-items:center;overflow:visible}
 .hero-contact-layout{position:relative;z-index:2;width:min(1380px,100%);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(330px,390px);gap:clamp(1.6rem,4vw,4.5rem);align-items:end}
 .hero-contact-main{max-width:1120px;min-width:0}
-.hero-contact-main h1{font-size:clamp(5.8rem,8.4vw,9.6rem);line-height:.82;letter-spacing:-.068em;max-width:1120px;margin:0}
+.hero-contact-main h1{font-size:clamp(5.8rem,8.4vw,9.6rem);line-height:.88;letter-spacing:0;max-width:1120px;margin:0;overflow:visible}
 .hero-title{display:grid!important;grid-template-columns:1fr!important;justify-items:start!important;align-items:start!important;gap:0!important;width:max-content;max-width:100%}
-.hero-title-line{display:block!important;width:auto!important;white-space:nowrap}
+.hero-title-line{display:block!important;width:auto!important;white-space:pre-wrap;overflow:visible}
 .hero-title-first{font-size:.82em}
 .hero-title-second{font-size:.92em}
 .hero-title-accent{font-size:.78em;line-height:.88;margin-top:.055em;color:var(--gold);font-weight:500}
@@ -430,3 +430,5 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
   .header-brand [data-editor-key="logo"]{display:flex;align-items:center;justify-content:center;height:72px;max-height:72px;overflow:hidden}
   .header-brand [data-editor-key="logo"] .brand-image-img{max-height:68px!important;max-width:96px!important;width:auto!important;height:auto!important;object-fit:contain}
 }
+
+.hero-bg-editor{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:auto}
