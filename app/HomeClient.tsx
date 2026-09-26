@@ -146,6 +146,16 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
     </section>
     <section className="numbers"><div><b>6 га</b><span>маточных насаждений</span></div><div><b>144–96</b><span>ячеек в кассетах</span></div><div><b>Р9</b><span>готовые растения</span></div><div><b>Тверь</b><span>выращиваем с душой</span></div></section>
     <section className="specialty-simple" id="about" data-editor-key="specialty">
+      <div className="specialty-pattern specialty-pattern-leaves" aria-hidden="true">
+        <svg viewBox="0 0 420 300"><path d="M24 274C82 221 124 163 150 89C170 124 178 168 173 216"/><path d="M80 276C147 230 202 170 239 91C248 137 246 185 224 236"/><path d="M154 278C220 251 277 203 322 139C320 192 297 238 259 278"/><path d="M145 90C118 84 92 65 76 42C108 44 137 61 151 88"/><path d="M240 91C214 77 195 56 185 29C215 37 237 60 240 91"/><path d="M322 139C301 120 289 94 287 68C313 84 328 109 322 139"/></svg>
+      </div>
+      <div className="specialty-pattern specialty-pattern-conifer" aria-hidden="true">
+        <svg viewBox="0 0 320 300"><path d="M160 18v264"/><path d="M160 42l-44 51h29l-58 64h39l-68 78h79"/><path d="M160 42l44 51h-29l58 64h-39l68 78h-79"/><path d="M160 73l-26 31"/><path d="M160 73l26 31"/><path d="M160 122l-39 43"/><path d="M160 122l39 43"/></svg>
+      </div>
+      <div className="specialty-pattern specialty-pattern-trays" aria-hidden="true">
+        <span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/>
+      </div>
+      <div className="specialty-pattern specialty-pattern-rings" aria-hidden="true"><span/><span/><span/><span/></div>
       <div className="specialty-simple-shell">
         <div className="specialty-simple-left">
           <p data-editor-key="specialtyKicker" className="specialty-simple-kicker" style={editorTextStyle('specialtyKicker',100)}>{c.specialty.kicker||'НАША СПЕЦИАЛИЗАЦИЯ'}</p>
