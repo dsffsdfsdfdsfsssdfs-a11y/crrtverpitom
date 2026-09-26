@@ -26,10 +26,10 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
   const clamp=(v:number,min:number,max:number)=>Math.min(max,Math.max(min,v));
   const logoSize=clamp(num(c.header.logoSize,53),28,180);
-  const logoX=clamp(num(c.header.logoX,0),-300,300);
-  const logoY=clamp(num(c.header.logoY,0),-160,160);
-  const textX=clamp(num(c.header.textX,0),-500,500);
-  const textY=clamp(num(c.header.textY,0),-200,200);
+  const logoX=clamp(num(c.header.logoX,0),-1500,1500);
+  const logoY=clamp(num(c.header.logoY,0),-1500,1500);
+  const textX=clamp(num(c.header.textX,0),-1500,1500);
+  const textY=clamp(num(c.header.textY,0),-1500,1500);
   const logoSlot=Math.max(68,logoSize+Math.abs(logoX)+16);
   const fontStyles={'--headingFont':`${c.appearance.headingFont}, Georgia, serif`,'--bodyFont':`${c.appearance.bodyFont}, Arial, sans-serif`} as React.CSSProperties;
   const videoSrc=(url:string)=>url.includes('watch?v=')?url.replace('watch?v=','embed/'):url;
@@ -45,15 +45,17 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const heroLineStyle=(key:string,defaults:{size:number,x:number,y:number,font:string})=>({
     fontFamily:`${c.hero[key+'Font']||defaults.font}, Georgia, serif`,
     fontSize:`${clamp(num(c.hero[key+'Size'],defaults.size),35,240)}%`,
-    transform:`translate(${clamp(num(c.hero[key+'X'],defaults.x),-500,500)}px,${clamp(num(c.hero[key+'Y'],defaults.y),-300,300)}px)`,
+    transform:`translate(${clamp(num(c.hero[key+'X'],defaults.x),-1500,1500)}px,${clamp(num(c.hero[key+'Y'],defaults.y),-1500,1500)}px)`,
     whiteSpace:'pre-wrap',
-    overflowWrap:'break-word'
+    overflowWrap:'break-word',
+    letterSpacing:`${num(c.hero[key+'Spacing'],0)}em`,
+    color:c.hero[key+'Color']||(key==='accent'?'#d5ad68':key==='subtitle'?'#efe2cf':'#ffffff')
   } as React.CSSProperties);
   const contactPeople=(c.contacts||[]).filter((x:{phone?:string})=>Boolean((x.phone||'').trim()));
   return <>
     <main style={fontStyles}>
-    <header className="topbar">
-      <a className="brand header-brand" href="/" aria-label="Обновить страницу" onClick={(e)=>{e.preventDefault();window.location.reload()}}><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc&&<span data-editor-key="logo"><Image src={logoSrc} alt="" aria-hidden="true" priority width={160} height={160} quality={65} className="brand-image brand-image-img" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}}/></span>}</span><span data-editor-key="brandText" className="brand-copy" style={{fontSize:`${c.header.textSize}%`,fontFamily:`${c.header.textFont||'Manrope'}, Arial, sans-serif`,transform:`translate(${textX}px,${textY}px)`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
+    <header className="topbar" data-editor-key="headerBg" style={{backgroundColor:c.header.bgColor||undefined,color:c.header.textColor||undefined}}>
+      <a className="brand header-brand" href="/" aria-label="Обновить страницу" onClick={(e)=>{e.preventDefault();window.location.reload()}}><span className="brand-logo-slot" style={{width:logoSlot}}>{logoSrc&&<span data-editor-key="logo"><Image src={logoSrc} alt="" aria-hidden="true" priority width={160} height={160} quality={65} className="brand-image brand-image-img" style={{width:logoSize,height:logoSize,transform:`translate(${logoX}px,${logoY}px)`}}/></span>}</span><span data-editor-key="brandText" className="brand-copy" style={{fontSize:`${c.header.textSize}%`,fontFamily:`${c.header.textFont||'Manrope'}, Arial, sans-serif`,transform:`translate(${textX}px,${textY}px)`,color:c.header.textColor||undefined,letterSpacing:`${num(c.header.textSpacing,0)}em`}}>{c.header.title}<br/><b>{c.header.subtitle}</b></span></a>
       <nav className={menu?'open':''}><a href="#about">{c.header.nav[0]}</a><a href="#assortment">{c.header.nav[1]}</a><a href="#gallery">{c.header.nav[2]}</a><a href="#knowledge">{c.header.nav[3]}</a></nav>
       <div className="header-socials" aria-label="Социальные сети питомника">
         <a className="header-social header-social-vk" href="https://vk.ru/crr.tver" target="_blank" rel="noreferrer" aria-label="ВКонтакте" title="ВКонтакте">
@@ -81,7 +83,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <div className="actions"><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
         </div>
 
-        <aside data-editor-key="contactDock" className="hero-contact-dock" aria-label="Контакты питомника" style={{transform:`translate(${Number(c.hero.contactX||0)}px,${Number(c.hero.contactY||0)}px) scale(${Number(c.hero.contactScale||100)/100})`,transformOrigin:'center'}}> 
+        <aside data-editor-key="contactDock" className="hero-contact-dock" aria-label="Контакты питомника" style={{transform:`translate(${Number(c.hero.contactX||0)}px,${Number(c.hero.contactY||0)}px) scale(${Number(c.hero.contactScale||100)/100})`,transformOrigin:'center',background:c.hero.contactBgColor||undefined}}> 
           <div className="hero-contact-dock-head">
             <span>Контакты</span>
           </div>
