@@ -155,7 +155,6 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <p data-editor-key="specialtyDesc" className="specialty-simple-desc" style={editorTextStyle('specialtyDesc',100)}>{c.specialty.paragraph1}</p>
           <a data-editor-key="specialtyLink" className="specialty-simple-link" href="#assortment" style={editorTextStyle('specialtyLink',100)}>
             <span>{c.specialty.linkText||'Посмотреть ассортимент'}</span>
-            <svg viewBox="0 0 30 14" aria-hidden="true"><path d="M1 7h25"/><path d="m21 2 5 5-5 5"/></svg>
           </a>
         </div>
         <aside className="specialty-simple-right">
