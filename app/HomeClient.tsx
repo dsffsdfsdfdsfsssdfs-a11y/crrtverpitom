@@ -145,32 +145,47 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
     </section>
     <section className="numbers"><div><b>6 га</b><span>маточных насаждений</span></div><div><b>144–96</b><span>ячеек в кассетах</span></div><div><b>Р9</b><span>готовые растения</span></div><div><b>Тверь</b><span>выращиваем с душой</span></div></section>
-    <section className="specialty-simple" id="about" data-editor-key="specialty">
-      <div className="specialty-simple-shell">
-        <div className="specialty-simple-left">
-          <p data-editor-key="specialtyKicker" className="specialty-simple-kicker" style={editorTextStyle('specialtyKicker',100)}>{c.specialty.kicker||'НАША СПЕЦИАЛИЗАЦИЯ'}</p>
-          <h2 data-editor-key="specialtyTitle" className="specialty-simple-title" style={editorTextStyle('specialtyTitle',100)}>
-            {String(c.specialty.title||'Вегетативное\nразмножение').split('\n').map((line:string,i:number)=><span key={i}>{i===0?line:<em>{line}</em>}{i===0&&<br/>}</span>)}
+    <section className="specialty-rail" id="about" data-editor-key="specialty">
+      <div className="specialty-rail-head">
+        <div>
+          <p data-editor-key="specialtyKicker" className="specialty-rail-kicker" style={editorTextStyle('specialtyKicker',100)}>{c.specialty.kicker||'НАША СПЕЦИАЛИЗАЦИЯ'}</p>
+          <h2 data-editor-key="specialtyTitle" className="specialty-rail-title" style={editorTextStyle('specialtyTitle',100)}>
+            {String(c.specialty.title||'Вегетативное\nразмножение').split('\n').map((line:string,i:number)=><span key={i}>{line}{i===0&&<br/>}</span>)}
           </h2>
-          <p data-editor-key="specialtyDesc" className="specialty-simple-desc" style={editorTextStyle('specialtyDesc',100)}>{c.specialty.paragraph1}</p>
-          <a data-editor-key="specialtyLink" className="specialty-simple-link" href="#assortment" style={editorTextStyle('specialtyLink',100)}>
-            <span>{c.specialty.linkText||'Посмотреть ассортимент'}</span>
-          </a>
         </div>
-        <aside className="specialty-simple-right">
-          <span data-editor-key="specialtyOverline" className="specialty-simple-overline" style={editorTextStyle('specialtyOverline',100)}>{c.specialty.overline||'ПРОФЕССИОНАЛЬНОЕ ПРОИЗВОДСТВО'}</span>
-          <span data-editor-key="specialtyNoteTitle" className="specialty-simple-note-title" style={editorTextStyle('specialtyNoteTitle',100)}>{c.specialty.noteTitle||'Выращиваем укоренённые черенки'}</span>
-          <p data-editor-key="specialtyNoteText" className="specialty-simple-note-text" style={editorTextStyle('specialtyNoteText',100)}>{c.specialty.paragraph2}</p>
-          <div className="specialty-simple-formats">
-            {(c.specialty.formats||['144 ячеек','104 ячеек','96 ячеек','Р9']).map((x:string,i:number)=>
-              <span data-editor-key={'specialtyFormat'+(i+1)} style={editorTextStyle('specialtyFormat'+(i+1),100)} key={i}>{x}</span>
-            )}
-          </div>
-          <p className="specialty-simple-for">Для питомников, садовых центров и оптовых клиентов</p>
-        </aside>
+        <div className="specialty-rail-intro">
+          <p data-editor-key="specialtyDesc" style={editorTextStyle('specialtyDesc',100)}>{c.specialty.paragraph1}</p>
+          <a data-editor-key="specialtyLink" href="#assortment" style={editorTextStyle('specialtyLink',100)}>{c.specialty.linkText||'Посмотреть ассортимент'}</a>
+        </div>
+      </div>
+
+      <div className="specialty-rail-track">
+        {(c.specialty.formats||['144 ячеек','104 ячеек','96 ячеек','Р9']).map((x:string,i:number)=>{
+          const descriptions=[
+            'Молодые укоренённые растения для дальнейшего доращивания.',
+            'Универсальный формат для профессионального выращивания.',
+            'Более развитая корневая система и удобный формат доращивания.',
+            'Готовый контейнерный формат для реализации и посадки.'
+          ];
+          const clean=String(x).replace(/\s*ячеек?/i,'').trim();
+          const title=clean.toUpperCase()==='Р9'?'Контейнер Р9':`Кассета ${clean}`;
+          return <article className={'specialty-rail-card '+(i===0?'is-featured':'')} key={i}>
+            <div className="specialty-rail-index">0{i+1}</div>
+            <div className="specialty-rail-format" data-editor-key={'specialtyFormat'+(i+1)} style={editorTextStyle('specialtyFormat'+(i+1),100)}>{x}</div>
+            <div className="specialty-rail-card-copy">
+              <h3>{title}</h3>
+              <p>{descriptions[i]||c.specialty.paragraph2}</p>
+            </div>
+          </article>
+        })}
+      </div>
+
+      <div className="specialty-rail-foot">
+        <span data-editor-key="specialtyOverline" style={editorTextStyle('specialtyOverline',100)}>{c.specialty.overline||'ПРОФЕССИОНАЛЬНОЕ ПРОИЗВОДСТВО'}</span>
+        <p data-editor-key="specialtyNoteText" style={editorTextStyle('specialtyNoteText',100)}>{c.specialty.paragraph2}</p>
       </div>
     </section>
-    <section className="photo-band greenhouse" data-editor-key="greenhouse" style={{backgroundImage:`linear-gradient(0deg,#180e0bcf,transparent 75%),url(${optimizeImage(c.greenhouse.image)})`}}><div><p data-editor-key="greenhouseKicker" className="eyebrow" style={editorTextStyle('greenhouseKicker',100)}>{c.greenhouse.kicker||'ПРОИЗВОДСТВО'}</p><h2><span data-editor-key="greenhouseTitle" style={{...editorTextStyle('greenhouseTitle',100),display:'inline-block'}}>{c.greenhouse.title}</span><br/><em><span data-editor-key="greenhouseAccent" style={{...editorTextStyle('greenhouseAccent',100),display:'inline-block'}}>{c.greenhouse.accent}</span></em></h2><p data-editor-key="greenhouseText" style={editorTextStyle('greenhouseText',100)}>{c.greenhouse.text}</p></div></section>
+        <section className="photo-band greenhouse" data-editor-key="greenhouse" style={{backgroundImage:`linear-gradient(0deg,#180e0bcf,transparent 75%),url(${optimizeImage(c.greenhouse.image)})`}}><div><p data-editor-key="greenhouseKicker" className="eyebrow" style={editorTextStyle('greenhouseKicker',100)}>{c.greenhouse.kicker||'ПРОИЗВОДСТВО'}</p><h2><span data-editor-key="greenhouseTitle" style={{...editorTextStyle('greenhouseTitle',100),display:'inline-block'}}>{c.greenhouse.title}</span><br/><em><span data-editor-key="greenhouseAccent" style={{...editorTextStyle('greenhouseAccent',100),display:'inline-block'}}>{c.greenhouse.accent}</span></em></h2><p data-editor-key="greenhouseText" style={editorTextStyle('greenhouseText',100)}>{c.greenhouse.text}</p></div></section>
     <section className="assortment wrap" id="assortment" data-editor-key="assortment"><div className="section-head"><div><p data-editor-key="assortmentKicker" className="eyebrow gold" style={editorTextStyle('assortmentKicker',100)}>{c.assortmentKicker||'КОЛЛЕКЦИЯ'}</p><h2 data-editor-key="assortmentTitle" style={editorTextStyle('assortmentTitle',100)}>{c.assortmentHeading||<>Ассортимент<br/>для красивых садов.</>}</h2></div><a data-editor-key="assortmentPrice" className="outline-btn" href={c.priceUrl} style={editorTextStyle('assortmentPrice',100)}>{c.assortmentPriceText||'Скачать прайс'} <span>↓</span></a></div><div className="plant-grid">{c.assortment.map((x:string,i:number)=><article key={i} className={'plant p'+i}><span data-editor-key={'assortmentIndex'+(i+1)} style={editorTextStyle('assortmentIndex'+(i+1),100)}>0{i+1}</span><h3 data-editor-key={'assortmentItem'+(i+1)} style={editorTextStyle('assortmentItem'+(i+1),100)}>{x}</h3><p data-editor-key={'assortmentDesc'+(i+1)} style={editorTextStyle('assortmentDesc'+(i+1),100)}>{(c.assortmentDescriptions?.[i])||(i===5?'Вейгела · ива · лапчатка · рябинник · снежноягодник':'Сортовые растения собственного производства')}</p><i>↗</i></article>)}</div></section>
     <section className="mother" data-editor-key="mother" style={{backgroundImage:`linear-gradient(90deg,#281914e8,#28191424),url(${optimizeImage(c.mother.image)})`}}><div className="wrap mother-copy"><p data-editor-key="motherKicker" className="eyebrow" style={editorTextStyle('motherKicker',100)}>{c.mother.kicker||'ОСНОВА КАЧЕСТВА'}</p><h2><span data-editor-key="motherTitle" style={{...editorTextStyle('motherTitle',100),display:'inline-block'}}>{c.mother.title}</span><br/><em><span data-editor-key="motherAccent" style={{...editorTextStyle('motherAccent',100),display:'inline-block'}}>{c.mother.accent}</span></em></h2><p data-editor-key="motherText" style={editorTextStyle('motherText',100)}>{c.mother.text}</p></div></section>
     <section className="gallery wrap" id="gallery" data-editor-key="gallery"><div className="section-head"><div><p data-editor-key="galleryKicker" className="eyebrow gold" style={editorTextStyle('galleryKicker',100)}>{c.galleryKicker||'НАШИ РАСТЕНИЯ'}</p><h2 data-editor-key="galleryTitle" style={editorTextStyle('galleryTitle',100)}>{c.galleryHeading||<>Фотографии<br/>наших черенков.</>}</h2></div><a data-editor-key="galleryLink" className="line-link" href="#order" style={editorTextStyle('galleryLink',100)}>{c.galleryLinkText||'Открыть галерею'} <span>→</span></a></div><div className="gallery-grid">{c.galleryImages.map((url:string,i:number)=>{const s=c.galleryImageSettings?.[i]||{scale:100,x:50,y:50};return <div key={url} style={{backgroundImage:`url(${optimizeImage(url)})`,backgroundSize:`${s.scale}%`,backgroundPosition:`${s.x}% ${s.y}%`}}/>})}</div></section>
