@@ -3,7 +3,7 @@ import './admin.css';
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 
 type Content=any;
-type LayerKey='headerBg'|'logo'|'brushText'|'brandText'|'heroImage'|'line1'|'line2'|'accent'|'subtitle'|'contactDock';
+type LayerKey='headerBg'|'logo'|'brushText1'|'brushText2'|'brandText'|'heroImage'|'line1'|'line2'|'accent'|'subtitle'|'contactDock';
 
 const FONTS=[
   'Cormorant Garamond','Prata','Playfair Display','Lora','Spectral','Forum',
@@ -14,7 +14,8 @@ const FONTS=[
 const LAYERS:{key:LayerKey;label:string;group:string}[]=[
   {key:'headerBg',label:'Фон шапки',group:'Шапка'},
   {key:'logo',label:'Логотип',group:'Шапка'},
-  {key:'brushText',label:'Кистевая надпись',group:'Шапка'},
+  {key:'brushText1',label:'Кистевая надпись — верхняя',group:'Шапка'},
+  {key:'brushText2',label:'Кистевая надпись — нижняя',group:'Шапка'},
   {key:'brandText',label:'Название в шапке',group:'Шапка'},
   {key:'heroImage',label:'Фоновое фото',group:'Первый экран'},
   {key:'line1',label:'Первая строка',group:'Первый экран'},
@@ -37,7 +38,8 @@ const clamp=(n:number,min:number,max:number)=>Math.max(min,Math.min(max,n));
 const META:Record<LayerKey,{x?:string;y?:string;size?:string;font?:string;text?:string;color?:string;spacing?:string;min?:number;max?:number}> = {
   headerBg:{color:'header.bgColor'},
   logo:{x:'header.logoX',y:'header.logoY',size:'header.logoSize',min:28,max:180},
-  brushText:{x:'header.brushX',y:'header.brushY',size:'header.brushSize',text:'header.brushText',color:'header.brushColor',spacing:'header.brushSpacing',min:20,max:180},
+  brushText1:{x:'header.brush1X',y:'header.brush1Y',size:'header.brush1Size',text:'header.brush1Text',color:'header.brush1Color',spacing:'header.brush1Spacing',min:20,max:180},
+  brushText2:{x:'header.brush2X',y:'header.brush2Y',size:'header.brush2Size',text:'header.brush2Text',color:'header.brush2Color',spacing:'header.brush2Spacing',min:20,max:180},
   brandText:{x:'header.textX',y:'header.textY',size:'header.textSize',font:'header.textFont',color:'header.textColor',spacing:'header.textSpacing',min:10,max:260},
   heroImage:{x:'hero.imageX',y:'hero.imageY',size:'hero.imageScale',min:100,max:180},
   line1:{x:'hero.line1X',y:'hero.line1Y',size:'hero.line1Size',font:'hero.line1Font',text:'hero.title',color:'hero.line1Color',spacing:'hero.line1Spacing',min:10,max:240},
@@ -326,10 +328,12 @@ export default function Admin(){
 
         {selected==='heroImage'&&<div className="inspector-section"><h3>Фоновое фото</h3><label className="upload-btn">{uploading?'Загрузка…':'Заменить фотографию'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'hero.image')}/></label></div>}
 
+        {(selected==='brushText1'||selected==='brushText2')&&<div className="inspector-section"><h3>Поворот</h3><Slider label="Угол, °" value={num(getPath(current,selected==='brushText1'?'header.brush1Rotate':'header.brush2Rotate'),selected==='brushText1'?-2:0)} min={-45} max={45} step={0.5} onChange={v=>update(selected==='brushText1'?'header.brush1Rotate':'header.brush2Rotate',String(v))}/></div>}
+
         {selected==='contactDock'&&<div className="inspector-section"><h3>Контакты</h3><p className="muted">Карточку можно двигать мышкой и менять её масштаб. Тексты контактов редактируются через данные сайта.</p></div>}
 
         <button className="reset-btn" onClick={()=>{
-          const defaults:any={headerBg:[0,0,100],logo:[0,0,80],brushText:[0,0,55],brandText:[0,0,125],heroImage:[50,50,105],line1:[0,0,100],line2:[0,0,112],accent:[0,0,95],subtitle:[0,0,100],contactDock:[0,0,100]};
+          const defaults:any={headerBg:[0,0,100],logo:[0,0,80],brushText1:[0,0,55],brushText2:[0,24,55],brandText:[0,0,125],heroImage:[50,50,105],line1:[0,0,100],line2:[0,0,112],accent:[0,0,95],subtitle:[0,0,100],contactDock:[0,0,100]};
           const d=defaults[selected]; if(meta.x)update(meta.x,String(d[0])); if(meta.y)update(meta.y,String(d[1])); if(meta.size)update(meta.size,String(d[2])); if(meta.spacing)update(meta.spacing,'0');
         }}>Сбросить положение и размер</button>
       </aside>
