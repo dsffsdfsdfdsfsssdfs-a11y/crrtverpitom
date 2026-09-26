@@ -163,7 +163,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
               <p data-editor-key="specialtyDesc" className="specialty-modern-subtitle" style={editorTextStyle('specialtyDesc',100)}>{c.specialty.paragraph1}</p>
               <a data-editor-key="specialtyLink" className="specialty-modern-link" href="#assortment" style={editorTextStyle('specialtyLink',100)}>
                 <span>{c.specialty.linkText||'Посмотреть ассортимент'}</span>
-                <i aria-hidden="true">→</i>
+                <i aria-hidden="true"><svg viewBox="0 0 72 34" role="presentation"><path d="M3 17H63"/><path d="M51 5L63 17L51 29"/></svg></i>
               </a>
             </div>
             <div className="specialty-organic-mark" aria-hidden="true"><span/><span/><span/></div>
