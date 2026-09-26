@@ -45,7 +45,9 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const heroLineStyle=(key:string,defaults:{size:number,x:number,y:number,font:string})=>({
     fontFamily:`${c.hero[key+'Font']||defaults.font}, Georgia, serif`,
     fontSize:`${clamp(num(c.hero[key+'Size'],defaults.size),35,240)}%`,
-    transform:`translate(${clamp(num(c.hero[key+'X'],defaults.x),-500,500)}px,${clamp(num(c.hero[key+'Y'],defaults.y),-300,300)}px)`
+    transform:`translate(${clamp(num(c.hero[key+'X'],defaults.x),-500,500)}px,${clamp(num(c.hero[key+'Y'],defaults.y),-300,300)}px)`,
+    whiteSpace:'pre-wrap',
+    overflowWrap:'break-word'
   } as React.CSSProperties);
   const contactPeople=(c.contacts||[]).filter((x:{phone?:string})=>Boolean((x.phone||'').trim()));
   return <>
