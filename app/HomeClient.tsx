@@ -136,7 +136,34 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
     </section>
     <section className="numbers"><div><b>6 га</b><span>маточных насаждений</span></div><div><b>144–96</b><span>ячеек в кассетах</span></div><div><b>Р9</b><span>готовые растения</span></div><div><b>Тверь</b><span>выращиваем с душой</span></div></section>
-    <section className="about wrap" id="about"><p className="eyebrow gold">НАША СПЕЦИАЛИЗАЦИЯ</p><div className="two"><h2>{c.specialty.title}</h2><div><p>{c.specialty.paragraph1}</p><p>{c.specialty.paragraph2}</p><a className="line-link" href="#assortment">Посмотреть ассортимент <span>→</span></a></div></div></section>
+    <section className="specialty-page" id="about">
+      <div className="specialty-inner">
+        <div className="specialty-head">
+          <span className="specialty-index">02</span>
+          <p className="eyebrow gold">НАША СПЕЦИАЛИЗАЦИЯ</p>
+        </div>
+        <div className="specialty-layout">
+          <div className="specialty-copy">
+            <h2>Вегетативное<br/><em>размножение</em></h2>
+            <p className="specialty-lead">Декоративных лиственных и хвойных растений в кассетах.</p>
+            <a className="line-link specialty-link" href="#assortment">Посмотреть ассортимент <span>→</span></a>
+          </div>
+          <div className="specialty-panel">
+            <div className="specialty-panel-top">
+              <span>УКОРЕНЁННЫЕ ЧЕРЕНКИ</span>
+              <small>форматы выращивания</small>
+            </div>
+            <p>Выращиваем укоренённые черенки в кассетах <b>144, 104, 96 ячеек</b> и в <b>Р9</b>.</p>
+            <div className="specialty-formats">
+              <div><strong>144</strong><span>ячейки</span></div>
+              <div><strong>104</strong><span>ячейки</span></div>
+              <div><strong>96</strong><span>ячеек</span></div>
+              <div className="is-p9"><strong>Р9</strong><span>горшки</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <section className="photo-band greenhouse" style={{backgroundImage:`linear-gradient(0deg,#180e0bcf,transparent 75%),url(${optimizeImage(c.greenhouse.image)})`}}><div><p className="eyebrow">ПРОИЗВОДСТВО</p><h2>{c.greenhouse.title}<br/><em>{c.greenhouse.accent}</em></h2><p>{c.greenhouse.text}</p></div></section>
     <section className="assortment wrap" id="assortment"><div className="section-head"><div><p className="eyebrow gold">КОЛЛЕКЦИЯ</p><h2>Ассортимент<br/>для красивых садов.</h2></div><a className="outline-btn" href={c.priceUrl}>Скачать прайс <span>↓</span></a></div><div className="plant-grid">{c.assortment.map((x:string,i:number)=><article key={x} className={'plant p'+i}><span>0{i+1}</span><h3>{x}</h3><p>{i===5?'Вейгела · ива · лапчатка · рябинник · снежноягодник':'Сортовые растения собственного производства'}</p><i>↗</i></article>)}</div></section>
     <section className="mother" style={{backgroundImage:`linear-gradient(90deg,#281914e8,#28191424),url(${optimizeImage(c.mother.image)})`}}><div className="wrap mother-copy"><p className="eyebrow">ОСНОВА КАЧЕСТВА</p><h2>{c.mother.title}<br/><em>{c.mother.accent}</em></h2><p>{c.mother.text}</p></div></section>
