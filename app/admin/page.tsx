@@ -3,7 +3,7 @@ import './admin.css';
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 
 type Content=any;
-type LayerKey='logo'|'brandText'|'heroImage'|'line1'|'line2'|'accent'|'subtitle'|'contactDock';
+type LayerKey='headerBg'|'logo'|'brandText'|'heroImage'|'line1'|'line2'|'accent'|'subtitle'|'contactDock';
 
 const FONTS=[
   'Cormorant Garamond','Prata','Playfair Display','Lora','Spectral','Forum',
@@ -12,6 +12,7 @@ const FONTS=[
 ];
 
 const LAYERS:{key:LayerKey;label:string;group:string}[]=[
+  {key:'headerBg',label:'Фон шапки',group:'Шапка'},
   {key:'logo',label:'Логотип',group:'Шапка'},
   {key:'brandText',label:'Название в шапке',group:'Шапка'},
   {key:'heroImage',label:'Фоновое фото',group:'Первый экран'},
@@ -32,15 +33,16 @@ const getPath=(o:any,path:string)=>path.split('.').reduce((v:any,k)=>v?.[k],o);
 const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
 const clamp=(n:number,min:number,max:number)=>Math.max(min,Math.min(max,n));
 
-const META:Record<LayerKey,{x?:string;y?:string;size?:string;font?:string;text?:string;min?:number;max?:number}> = {
+const META:Record<LayerKey,{x?:string;y?:string;size?:string;font?:string;text?:string;color?:string;spacing?:string;min?:number;max?:number}> = {
+  headerBg:{color:'header.bgColor'},
   logo:{x:'header.logoX',y:'header.logoY',size:'header.logoSize',min:28,max:180},
-  brandText:{x:'header.textX',y:'header.textY',size:'header.textSize',font:'header.textFont',min:50,max:260},
+  brandText:{x:'header.textX',y:'header.textY',size:'header.textSize',font:'header.textFont',color:'header.textColor',spacing:'header.textSpacing',min:50,max:260},
   heroImage:{x:'hero.imageX',y:'hero.imageY',size:'hero.imageScale',min:100,max:180},
-  line1:{x:'hero.line1X',y:'hero.line1Y',size:'hero.line1Size',font:'hero.line1Font',text:'hero.title',min:35,max:240},
-  line2:{x:'hero.line2X',y:'hero.line2Y',size:'hero.line2Size',font:'hero.line2Font',text:'hero.title2',min:35,max:240},
-  accent:{x:'hero.accentX',y:'hero.accentY',size:'hero.accentSize',font:'hero.accentFont',text:'hero.accent',min:35,max:240},
-  subtitle:{x:'hero.subtitleX',y:'hero.subtitleY',size:'hero.subtitleSize',font:'hero.subtitleFont',text:'hero.subtitle',min:35,max:220},
-  contactDock:{x:'hero.contactX',y:'hero.contactY',size:'hero.contactScale',min:70,max:140}
+  line1:{x:'hero.line1X',y:'hero.line1Y',size:'hero.line1Size',font:'hero.line1Font',text:'hero.title',color:'hero.line1Color',spacing:'hero.line1Spacing',min:35,max:240},
+  line2:{x:'hero.line2X',y:'hero.line2Y',size:'hero.line2Size',font:'hero.line2Font',text:'hero.title2',color:'hero.line2Color',spacing:'hero.line2Spacing',min:35,max:240},
+  accent:{x:'hero.accentX',y:'hero.accentY',size:'hero.accentSize',font:'hero.accentFont',text:'hero.accent',color:'hero.accentColor',spacing:'hero.accentSpacing',min:35,max:240},
+  subtitle:{x:'hero.subtitleX',y:'hero.subtitleY',size:'hero.subtitleSize',font:'hero.subtitleFont',text:'hero.subtitle',color:'hero.subtitleColor',spacing:'hero.subtitleSpacing',min:35,max:220},
+  contactDock:{x:'hero.contactX',y:'hero.contactY',size:'hero.contactScale',color:'hero.contactBgColor',min:70,max:140}
 };
 
 const readDataUrl=(file:Blob)=>new Promise<string>((ok,bad)=>{
@@ -304,10 +306,14 @@ export default function Admin(){
 
         {meta.font&&<div className="inspector-section"><label className="text-label">Шрифт<select value={getPath(current,meta.font)||'Georgia'} onChange={e=>update(meta.font!,e.target.value)}>{FONTS.map(font=><option key={font} style={{fontFamily:font}}>{font}</option>)}</select></label><div className="font-preview" style={{fontFamily:getPath(current,meta.font)||'Georgia'}}>Aa Бб — красивый сад</div></div>}
 
+        {meta.color&&<div className="inspector-section"><h3>Цвет</h3><label className="color-control"><input type="color" value={getPath(current,meta.color)||(selected==='headerBg'?'#f4eee3':selected==='accent'?'#d5ad68':selected==='contactDock'?'#5a482f':'#ffffff')} onChange={e=>update(meta.color!,e.target.value)}/><span>{getPath(current,meta.color)||'Выбрать цвет'}</span></label></div>}
+
+        {meta.spacing&&<div className="inspector-section"><h3>Расстояние между буквами</h3><Slider label="Интервал, em" value={num(getPath(current,meta.spacing),0)} min={-0.08} max={0.30} step={0.005} onChange={v=>update(meta.spacing!,String(v))}/></div>}
+
         <div className="inspector-section">
           <h3>Положение</h3>
-          {meta.x&&<Slider label="X" value={num(getPath(current,meta.x),selected==='heroImage'?50:0)} min={selected==='heroImage'?0:-500} max={selected==='heroImage'?100:500} onChange={v=>update(meta.x!,String(v))}/>}
-          {meta.y&&<Slider label="Y" value={num(getPath(current,meta.y),selected==='heroImage'?50:0)} min={selected==='heroImage'?0:-300} max={selected==='heroImage'?100:300} onChange={v=>update(meta.y!,String(v))}/>}
+          {meta.x&&<Slider label="X" value={num(getPath(current,meta.x),selected==='heroImage'?50:0)} min={selected==='heroImage'?0:-1500} max={selected==='heroImage'?100:1500} onChange={v=>update(meta.x!,String(v))}/>}
+          {meta.y&&<Slider label="Y" value={num(getPath(current,meta.y),selected==='heroImage'?50:0)} min={selected==='heroImage'?0:-1500} max={selected==='heroImage'?100:1500} onChange={v=>update(meta.y!,String(v))}/>}
         </div>
 
         {meta.size&&<div className="inspector-section"><h3>Размер</h3><Slider label={selected==='logo'?'Размер, px':'Масштаб, %'} value={num(getPath(current,meta.size),100)} min={meta.min||35} max={meta.max||240} onChange={v=>update(meta.size!,String(v))}/></div>}
@@ -321,8 +327,8 @@ export default function Admin(){
         {selected==='contactDock'&&<div className="inspector-section"><h3>Контакты</h3><p className="muted">Карточку можно двигать мышкой и менять её масштаб. Тексты контактов редактируются через данные сайта.</p></div>}
 
         <button className="reset-btn" onClick={()=>{
-          const defaults:any={logo:[0,0,80],brandText:[0,0,125],heroImage:[50,50,105],line1:[0,0,100],line2:[0,0,112],accent:[0,0,95],subtitle:[0,0,100],contactDock:[0,0,100]};
-          const d=defaults[selected]; if(meta.x)update(meta.x,String(d[0])); if(meta.y)update(meta.y,String(d[1])); if(meta.size)update(meta.size,String(d[2]));
+          const defaults:any={headerBg:[0,0,100],logo:[0,0,80],brandText:[0,0,125],heroImage:[50,50,105],line1:[0,0,100],line2:[0,0,112],accent:[0,0,95],subtitle:[0,0,100],contactDock:[0,0,100]};
+          const d=defaults[selected]; if(meta.x)update(meta.x,String(d[0])); if(meta.y)update(meta.y,String(d[1])); if(meta.size)update(meta.size,String(d[2])); if(meta.spacing)update(meta.spacing,'0');
         }}>Сбросить положение и размер</button>
       </aside>
     </div>
