@@ -158,7 +158,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <div className="specialty-main-card">
             <div className="specialty-card-glow"/>
             <div className="specialty-main-copy">
-              <span className="specialty-overline">ПРОФЕССИОНАЛЬНОЕ ПРОИЗВОДСТВО</span>
+              <span data-editor-key="specialtyOverline" className="specialty-overline" style={editorTextStyle('specialtyOverline',100)}>{c.specialty.overline||'ПРОФЕССИОНАЛЬНОЕ ПРОИЗВОДСТВО'}</span>
               <h2 data-editor-key="specialtyTitle" className="specialty-modern-title" style={editorTextStyle('specialtyTitle',100)}>{String(c.specialty.title||'Вегетативное\nразмножение').split('\n').map((line:string,i:number)=><span key={i}>{i===0?line:<em>{line}</em>}{i===0&&<br/>}</span>)}</h2>
               <p data-editor-key="specialtyDesc" className="specialty-modern-subtitle" style={editorTextStyle('specialtyDesc',100)}>{c.specialty.paragraph1}</p>
               <a data-editor-key="specialtyLink" className="specialty-modern-link" href="#assortment" style={editorTextStyle('specialtyLink',100)}>
