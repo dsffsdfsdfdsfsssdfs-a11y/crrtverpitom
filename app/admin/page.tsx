@@ -304,7 +304,7 @@ export default function Admin(){
     <div className="ve-workspace">
       <aside className="ve-layers">
         <div className="panel-title"><span>Слои</span><small>Кликни элемент на сайте или выбери здесь</small></div>
-        {groups.map(group=><div className="layer-group" key={group}><b>{group}</b>{LAYERS.filter(x=>x.group===group).map(x=><button key={x.key} className={selected===x.key?'active':''} onClick={()=>setSelected(x.key)}><i/><span>{x.label}</span></button>)}</div>)}
+        {groups.map(group=><div className="layer-group" key={group}><b>{group}</b>{LAYERS.filter(x=>x.group===group).map(x=><button key={x.key} className={selected===x.key?'active':''} onClick={()=>{setSelected(x.key);window.setTimeout(()=>{try{iframeRef.current?.contentDocument?.querySelector<HTMLElement>('[data-editor-key="'+x.key+'"]')?.scrollIntoView({behavior:'smooth',block:'center'})}catch{}},30)}}><i/><span>{x.label}</span></button>)}</div>)}
         <div className="ve-tip"><b>Как редактировать</b><p>Выбери элемент и тащи его мышкой прямо на макете. Размер и точные значения меняются справа.</p></div>
       </aside>
 
