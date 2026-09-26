@@ -136,29 +136,28 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
     </section>
     <section className="numbers"><div><b>6 га</b><span>маточных насаждений</span></div><div><b>144–96</b><span>ячеек в кассетах</span></div><div><b>Р9</b><span>готовые растения</span></div><div><b>Тверь</b><span>выращиваем с душой</span></div></section>
-    <section className="specialty-page" id="about">
-      <div className="specialty-inner">
-        <div className="specialty-head">
-          <span className="specialty-index">02</span>
+    <section className="specialty-modern" id="about">
+      <div className="specialty-modern-inner">
+        <div className="specialty-modern-top">
+          <span className="specialty-modern-number">02</span>
           <p className="eyebrow gold">НАША СПЕЦИАЛИЗАЦИЯ</p>
         </div>
-        <div className="specialty-layout">
-          <div className="specialty-copy">
-            <h2>Вегетативное<br/><em>размножение</em></h2>
-            <p className="specialty-lead">Декоративных лиственных и хвойных растений в кассетах.</p>
-            <a className="line-link specialty-link" href="#assortment">Посмотреть ассортимент <span>→</span></a>
+        <div className="specialty-modern-grid">
+          <div className="specialty-modern-left">
+            <h2 className="specialty-modern-title">Вегетативное<br/><em>размножение</em></h2>
+            <p className="specialty-modern-subtitle">Декоративных лиственных и хвойных растений в кассетах.</p>
+            <a className="line-link specialty-modern-link" href="#assortment">Посмотреть ассортимент <span>→</span></a>
           </div>
-          <div className="specialty-panel">
-            <div className="specialty-panel-top">
-              <span>УКОРЕНЁННЫЕ ЧЕРЕНКИ</span>
-              <small>форматы выращивания</small>
-            </div>
-            <p>Выращиваем укоренённые черенки в кассетах <b>144, 104, 96 ячеек</b> и в <b>Р9</b>.</p>
-            <div className="specialty-formats">
-              <div><strong>144</strong><span>ячейки</span></div>
-              <div><strong>104</strong><span>ячейки</span></div>
-              <div><strong>96</strong><span>ячеек</span></div>
-              <div className="is-p9"><strong>Р9</strong><span>горшки</span></div>
+          <div className="specialty-modern-right">
+            <div className="specialty-modern-note">
+              <span className="specialty-modern-note-title">Выращиваем укоренённые черенки</span>
+              <p className="specialty-modern-note-text">В кассетах <b>144, 104, 96 ячеек</b><br/>и в формате <b>Р9</b>.</p>
+              <div className="specialty-modern-tags">
+                <span>144 ячеек</span>
+                <span>104 ячеек</span>
+                <span>96 ячеек</span>
+                <span>Р9</span>
+              </div>
             </div>
           </div>
         </div>
