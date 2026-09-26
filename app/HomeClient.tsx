@@ -80,7 +80,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           </h1>
           {heroSubtitle!==''&&<p data-editor-key="subtitle" className="hero-subtitle" style={heroLineStyle('subtitle',{size:100,x:0,y:0,font:'Manrope'})}>{heroSubtitle}</p>}
           <p className="intro">{c.hero.intro}</p>
-          <div className="actions"><a className="text-btn" href="#about">О питомнике <span>↓</span></a></div>
+          
         </div>
 
         <aside data-editor-key="contactDock" className="hero-contact-dock" aria-label="Контакты питомника" style={{transform:`translate(${Number(c.hero.contactX||0)}px,${Number(c.hero.contactY||0)}px) scale(${Number(c.hero.contactScale||100)/100})`,transformOrigin:'center',background:c.hero.contactBgColor||undefined}}> 
