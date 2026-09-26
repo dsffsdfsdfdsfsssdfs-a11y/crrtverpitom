@@ -145,43 +145,30 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
     </section>
     <section className="numbers"><div><b>6 га</b><span>маточных насаждений</span></div><div><b>144–96</b><span>ячеек в кассетах</span></div><div><b>Р9</b><span>готовые растения</span></div><div><b>Тверь</b><span>выращиваем с душой</span></div></section>
-    <section className="specialty-cozy" id="about" data-editor-key="specialty">
-      <div className="specialty-cozy-shell">
-        <div className="specialty-cozy-head">
-          <div>
-            <p data-editor-key="specialtyKicker" className="specialty-cozy-kicker" style={editorTextStyle('specialtyKicker',100)}>{c.specialty.kicker||'НАША СПЕЦИАЛИЗАЦИЯ'}</p>
-            <h2 data-editor-key="specialtyTitle" className="specialty-cozy-title" style={editorTextStyle('specialtyTitle',100)}>
-              {String(c.specialty.title||'Вегетативное\nразмножение').split('\n').map((line:string,i:number)=><span key={i}>{i===0?line:<em>{line}</em>}{i===0&&<br/>}</span>)}
-            </h2>
+    <section className="specialty-simple" id="about" data-editor-key="specialty">
+      <div className="specialty-simple-shell">
+        <div className="specialty-simple-left">
+          <p data-editor-key="specialtyKicker" className="specialty-simple-kicker" style={editorTextStyle('specialtyKicker',100)}>{c.specialty.kicker||'НАША СПЕЦИАЛИЗАЦИЯ'}</p>
+          <h2 data-editor-key="specialtyTitle" className="specialty-simple-title" style={editorTextStyle('specialtyTitle',100)}>
+            {String(c.specialty.title||'Вегетативное\nразмножение').split('\n').map((line:string,i:number)=><span key={i}>{i===0?line:<em>{line}</em>}{i===0&&<br/>}</span>)}
+          </h2>
+          <p data-editor-key="specialtyDesc" className="specialty-simple-desc" style={editorTextStyle('specialtyDesc',100)}>{c.specialty.paragraph1}</p>
+          <a data-editor-key="specialtyLink" className="specialty-simple-link" href="#assortment" style={editorTextStyle('specialtyLink',100)}>
+            <span>{c.specialty.linkText||'Посмотреть ассортимент'}</span>
+            <svg viewBox="0 0 30 14" aria-hidden="true"><path d="M1 7h25"/><path d="m21 2 5 5-5 5"/></svg>
+          </a>
+        </div>
+        <aside className="specialty-simple-right">
+          <span data-editor-key="specialtyOverline" className="specialty-simple-overline" style={editorTextStyle('specialtyOverline',100)}>{c.specialty.overline||'ПРОФЕССИОНАЛЬНОЕ ПРОИЗВОДСТВО'}</span>
+          <span data-editor-key="specialtyNoteTitle" className="specialty-simple-note-title" style={editorTextStyle('specialtyNoteTitle',100)}>{c.specialty.noteTitle||'Выращиваем укоренённые черенки'}</span>
+          <p data-editor-key="specialtyNoteText" className="specialty-simple-note-text" style={editorTextStyle('specialtyNoteText',100)}>{c.specialty.paragraph2}</p>
+          <div className="specialty-simple-formats">
+            {(c.specialty.formats||['144 ячеек','104 ячеек','96 ячеек','Р9']).map((x:string,i:number)=>
+              <span data-editor-key={'specialtyFormat'+(i+1)} style={editorTextStyle('specialtyFormat'+(i+1),100)} key={i}>{x}</span>
+            )}
           </div>
-          <span data-editor-key="specialtyOverline" className="specialty-cozy-badge" style={editorTextStyle('specialtyOverline',100)}>{c.specialty.overline||'ПРОФЕССИОНАЛЬНОЕ ПРОИЗВОДСТВО'}</span>
-        </div>
-
-        <div className="specialty-cozy-grid">
-          <div className="specialty-cozy-copy">
-            <p data-editor-key="specialtyDesc" className="specialty-cozy-desc" style={editorTextStyle('specialtyDesc',100)}>{c.specialty.paragraph1}</p>
-            <a data-editor-key="specialtyLink" className="specialty-cozy-link" href="#assortment" style={editorTextStyle('specialtyLink',100)}>
-              <span>{c.specialty.linkText||'Посмотреть ассортимент'}</span>
-              <svg viewBox="0 0 30 14" aria-hidden="true"><path d="M1 7h25"/><path d="m21 2 5 5-5 5"/></svg>
-            </a>
-          </div>
-
-          <aside className="specialty-cozy-panel">
-            <span data-editor-key="specialtyNoteTitle" className="specialty-cozy-note-title" style={editorTextStyle('specialtyNoteTitle',100)}>{c.specialty.noteTitle||'Выращиваем укоренённые черенки'}</span>
-            <p data-editor-key="specialtyNoteText" className="specialty-cozy-note-text" style={editorTextStyle('specialtyNoteText',100)}>{c.specialty.paragraph2}</p>
-            <div className="specialty-cozy-formats">
-              {(c.specialty.formats||['144 ячеек','104 ячеек','96 ячеек','Р9']).map((x:string,i:number)=>
-                <span data-editor-key={'specialtyFormat'+(i+1)} style={editorTextStyle('specialtyFormat'+(i+1),100)} key={i}>{x}</span>
-              )}
-            </div>
-          </aside>
-        </div>
-
-        <div className="specialty-cozy-benefits">
-          <span><b>Собственное производство</b><small>Контролируем качество на каждом этапе</small></span>
-          <span><b>Удобные форматы</b><small>Кассеты и Р9 под разные задачи</small></span>
-          <span><b>Для питомников и садовых центров</b><small>Подберём объём и формат поставки</small></span>
-        </div>
+          <p className="specialty-simple-for">Для питомников, садовых центров и оптовых клиентов</p>
+        </aside>
       </div>
     </section>
     <section className="photo-band greenhouse" data-editor-key="greenhouse" style={{backgroundImage:`linear-gradient(0deg,#180e0bcf,transparent 75%),url(${optimizeImage(c.greenhouse.image)})`}}><div><p data-editor-key="greenhouseKicker" className="eyebrow" style={editorTextStyle('greenhouseKicker',100)}>{c.greenhouse.kicker||'ПРОИЗВОДСТВО'}</p><h2><span data-editor-key="greenhouseTitle" style={{...editorTextStyle('greenhouseTitle',100),display:'inline-block'}}>{c.greenhouse.title}</span><br/><em><span data-editor-key="greenhouseAccent" style={{...editorTextStyle('greenhouseAccent',100),display:'inline-block'}}>{c.greenhouse.accent}</span></em></h2><p data-editor-key="greenhouseText" style={editorTextStyle('greenhouseText',100)}>{c.greenhouse.text}</p></div></section>
