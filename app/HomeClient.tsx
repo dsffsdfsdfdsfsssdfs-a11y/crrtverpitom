@@ -41,6 +41,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const heroTitle1=c.hero.title??'';
   const heroTitle2=c.hero.title2??'';
   const heroAccent=c.hero.accent??'';
+  const heroAccentGroups=String(heroAccent).split(/\n\s*\n/).map((group:string)=>group.split('\n').map((x:string)=>x.trim()).filter(Boolean));
   const heroSubtitle=c.hero.subtitle??'';
   const brush1Text=String(c.header.brush1Text||'Центр размножения');
   const brush2Text=String(c.header.brush2Text||'растений');
@@ -78,7 +79,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <h1 className="hero-title">
             {heroTitle1!==''&&<span data-editor-key="line1" className="hero-title-line hero-title-first" style={heroLineStyle('line1',{size:100,x:0,y:0,font:'Georgia'})}>{heroTitle1}</span>}
             {heroTitle2!==''&&<span data-editor-key="line2" className="hero-title-line hero-title-second" style={heroLineStyle('line2',{size:112,x:0,y:0,font:'Georgia'})}>{heroTitle2}</span>}
-            {heroAccent!==''&&<em data-editor-key="accent" className="hero-title-line hero-title-accent" style={heroLineStyle('accent',{size:95,x:0,y:0,font:'Georgia'})}>{heroAccent}</em>}
+            {heroAccent!==''&&<span data-editor-key="accent" className="hero-title-line hero-title-accent" style={heroLineStyle('accent',{size:95,x:0,y:0,font:'Georgia'})}>{heroAccentGroups.map((group:string[],gi:number)=><span className="hero-accent-group" key={gi}><span className="hero-accent-group-title">{group[0]}</span>{group.slice(1).length>0&&<span className="hero-accent-group-desc">{group.slice(1).map((line:string,i:number)=><span key={i}>{line}</span>)}</span>}</span>)}</span>}
           </h1>
           {heroSubtitle!==''&&<p data-editor-key="subtitle" className="hero-subtitle" style={heroLineStyle('subtitle',{size:100,x:0,y:0,font:'Manrope'})}>{heroSubtitle}</p>}
           <p className="intro">{c.hero.intro}</p>
