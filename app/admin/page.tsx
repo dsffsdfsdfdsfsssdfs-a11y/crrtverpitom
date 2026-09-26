@@ -3,7 +3,7 @@ import './admin.css';
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 
 type Content=any;
-type LayerKey='headerBg'|'logo'|'brushText1'|'brushText2'|'brandText'|'heroImage'|'line1'|'line2'|'accent'|'subtitle'|'contactDock'|'specialty'|'greenhouse'|'assortment'|'mother'|'gallery'|'knowledge'|'order'|'contacts';
+type LayerKey='headerBg'|'logo'|'brushText1'|'brushText2'|'brandText'|'heroImage'|'line1'|'line2'|'accent'|'subtitle'|'contactDock'|'specialty'|'specialtyKicker'|'specialtyTitle'|'specialtyDesc'|'specialtyNoteTitle'|'specialtyNoteText'|'greenhouse'|'greenhouseKicker'|'greenhouseTitle'|'greenhouseAccent'|'greenhouseText'|'assortment'|'assortmentKicker'|'assortmentTitle'|'mother'|'motherKicker'|'motherTitle'|'motherAccent'|'motherText'|'gallery'|'galleryKicker'|'galleryTitle'|'knowledge'|'knowledgeKicker'|'knowledgeTitle'|'order'|'orderKicker'|'orderTitle'|'orderAccent'|'orderText'|'contacts';
 
 const FONTS=[
   'Cormorant Garamond','Prata','Playfair Display','Lora','Spectral','Forum',
@@ -23,20 +23,47 @@ const LAYERS:{key:LayerKey;label:string;group:string}[]=[
   {key:'accent',label:'Золотая строка',group:'Первый экран'},
   {key:'subtitle',label:'Подзаголовок',group:'Первый экран'},
   {key:'contactDock',label:'Карточка контактов',group:'Первый экран'},
-  {key:'specialty',label:'Специализация',group:'Страница 2'},
-  {key:'greenhouse',label:'Тепличный комплекс',group:'Страница 3'},
-  {key:'assortment',label:'Ассортимент',group:'Страница 4'},
-  {key:'mother',label:'Маточник',group:'Страница 5'},
-  {key:'gallery',label:'Галерея',group:'Галерея'},
-  {key:'knowledge',label:'Полезная информация',group:'Информация'},
-  {key:'order',label:'Заказ',group:'Финальный блок'},
+  {key:'specialty',label:'Настройки страницы',group:'Страница 2'},
+  {key:'specialtyKicker',label:'Наша специализация',group:'Страница 2'},
+  {key:'specialtyTitle',label:'Заголовок',group:'Страница 2'},
+  {key:'specialtyDesc',label:'Описание',group:'Страница 2'},
+  {key:'specialtyNoteTitle',label:'Заголовок справа',group:'Страница 2'},
+  {key:'specialtyNoteText',label:'Текст справа',group:'Страница 2'},
+  {key:'greenhouse',label:'Настройки страницы',group:'Страница 3'},
+  {key:'greenhouseKicker',label:'Производство',group:'Страница 3'},
+  {key:'greenhouseTitle',label:'Заголовок теплиц',group:'Страница 3'},
+  {key:'greenhouseAccent',label:'5 000 м²',group:'Страница 3'},
+  {key:'greenhouseText',label:'Описание теплиц',group:'Страница 3'},
+  {key:'assortment',label:'Настройки страницы',group:'Страница 4'},
+  {key:'assortmentKicker',label:'Коллекция',group:'Страница 4'},
+  {key:'assortmentTitle',label:'Заголовок ассортимента',group:'Страница 4'},
+  {key:'mother',label:'Настройки страницы',group:'Страница 5'},
+  {key:'motherKicker',label:'Основа качества',group:'Страница 5'},
+  {key:'motherTitle',label:'Заголовок маточника',group:'Страница 5'},
+  {key:'motherAccent',label:'6 гектаров',group:'Страница 5'},
+  {key:'motherText',label:'Описание маточника',group:'Страница 5'},
+  {key:'gallery',label:'Настройки галереи',group:'Галерея'},
+  {key:'galleryKicker',label:'Наши растения',group:'Галерея'},
+  {key:'galleryTitle',label:'Заголовок галереи',group:'Галерея'},
+  {key:'knowledge',label:'Настройки блока',group:'Информация'},
+  {key:'knowledgeKicker',label:'Делимся опытом',group:'Информация'},
+  {key:'knowledgeTitle',label:'Полезная информация',group:'Информация'},
+  {key:'order',label:'Настройки заказа',group:'Финальный блок'},
+  {key:'orderKicker',label:'Метка заказа',group:'Финальный блок'},
+  {key:'orderTitle',label:'Заголовок заказа',group:'Финальный блок'},
+  {key:'orderAccent',label:'Акцент заказа',group:'Финальный блок'},
+  {key:'orderText',label:'Текст заказа',group:'Финальный блок'},
   {key:'contacts',label:'Контакты и подвал',group:'Финальный блок'}
 ];
 
 const setPath=(o:any,path:string,value:any)=>{
   const parts=path.split('.');
   let x=o;
-  for(let i=0;i<parts.length-1;i++) x=x[parts[i]];
+  for(let i=0;i<parts.length-1;i++){
+    const k=parts[i];
+    if(x[k]==null||typeof x[k]!=='object') x[k]={};
+    x=x[k];
+  }
   x[parts[parts.length-1]]=value;
 };
 const getPath=(o:any,path:string)=>path.split('.').reduce((v:any,k)=>v?.[k],o);
@@ -56,12 +83,35 @@ const META:Record<LayerKey,{x?:string;y?:string;size?:string;font?:string;text?:
   subtitle:{x:'hero.subtitleX',y:'hero.subtitleY',size:'hero.subtitleSize',font:'hero.subtitleFont',text:'hero.subtitle',color:'hero.subtitleColor',spacing:'hero.subtitleSpacing',min:10,max:220},
   contactDock:{x:'hero.contactX',y:'hero.contactY',size:'hero.contactScale',color:'hero.contactBgColor',min:70,max:140},
   specialty:{},
+  specialtyKicker:{x:'editor.specialtyKickerX',y:'editor.specialtyKickerY',size:'editor.specialtyKickerSize',font:'editor.specialtyKickerFont',text:'specialty.kicker',color:'editor.specialtyKickerColor',spacing:'editor.specialtyKickerSpacing',min:10,max:300},
+  specialtyTitle:{x:'editor.specialtyTitleX',y:'editor.specialtyTitleY',size:'editor.specialtyTitleSize',font:'editor.specialtyTitleFont',text:'specialty.title',color:'editor.specialtyTitleColor',spacing:'editor.specialtyTitleSpacing',min:10,max:300},
+  specialtyDesc:{x:'editor.specialtyDescX',y:'editor.specialtyDescY',size:'editor.specialtyDescSize',font:'editor.specialtyDescFont',text:'specialty.paragraph1',color:'editor.specialtyDescColor',spacing:'editor.specialtyDescSpacing',min:10,max:300},
+  specialtyNoteTitle:{x:'editor.specialtyNoteTitleX',y:'editor.specialtyNoteTitleY',size:'editor.specialtyNoteTitleSize',font:'editor.specialtyNoteTitleFont',text:'specialty.noteTitle',color:'editor.specialtyNoteTitleColor',spacing:'editor.specialtyNoteTitleSpacing',min:10,max:300},
+  specialtyNoteText:{x:'editor.specialtyNoteTextX',y:'editor.specialtyNoteTextY',size:'editor.specialtyNoteTextSize',font:'editor.specialtyNoteTextFont',text:'specialty.paragraph2',color:'editor.specialtyNoteTextColor',spacing:'editor.specialtyNoteTextSpacing',min:10,max:300},
   greenhouse:{},
+  greenhouseKicker:{x:'editor.greenhouseKickerX',y:'editor.greenhouseKickerY',size:'editor.greenhouseKickerSize',font:'editor.greenhouseKickerFont',color:'editor.greenhouseKickerColor',spacing:'editor.greenhouseKickerSpacing',min:10,max:300},
+  greenhouseTitle:{x:'editor.greenhouseTitleX',y:'editor.greenhouseTitleY',size:'editor.greenhouseTitleSize',font:'editor.greenhouseTitleFont',text:'greenhouse.title',color:'editor.greenhouseTitleColor',spacing:'editor.greenhouseTitleSpacing',min:10,max:300},
+  greenhouseAccent:{x:'editor.greenhouseAccentX',y:'editor.greenhouseAccentY',size:'editor.greenhouseAccentSize',font:'editor.greenhouseAccentFont',text:'greenhouse.accent',color:'editor.greenhouseAccentColor',spacing:'editor.greenhouseAccentSpacing',min:10,max:300},
+  greenhouseText:{x:'editor.greenhouseTextX',y:'editor.greenhouseTextY',size:'editor.greenhouseTextSize',font:'editor.greenhouseTextFont',text:'greenhouse.text',color:'editor.greenhouseTextColor',spacing:'editor.greenhouseTextSpacing',min:10,max:300},
   assortment:{},
+  assortmentKicker:{x:'editor.assortmentKickerX',y:'editor.assortmentKickerY',size:'editor.assortmentKickerSize',font:'editor.assortmentKickerFont',text:'assortmentKicker',color:'editor.assortmentKickerColor',spacing:'editor.assortmentKickerSpacing',min:10,max:300},
+  assortmentTitle:{x:'editor.assortmentTitleX',y:'editor.assortmentTitleY',size:'editor.assortmentTitleSize',font:'editor.assortmentTitleFont',text:'assortmentHeading',color:'editor.assortmentTitleColor',spacing:'editor.assortmentTitleSpacing',min:10,max:300},
   mother:{},
+  motherKicker:{x:'editor.motherKickerX',y:'editor.motherKickerY',size:'editor.motherKickerSize',font:'editor.motherKickerFont',color:'editor.motherKickerColor',spacing:'editor.motherKickerSpacing',min:10,max:300},
+  motherTitle:{x:'editor.motherTitleX',y:'editor.motherTitleY',size:'editor.motherTitleSize',font:'editor.motherTitleFont',text:'mother.title',color:'editor.motherTitleColor',spacing:'editor.motherTitleSpacing',min:10,max:300},
+  motherAccent:{x:'editor.motherAccentX',y:'editor.motherAccentY',size:'editor.motherAccentSize',font:'editor.motherAccentFont',text:'mother.accent',color:'editor.motherAccentColor',spacing:'editor.motherAccentSpacing',min:10,max:300},
+  motherText:{x:'editor.motherTextX',y:'editor.motherTextY',size:'editor.motherTextSize',font:'editor.motherTextFont',text:'mother.text',color:'editor.motherTextColor',spacing:'editor.motherTextSpacing',min:10,max:300},
   gallery:{},
+  galleryKicker:{x:'editor.galleryKickerX',y:'editor.galleryKickerY',size:'editor.galleryKickerSize',font:'editor.galleryKickerFont',text:'galleryKicker',color:'editor.galleryKickerColor',spacing:'editor.galleryKickerSpacing',min:10,max:300},
+  galleryTitle:{x:'editor.galleryTitleX',y:'editor.galleryTitleY',size:'editor.galleryTitleSize',font:'editor.galleryTitleFont',text:'galleryHeading',color:'editor.galleryTitleColor',spacing:'editor.galleryTitleSpacing',min:10,max:300},
   knowledge:{},
+  knowledgeKicker:{x:'editor.knowledgeKickerX',y:'editor.knowledgeKickerY',size:'editor.knowledgeKickerSize',font:'editor.knowledgeKickerFont',text:'knowledgeKicker',color:'editor.knowledgeKickerColor',spacing:'editor.knowledgeKickerSpacing',min:10,max:300},
+  knowledgeTitle:{x:'editor.knowledgeTitleX',y:'editor.knowledgeTitleY',size:'editor.knowledgeTitleSize',font:'editor.knowledgeTitleFont',text:'knowledgeHeading',color:'editor.knowledgeTitleColor',spacing:'editor.knowledgeTitleSpacing',min:10,max:300},
   order:{},
+  orderKicker:{x:'editor.orderKickerX',y:'editor.orderKickerY',size:'editor.orderKickerSize',font:'editor.orderKickerFont',text:'order.kicker',color:'editor.orderKickerColor',spacing:'editor.orderKickerSpacing',min:10,max:300},
+  orderTitle:{x:'editor.orderTitleX',y:'editor.orderTitleY',size:'editor.orderTitleSize',font:'editor.orderTitleFont',text:'order.title',color:'editor.orderTitleColor',spacing:'editor.orderTitleSpacing',min:10,max:300},
+  orderAccent:{x:'editor.orderAccentX',y:'editor.orderAccentY',size:'editor.orderAccentSize',font:'editor.orderAccentFont',text:'order.accent',color:'editor.orderAccentColor',spacing:'editor.orderAccentSpacing',min:10,max:300},
+  orderText:{x:'editor.orderTextX',y:'editor.orderTextY',size:'editor.orderTextSize',font:'editor.orderTextFont',text:'order.text',color:'editor.orderTextColor',spacing:'editor.orderTextSpacing',min:10,max:300},
   contacts:{}
 };
 
@@ -406,7 +456,7 @@ export default function Admin(){
 
         <button className="reset-btn" onClick={()=>{
           const defaults:any={headerBg:[0,0,100],logo:[0,0,80],brushText1:[0,0,55],brushText2:[0,24,55],brandText:[0,0,125],heroImage:[50,50,105],line1:[0,0,100],line2:[0,0,112],accent:[0,0,95],subtitle:[0,0,100],contactDock:[0,0,100]};
-          const d=defaults[selected]; if(meta.x)update(meta.x,String(d[0])); if(meta.y)update(meta.y,String(d[1])); if(meta.size)update(meta.size,String(d[2])); if(meta.spacing)update(meta.spacing,'0');
+          const d=defaults[selected]||[0,0,100]; if(meta.x)update(meta.x,String(d[0])); if(meta.y)update(meta.y,String(d[1])); if(meta.size)update(meta.size,String(d[2])); if(meta.spacing)update(meta.spacing,'0');
         }}>Сбросить положение и размер</button>
       </aside>
     </div>
