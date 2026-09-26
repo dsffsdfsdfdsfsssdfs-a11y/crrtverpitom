@@ -73,11 +73,6 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       <div className="hero-overlay"/>
       <div className="hero-contact-layout">
         <div className="hero-contact-main">
-          <svg className="hero-botanical-accent" viewBox="0 0 180 270" fill="none" aria-hidden="true">
-            <path d="M90 258C89 210 83 164 92 119C98 86 113 54 137 22" />
-            <path d="M91 211C69 199 53 183 40 161M89 183C110 171 126 156 139 136M91 150C70 139 55 122 45 100M97 119C117 107 132 91 142 71M106 87C91 77 81 65 74 50M119 58C132 50 143 39 151 27" />
-            <path d="M47 166C35 160 29 151 30 141C41 141 51 147 57 157C55 162 52 165 47 166ZM134 142C145 135 157 134 167 139C163 150 153 158 141 160C136 156 134 150 134 142ZM49 105C37 101 29 93 27 83C38 80 49 84 57 92C56 97 53 102 49 105ZM137 76C148 69 160 69 169 75C165 86 155 93 143 95C139 90 137 84 137 76ZM77 54C67 47 62 37 64 27C75 28 84 34 90 44C87 49 83 52 77 54Z" />
-          </svg>
           <h1 className="hero-title">
             {heroTitle1!==''&&<span data-editor-key="line1" className="hero-title-line hero-title-first" style={heroLineStyle('line1',{size:100,x:0,y:0,font:'Georgia'})}>{heroTitle1}</span>}
             {heroTitle2!==''&&<span data-editor-key="line2" className="hero-title-line hero-title-second" style={heroLineStyle('line2',{size:112,x:0,y:0,font:'Georgia'})}>{heroTitle2}</span>}
