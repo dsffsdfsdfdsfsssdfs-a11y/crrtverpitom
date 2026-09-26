@@ -143,7 +143,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
         </div>
         <div className="specialty-modern-grid">
           <div className="specialty-modern-left">
-            <h2 className="specialty-modern-title">{String(c.specialty.title||'Вегетативное размножение').split('\n').map((line:string,i:number)=><span key={i}>{line}{i===0&&<br/>}</span>)}</h2>
+            <h2 className="specialty-modern-title">{String(c.specialty.title||'Вегетативное\nразмножение').split('\n').map((line:string,i:number)=><span key={i}>{i===0?line:<em>{line}</em>}{i===0&&<br/>}</span>)}</h2>
             <p className="specialty-modern-subtitle">{c.specialty.paragraph1}</p>
             <a className="line-link specialty-modern-link" href="#assortment">Посмотреть ассортимент <span>→</span></a>
           </div>
