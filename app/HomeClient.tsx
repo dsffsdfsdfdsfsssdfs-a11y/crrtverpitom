@@ -146,23 +146,38 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
     </section>
     <section className="numbers"><div><b>6 га</b><span>маточных насаждений</span></div><div><b>144–96</b><span>ячеек в кассетах</span></div><div><b>Р9</b><span>готовые растения</span></div><div><b>Тверь</b><span>выращиваем с душой</span></div></section>
     <section className="specialty-modern" id="about" data-editor-key="specialty">
+      <div className="specialty-ambient specialty-ambient-a"/>
+      <div className="specialty-ambient specialty-ambient-b"/>
+      <div className="specialty-grid-lines"/>
       <div className="specialty-modern-inner">
         <div className="specialty-modern-top">
           <p data-editor-key="specialtyKicker" className="specialty-modern-kicker" style={editorTextStyle('specialtyKicker',100)}>{c.specialty.kicker||'НАША СПЕЦИАЛИЗАЦИЯ'}</p>
+          <span className="specialty-page-no">02</span>
         </div>
-        <div className="specialty-modern-grid">
-          <div className="specialty-modern-left">
-            <h2 data-editor-key="specialtyTitle" className="specialty-modern-title" style={editorTextStyle('specialtyTitle',100)}>{String(c.specialty.title||'Вегетативное\nразмножение').split('\n').map((line:string,i:number)=><span key={i}>{i===0?line:<em>{line}</em>}{i===0&&<br/>}</span>)}</h2>
-            <p data-editor-key="specialtyDesc" className="specialty-modern-subtitle" style={editorTextStyle('specialtyDesc',100)}>{c.specialty.paragraph1}</p>
-            <a data-editor-key="specialtyLink" className="line-link specialty-modern-link" href="#assortment" style={editorTextStyle('specialtyLink',100)}>{c.specialty.linkText||'Посмотреть ассортимент'} <span>→</span></a>
-          </div>
-          <div className="specialty-modern-right">
-            <div className="specialty-modern-note">
-              <span data-editor-key="specialtyNoteTitle" className="specialty-modern-note-title" style={editorTextStyle('specialtyNoteTitle',100)}>{c.specialty.noteTitle||'Выращиваем укоренённые черенки'}</span>
-              <p data-editor-key="specialtyNoteText" className="specialty-modern-note-text" style={editorTextStyle('specialtyNoteText',100)}>{c.specialty.paragraph2}</p>
-              <div className="specialty-modern-tags">{(c.specialty.formats||['144 ячеек','104 ячеек','96 ячеек','Р9']).map((x:string,i:number)=><span data-editor-key={'specialtyFormat'+(i+1)} style={editorTextStyle('specialtyFormat'+(i+1),100)} key={i}>{x}</span>)}</div>
+        <div className="specialty-stage">
+          <div className="specialty-main-card">
+            <div className="specialty-card-glow"/>
+            <div className="specialty-main-copy">
+              <span className="specialty-overline">ПРОФЕССИОНАЛЬНОЕ ПРОИЗВОДСТВО</span>
+              <h2 data-editor-key="specialtyTitle" className="specialty-modern-title" style={editorTextStyle('specialtyTitle',100)}>{String(c.specialty.title||'Вегетативное\nразмножение').split('\n').map((line:string,i:number)=><span key={i}>{i===0?line:<em>{line}</em>}{i===0&&<br/>}</span>)}</h2>
+              <p data-editor-key="specialtyDesc" className="specialty-modern-subtitle" style={editorTextStyle('specialtyDesc',100)}>{c.specialty.paragraph1}</p>
+              <a data-editor-key="specialtyLink" className="specialty-modern-link" href="#assortment" style={editorTextStyle('specialtyLink',100)}>
+                <span>{c.specialty.linkText||'Посмотреть ассортимент'}</span>
+                <i>↗</i>
+              </a>
             </div>
+            <div className="specialty-organic-mark" aria-hidden="true"><span/><span/><span/></div>
           </div>
+          <aside className="specialty-info-card">
+            <div className="specialty-info-head">
+              <span className="specialty-info-icon">✦</span>
+              <span className="specialty-info-caption">ФОРМАТЫ ПРОИЗВОДСТВА</span>
+            </div>
+            <span data-editor-key="specialtyNoteTitle" className="specialty-modern-note-title" style={editorTextStyle('specialtyNoteTitle',100)}>{c.specialty.noteTitle||'Выращиваем укоренённые черенки'}</span>
+            <p data-editor-key="specialtyNoteText" className="specialty-modern-note-text" style={editorTextStyle('specialtyNoteText',100)}>{c.specialty.paragraph2}</p>
+            <div className="specialty-modern-tags">{(c.specialty.formats||['144 ячеек','104 ячеек','96 ячеек','Р9']).map((x:string,i:number)=><span data-editor-key={'specialtyFormat'+(i+1)} style={editorTextStyle('specialtyFormat'+(i+1),100)} key={i}><b>{String(i+1).padStart(2,'0')}</b>{x}</span>)}</div>
+            <div className="specialty-info-foot"><span>Контроль качества</span><span>Собственное производство</span></div>
+          </aside>
         </div>
       </div>
     </section>
