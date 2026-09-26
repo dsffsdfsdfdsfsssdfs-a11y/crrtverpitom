@@ -44,7 +44,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const heroSubtitle=c.hero.subtitle??'';
   const heroLineStyle=(key:string,defaults:{size:number,x:number,y:number,font:string})=>({
     fontFamily:`${c.hero[key+'Font']||defaults.font}, Georgia, serif`,
-    fontSize:`${clamp(num(c.hero[key+'Size'],defaults.size),35,240)}%`,
+    fontSize:`${clamp(num(c.hero[key+'Size'],defaults.size),10,240)}%`,
     transform:`translate(${clamp(num(c.hero[key+'X'],defaults.x),-1500,1500)}px,${clamp(num(c.hero[key+'Y'],defaults.y),-1500,1500)}px)`,
     whiteSpace:'pre-wrap',
     overflowWrap:'break-word',
