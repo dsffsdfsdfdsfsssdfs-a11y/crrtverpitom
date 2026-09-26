@@ -36,12 +36,12 @@ const clamp=(n:number,min:number,max:number)=>Math.max(min,Math.min(max,n));
 const META:Record<LayerKey,{x?:string;y?:string;size?:string;font?:string;text?:string;color?:string;spacing?:string;min?:number;max?:number}> = {
   headerBg:{color:'header.bgColor'},
   logo:{x:'header.logoX',y:'header.logoY',size:'header.logoSize',min:28,max:180},
-  brandText:{x:'header.textX',y:'header.textY',size:'header.textSize',font:'header.textFont',color:'header.textColor',spacing:'header.textSpacing',min:50,max:260},
+  brandText:{x:'header.textX',y:'header.textY',size:'header.textSize',font:'header.textFont',color:'header.textColor',spacing:'header.textSpacing',min:10,max:260},
   heroImage:{x:'hero.imageX',y:'hero.imageY',size:'hero.imageScale',min:100,max:180},
-  line1:{x:'hero.line1X',y:'hero.line1Y',size:'hero.line1Size',font:'hero.line1Font',text:'hero.title',color:'hero.line1Color',spacing:'hero.line1Spacing',min:35,max:240},
-  line2:{x:'hero.line2X',y:'hero.line2Y',size:'hero.line2Size',font:'hero.line2Font',text:'hero.title2',color:'hero.line2Color',spacing:'hero.line2Spacing',min:35,max:240},
-  accent:{x:'hero.accentX',y:'hero.accentY',size:'hero.accentSize',font:'hero.accentFont',text:'hero.accent',color:'hero.accentColor',spacing:'hero.accentSpacing',min:35,max:240},
-  subtitle:{x:'hero.subtitleX',y:'hero.subtitleY',size:'hero.subtitleSize',font:'hero.subtitleFont',text:'hero.subtitle',color:'hero.subtitleColor',spacing:'hero.subtitleSpacing',min:35,max:220},
+  line1:{x:'hero.line1X',y:'hero.line1Y',size:'hero.line1Size',font:'hero.line1Font',text:'hero.title',color:'hero.line1Color',spacing:'hero.line1Spacing',min:10,max:240},
+  line2:{x:'hero.line2X',y:'hero.line2Y',size:'hero.line2Size',font:'hero.line2Font',text:'hero.title2',color:'hero.line2Color',spacing:'hero.line2Spacing',min:10,max:240},
+  accent:{x:'hero.accentX',y:'hero.accentY',size:'hero.accentSize',font:'hero.accentFont',text:'hero.accent',color:'hero.accentColor',spacing:'hero.accentSpacing',min:10,max:240},
+  subtitle:{x:'hero.subtitleX',y:'hero.subtitleY',size:'hero.subtitleSize',font:'hero.subtitleFont',text:'hero.subtitle',color:'hero.subtitleColor',spacing:'hero.subtitleSpacing',min:10,max:220},
   contactDock:{x:'hero.contactX',y:'hero.contactY',size:'hero.contactScale',color:'hero.contactBgColor',min:70,max:140}
 };
 
