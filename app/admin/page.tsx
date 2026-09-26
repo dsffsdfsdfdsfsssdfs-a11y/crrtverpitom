@@ -3,7 +3,7 @@ import './admin.css';
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 
 type Content=any;
-type LayerKey='headerBg'|'logo'|'brushText1'|'brushText2'|'brandText'|'heroImage'|'line1'|'line2'|'accent'|'subtitle'|'contactDock';
+type LayerKey='headerBg'|'logo'|'brushText1'|'brushText2'|'brandText'|'heroImage'|'line1'|'line2'|'accent'|'subtitle'|'contactDock'|'specialty'|'greenhouse'|'assortment'|'mother'|'gallery'|'knowledge'|'order'|'contacts';
 
 const FONTS=[
   'Cormorant Garamond','Prata','Playfair Display','Lora','Spectral','Forum',
@@ -22,7 +22,15 @@ const LAYERS:{key:LayerKey;label:string;group:string}[]=[
   {key:'line2',label:'Вторая строка',group:'Первый экран'},
   {key:'accent',label:'Золотая строка',group:'Первый экран'},
   {key:'subtitle',label:'Подзаголовок',group:'Первый экран'},
-  {key:'contactDock',label:'Карточка контактов',group:'Первый экран'}
+  {key:'contactDock',label:'Карточка контактов',group:'Первый экран'},
+  {key:'specialty',label:'Специализация',group:'Страница 2'},
+  {key:'greenhouse',label:'Тепличный комплекс',group:'Страница 3'},
+  {key:'assortment',label:'Ассортимент',group:'Страница 4'},
+  {key:'mother',label:'Маточник',group:'Страница 5'},
+  {key:'gallery',label:'Галерея',group:'Галерея'},
+  {key:'knowledge',label:'Полезная информация',group:'Информация'},
+  {key:'order',label:'Заказ',group:'Финальный блок'},
+  {key:'contacts',label:'Контакты и подвал',group:'Финальный блок'}
 ];
 
 const setPath=(o:any,path:string,value:any)=>{
@@ -46,7 +54,15 @@ const META:Record<LayerKey,{x?:string;y?:string;size?:string;font?:string;text?:
   line2:{x:'hero.line2X',y:'hero.line2Y',size:'hero.line2Size',font:'hero.line2Font',text:'hero.title2',color:'hero.line2Color',spacing:'hero.line2Spacing',min:10,max:240},
   accent:{x:'hero.accentX',y:'hero.accentY',size:'hero.accentSize',font:'hero.accentFont',text:'hero.accent',color:'hero.accentColor',spacing:'hero.accentSpacing',min:10,max:240},
   subtitle:{x:'hero.subtitleX',y:'hero.subtitleY',size:'hero.subtitleSize',font:'hero.subtitleFont',text:'hero.subtitle',color:'hero.subtitleColor',spacing:'hero.subtitleSpacing',min:10,max:220},
-  contactDock:{x:'hero.contactX',y:'hero.contactY',size:'hero.contactScale',color:'hero.contactBgColor',min:70,max:140}
+  contactDock:{x:'hero.contactX',y:'hero.contactY',size:'hero.contactScale',color:'hero.contactBgColor',min:70,max:140},
+  specialty:{},
+  greenhouse:{},
+  assortment:{},
+  mother:{},
+  gallery:{},
+  knowledge:{},
+  order:{},
+  contacts:{}
 };
 
 const readDataUrl=(file:Blob)=>new Promise<string>((ok,bad)=>{
@@ -331,6 +347,62 @@ export default function Admin(){
         {(selected==='brushText1'||selected==='brushText2')&&<div className="inspector-section"><h3>Поворот</h3><Slider label="Угол, °" value={num(getPath(current,selected==='brushText1'?'header.brush1Rotate':'header.brush2Rotate'),selected==='brushText1'?-2:0)} min={-45} max={45} step={0.5} onChange={v=>update(selected==='brushText1'?'header.brush1Rotate':'header.brush2Rotate',String(v))}/></div>}
 
         {selected==='contactDock'&&<div className="inspector-section"><h3>Контакты</h3><p className="muted">Карточку можно двигать мышкой и менять её масштаб. Тексты контактов редактируются через данные сайта.</p></div>}
+        {selected==='specialty'&&<div className="inspector-section"><h3>Страница 2 — Специализация</h3>
+          <label className="text-label">Метка<input value={current.specialty.kicker||''} onChange={e=>update('specialty.kicker',e.target.value)}/></label>
+          <label className="text-label">Заголовок<textarea value={current.specialty.title||''} onChange={e=>update('specialty.title',e.target.value)}/></label>
+          <label className="text-label">Описание<textarea value={current.specialty.paragraph1||''} onChange={e=>update('specialty.paragraph1',e.target.value)}/></label>
+          <label className="text-label">Заголовок справа<input value={current.specialty.noteTitle||''} onChange={e=>update('specialty.noteTitle',e.target.value)}/></label>
+          <label className="text-label">Текст справа<textarea value={current.specialty.paragraph2||''} onChange={e=>update('specialty.paragraph2',e.target.value)}/></label>
+          {(current.specialty.formats||[]).map((x:string,i:number)=><label className="text-label" key={i}>Формат {i+1}<input value={x} onChange={e=>update('specialty.formats.'+i,e.target.value)}/></label>)}
+        </div>}
+
+        {selected==='greenhouse'&&<div className="inspector-section"><h3>Страница 3 — Теплицы</h3>
+          <label className="text-label">Заголовок<input value={current.greenhouse.title||''} onChange={e=>update('greenhouse.title',e.target.value)}/></label>
+          <label className="text-label">Акцент<input value={current.greenhouse.accent||''} onChange={e=>update('greenhouse.accent',e.target.value)}/></label>
+          <label className="text-label">Текст<textarea value={current.greenhouse.text||''} onChange={e=>update('greenhouse.text',e.target.value)}/></label>
+          <label className="upload-btn">{uploading?'Загрузка…':'Заменить фото теплиц'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'greenhouse.image')}/></label>
+        </div>}
+
+        {selected==='assortment'&&<div className="inspector-section"><h3>Страница 4 — Ассортимент</h3>
+          <label className="text-label">Метка<input value={current.assortmentKicker||''} onChange={e=>update('assortmentKicker',e.target.value)}/></label>
+          <label className="text-label">Заголовок<textarea value={current.assortmentHeading||''} onChange={e=>update('assortmentHeading',e.target.value)}/></label>
+          {(current.assortment||[]).map((x:string,i:number)=><label className="text-label" key={i}>Позиция {i+1}<input value={x} onChange={e=>update('assortment.'+i,e.target.value)}/></label>)}
+        </div>}
+
+        {selected==='mother'&&<div className="inspector-section"><h3>Страница 5 — Маточник</h3>
+          <label className="text-label">Заголовок<input value={current.mother.title||''} onChange={e=>update('mother.title',e.target.value)}/></label>
+          <label className="text-label">Акцент<input value={current.mother.accent||''} onChange={e=>update('mother.accent',e.target.value)}/></label>
+          <label className="text-label">Текст<textarea value={current.mother.text||''} onChange={e=>update('mother.text',e.target.value)}/></label>
+          <label className="upload-btn">{uploading?'Загрузка…':'Заменить фото маточника'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'mother.image')}/></label>
+        </div>}
+
+        {selected==='gallery'&&<div className="inspector-section"><h3>Галерея</h3>
+          <label className="text-label">Метка<input value={current.galleryKicker||''} onChange={e=>update('galleryKicker',e.target.value)}/></label>
+          <label className="text-label">Заголовок<textarea value={current.galleryHeading||''} onChange={e=>update('galleryHeading',e.target.value)}/></label>
+          {(current.galleryImages||[]).map((url:string,i:number)=><div className="editor-image-row" key={i}><span>Фото {i+1}</span><label className="upload-btn">{uploading?'Загрузка…':'Заменить'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'galleryImages.'+i)}/></label></div>)}
+        </div>}
+
+        {selected==='knowledge'&&<div className="inspector-section"><h3>Полезная информация</h3>
+          <label className="text-label">Метка<input value={current.knowledgeKicker||''} onChange={e=>update('knowledgeKicker',e.target.value)}/></label>
+          <label className="text-label">Заголовок<input value={current.knowledgeHeading||''} onChange={e=>update('knowledgeHeading',e.target.value)}/></label>
+          {(current.resources||[]).map((x:any,i:number)=><div className="editor-resource" key={i}><label className="text-label">Название {i+1}<input value={x.title||''} onChange={e=>update('resources.'+i+'.title',e.target.value)}/></label><label className="text-label">Ссылка<input value={x.url||''} onChange={e=>update('resources.'+i+'.url',e.target.value)}/></label></div>)}
+        </div>}
+
+        {selected==='order'&&<div className="inspector-section"><h3>Финальный блок — Заказ</h3>
+          <label className="text-label">Метка<input value={current.order?.kicker||''} onChange={e=>update('order.kicker',e.target.value)}/></label>
+          <label className="text-label">Заголовок<input value={current.order?.title||''} onChange={e=>update('order.title',e.target.value)}/></label>
+          <label className="text-label">Акцент<input value={current.order?.accent||''} onChange={e=>update('order.accent',e.target.value)}/></label>
+          <label className="text-label">Текст<textarea value={current.order?.text||''} onChange={e=>update('order.text',e.target.value)}/></label>
+          <label className="text-label">Текст кнопки<input value={current.order?.button||''} onChange={e=>update('order.button',e.target.value)}/></label>
+          <label className="text-label">Подпись помощи<textarea value={current.order?.help||''} onChange={e=>update('order.help',e.target.value)}/></label>
+        </div>}
+
+        {selected==='contacts'&&<div className="inspector-section"><h3>Контакты и подвал</h3>
+          {(current.contacts||[]).map((x:any,i:number)=><div className="editor-resource" key={i}><label className="text-label">Имя {i+1}<input value={x.name||''} onChange={e=>update('contacts.'+i+'.name',e.target.value)}/></label><label className="text-label">Телефон<input value={x.phone||''} onChange={e=>update('contacts.'+i+'.phone',e.target.value)}/></label><label className="text-label">Подпись<input value={x.label||''} onChange={e=>update('contacts.'+i+'.label',e.target.value)}/></label></div>)}
+          <label className="text-label">E-mail<input value={current.email||''} onChange={e=>update('email',e.target.value)}/></label>
+          <label className="text-label">Адрес<textarea value={current.address||''} onChange={e=>update('address',e.target.value)}/></label>
+        </div>}
+
 
         <button className="reset-btn" onClick={()=>{
           const defaults:any={headerBg:[0,0,100],logo:[0,0,80],brushText1:[0,0,55],brushText2:[0,24,55],brandText:[0,0,125],heroImage:[50,50,105],line1:[0,0,100],line2:[0,0,112],accent:[0,0,95],subtitle:[0,0,100],contactDock:[0,0,100]};
