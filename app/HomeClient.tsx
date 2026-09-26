@@ -146,30 +146,6 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
     </section>
     <section className="numbers"><div><b>6 га</b><span>маточных насаждений</span></div><div><b>144–96</b><span>ячеек в кассетах</span></div><div><b>Р9</b><span>готовые растения</span></div><div><b>Тверь</b><span>выращиваем с душой</span></div></section>
     <section className="specialty-simple" id="about" data-editor-key="specialty">
-      <div className="specialty-botanical specialty-botanical-left" aria-hidden="true">
-        <svg viewBox="0 0 520 420">
-          <path className="stem" d="M34 387C135 318 195 220 224 74"/>
-          <path className="stem" d="M119 402C221 337 288 246 330 113"/>
-          <path className="leaf" d="M126 294C86 282 54 253 40 217C84 220 117 246 126 294Z"/>
-          <path className="leaf" d="M176 229C140 214 115 184 108 150C148 159 174 189 176 229Z"/>
-          <path className="leaf" d="M214 156C184 139 167 112 166 83C199 95 218 122 214 156Z"/>
-          <path className="leaf" d="M254 294C292 278 318 248 326 213C286 221 258 251 254 294Z"/>
-          <path className="leaf" d="M293 221C329 204 351 175 354 143C316 154 291 185 293 221Z"/>
-          <path className="leaf" d="M323 151C353 134 369 109 370 82C338 93 321 119 323 151Z"/>
-        </svg>
-      </div>
-      <div className="specialty-botanical specialty-botanical-right" aria-hidden="true">
-        <svg viewBox="0 0 430 360">
-          <path className="stem" d="M406 338C319 281 270 198 244 65"/>
-          <path className="stem" d="M340 353C259 304 204 231 171 124"/>
-          <path className="leaf" d="M325 271C362 260 389 234 402 202C362 202 334 227 325 271Z"/>
-          <path className="leaf" d="M286 210C320 196 344 169 350 138C313 146 288 175 286 210Z"/>
-          <path className="leaf" d="M250 150C280 135 298 111 301 84C269 92 249 118 250 150Z"/>
-          <path className="leaf" d="M230 278C197 265 174 240 166 211C201 218 226 245 230 278Z"/>
-          <path className="leaf" d="M195 219C164 206 143 182 138 154C171 163 193 190 195 219Z"/>
-        </svg>
-      </div>
-      <div className="specialty-botanical-glow" aria-hidden="true"/>
       <div className="specialty-simple-shell">
         <div className="specialty-simple-left">
           <p data-editor-key="specialtyKicker" className="specialty-simple-kicker" style={editorTextStyle('specialtyKicker',100)}>{c.specialty.kicker||'НАША СПЕЦИАЛИЗАЦИЯ'}</p>
