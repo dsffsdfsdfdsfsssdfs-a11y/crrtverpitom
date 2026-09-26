@@ -170,7 +170,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
         </svg>
       </div>
       <div className="specialty-botanical-glow" aria-hidden="true"/>
-      <div className="specialty-simple-shell">      <div className="specialty-simple-shell">
+      <div className="specialty-simple-shell">
         <div className="specialty-simple-left">
           <p data-editor-key="specialtyKicker" className="specialty-simple-kicker" style={editorTextStyle('specialtyKicker',100)}>{c.specialty.kicker||'НАША СПЕЦИАЛИЗАЦИЯ'}</p>
           <h2 data-editor-key="specialtyTitle" className="specialty-simple-title" style={editorTextStyle('specialtyTitle',100)}>
