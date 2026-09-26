@@ -139,8 +139,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
     <section className="specialty-modern" id="about">
       <div className="specialty-modern-inner">
         <div className="specialty-modern-top">
-          <span className="specialty-modern-number">02</span>
-          <p className="eyebrow gold">НАША СПЕЦИАЛИЗАЦИЯ</p>
+          <p className="specialty-modern-kicker">НАША СПЕЦИАЛИЗАЦИЯ</p>
         </div>
         <div className="specialty-modern-grid">
           <div className="specialty-modern-left">
