@@ -3,7 +3,7 @@ import './admin.css';
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 
 type Content=any;
-type LayerKey='headerBg'|'logo'|'brushText1'|'brushText2'|'brandText'|'heroImage'|'line1'|'line2'|'accent'|'subtitle'|'contactDock'|'specialty'|'specialtyKicker'|'specialtyTitle'|'specialtyDesc'|'specialtyNoteTitle'|'specialtyNoteText'|'greenhouse'|'greenhouseKicker'|'greenhouseTitle'|'greenhouseAccent'|'greenhouseText'|'assortment'|'assortmentKicker'|'assortmentTitle'|'mother'|'motherKicker'|'motherTitle'|'motherAccent'|'motherText'|'gallery'|'galleryKicker'|'galleryTitle'|'knowledge'|'knowledgeKicker'|'knowledgeTitle'|'order'|'orderKicker'|'orderTitle'|'orderAccent'|'orderText'|'contacts';
+type LayerKey=string;
 
 const FONTS=[
   'Cormorant Garamond','Prata','Playfair Display','Lora','Spectral','Forum',
@@ -29,6 +29,11 @@ const LAYERS:{key:LayerKey;label:string;group:string}[]=[
   {key:'specialtyDesc',label:'Описание',group:'Страница 2'},
   {key:'specialtyNoteTitle',label:'Заголовок справа',group:'Страница 2'},
   {key:'specialtyNoteText',label:'Текст справа',group:'Страница 2'},
+  {key:'specialtyFormat1',label:'Формат 144',group:'Страница 2'},
+  {key:'specialtyFormat2',label:'Формат 104',group:'Страница 2'},
+  {key:'specialtyFormat3',label:'Формат 96',group:'Страница 2'},
+  {key:'specialtyFormat4',label:'Формат Р9',group:'Страница 2'},
+  {key:'specialtyLink',label:'Ссылка на ассортимент',group:'Страница 2'},
   {key:'greenhouse',label:'Настройки страницы',group:'Страница 3'},
   {key:'greenhouseKicker',label:'Производство',group:'Страница 3'},
   {key:'greenhouseTitle',label:'Заголовок теплиц',group:'Страница 3'},
@@ -37,6 +42,10 @@ const LAYERS:{key:LayerKey;label:string;group:string}[]=[
   {key:'assortment',label:'Настройки страницы',group:'Страница 4'},
   {key:'assortmentKicker',label:'Коллекция',group:'Страница 4'},
   {key:'assortmentTitle',label:'Заголовок ассортимента',group:'Страница 4'},
+  {key:'assortmentPrice',label:'Кнопка прайса',group:'Страница 4'},
+  ...Array.from({length:6},(_,i)=>({key:'assortmentItem'+(i+1),label:'Название растения '+(i+1),group:'Страница 4'})),
+  ...Array.from({length:6},(_,i)=>({key:'assortmentDesc'+(i+1),label:'Описание растения '+(i+1),group:'Страница 4'})),
+  ...Array.from({length:6},(_,i)=>({key:'assortmentIndex'+(i+1),label:'Номер карточки '+(i+1),group:'Страница 4'})),
   {key:'mother',label:'Настройки страницы',group:'Страница 5'},
   {key:'motherKicker',label:'Основа качества',group:'Страница 5'},
   {key:'motherTitle',label:'Заголовок маточника',group:'Страница 5'},
@@ -45,14 +54,20 @@ const LAYERS:{key:LayerKey;label:string;group:string}[]=[
   {key:'gallery',label:'Настройки галереи',group:'Галерея'},
   {key:'galleryKicker',label:'Наши растения',group:'Галерея'},
   {key:'galleryTitle',label:'Заголовок галереи',group:'Галерея'},
+  {key:'galleryLink',label:'Ссылка галереи',group:'Галерея'},
   {key:'knowledge',label:'Настройки блока',group:'Информация'},
   {key:'knowledgeKicker',label:'Делимся опытом',group:'Информация'},
   {key:'knowledgeTitle',label:'Полезная информация',group:'Информация'},
+  ...Array.from({length:3},(_,i)=>({key:'resourceTitle'+(i+1),label:'Материал '+(i+1),group:'Информация'})),
+  ...Array.from({length:3},(_,i)=>({key:'resourceIndex'+(i+1),label:'Номер материала '+(i+1),group:'Информация'})),
   {key:'order',label:'Настройки заказа',group:'Финальный блок'},
   {key:'orderKicker',label:'Метка заказа',group:'Финальный блок'},
   {key:'orderTitle',label:'Заголовок заказа',group:'Финальный блок'},
   {key:'orderAccent',label:'Акцент заказа',group:'Финальный блок'},
   {key:'orderText',label:'Текст заказа',group:'Финальный блок'},
+  {key:'orderButton',label:'Кнопка заказа',group:'Финальный блок'},
+  {key:'orderPhone',label:'Телефон',group:'Финальный блок'},
+  {key:'orderHelp',label:'Текст помощи',group:'Финальный блок'},
   {key:'contacts',label:'Контакты и подвал',group:'Финальный блок'}
 ];
 
@@ -70,7 +85,7 @@ const getPath=(o:any,path:string)=>path.split('.').reduce((v:any,k)=>v?.[k],o);
 const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
 const clamp=(n:number,min:number,max:number)=>Math.max(min,Math.min(max,n));
 
-const META:Record<LayerKey,{x?:string;y?:string;size?:string;font?:string;text?:string;color?:string;spacing?:string;min?:number;max?:number}> = {
+const META:Record<string,{x?:string;y?:string;size?:string;font?:string;text?:string;color?:string;spacing?:string;min?:number;max?:number}> = {
   headerBg:{color:'header.bgColor'},
   logo:{x:'header.logoX',y:'header.logoY',size:'header.logoSize',min:28,max:180},
   brushText1:{x:'header.brush1X',y:'header.brush1Y',size:'header.brush1Size',text:'header.brush1Text',color:'header.brush1Color',spacing:'header.brush1Spacing',min:20,max:180},
@@ -83,37 +98,57 @@ const META:Record<LayerKey,{x?:string;y?:string;size?:string;font?:string;text?:
   subtitle:{x:'hero.subtitleX',y:'hero.subtitleY',size:'hero.subtitleSize',font:'hero.subtitleFont',text:'hero.subtitle',color:'hero.subtitleColor',spacing:'hero.subtitleSpacing',min:10,max:220},
   contactDock:{x:'hero.contactX',y:'hero.contactY',size:'hero.contactScale',color:'hero.contactBgColor',min:70,max:140},
   specialty:{},
-  specialtyKicker:{x:'editor.specialtyKickerX',y:'editor.specialtyKickerY',size:'editor.specialtyKickerSize',font:'editor.specialtyKickerFont',text:'specialty.kicker',color:'editor.specialtyKickerColor',spacing:'editor.specialtyKickerSpacing',min:10,max:300},
-  specialtyTitle:{x:'editor.specialtyTitleX',y:'editor.specialtyTitleY',size:'editor.specialtyTitleSize',font:'editor.specialtyTitleFont',text:'specialty.title',color:'editor.specialtyTitleColor',spacing:'editor.specialtyTitleSpacing',min:10,max:300},
-  specialtyDesc:{x:'editor.specialtyDescX',y:'editor.specialtyDescY',size:'editor.specialtyDescSize',font:'editor.specialtyDescFont',text:'specialty.paragraph1',color:'editor.specialtyDescColor',spacing:'editor.specialtyDescSpacing',min:10,max:300},
-  specialtyNoteTitle:{x:'editor.specialtyNoteTitleX',y:'editor.specialtyNoteTitleY',size:'editor.specialtyNoteTitleSize',font:'editor.specialtyNoteTitleFont',text:'specialty.noteTitle',color:'editor.specialtyNoteTitleColor',spacing:'editor.specialtyNoteTitleSpacing',min:10,max:300},
-  specialtyNoteText:{x:'editor.specialtyNoteTextX',y:'editor.specialtyNoteTextY',size:'editor.specialtyNoteTextSize',font:'editor.specialtyNoteTextFont',text:'specialty.paragraph2',color:'editor.specialtyNoteTextColor',spacing:'editor.specialtyNoteTextSpacing',min:10,max:300},
+  specialtyKicker:{x:'editor.specialtyKickerX',y:'editor.specialtyKickerY',size:'editor.specialtyKickerSize',font:'editor.specialtyKickerFont',text:'specialty.kicker',color:'editor.specialtyKickerColor',spacing:'editor.specialtyKickerSpacing',min:10,max:800},
+  specialtyTitle:{x:'editor.specialtyTitleX',y:'editor.specialtyTitleY',size:'editor.specialtyTitleSize',font:'editor.specialtyTitleFont',text:'specialty.title',color:'editor.specialtyTitleColor',spacing:'editor.specialtyTitleSpacing',min:10,max:800},
+  specialtyDesc:{x:'editor.specialtyDescX',y:'editor.specialtyDescY',size:'editor.specialtyDescSize',font:'editor.specialtyDescFont',text:'specialty.paragraph1',color:'editor.specialtyDescColor',spacing:'editor.specialtyDescSpacing',min:10,max:800},
+  specialtyNoteTitle:{x:'editor.specialtyNoteTitleX',y:'editor.specialtyNoteTitleY',size:'editor.specialtyNoteTitleSize',font:'editor.specialtyNoteTitleFont',text:'specialty.noteTitle',color:'editor.specialtyNoteTitleColor',spacing:'editor.specialtyNoteTitleSpacing',min:10,max:800},
+  specialtyNoteText:{x:'editor.specialtyNoteTextX',y:'editor.specialtyNoteTextY',size:'editor.specialtyNoteTextSize',font:'editor.specialtyNoteTextFont',text:'specialty.paragraph2',color:'editor.specialtyNoteTextColor',spacing:'editor.specialtyNoteTextSpacing',min:10,max:800},
+  specialtyFormat1:{x:'editor.specialtyFormat1X',y:'editor.specialtyFormat1Y',size:'editor.specialtyFormat1Size',font:'editor.specialtyFormat1Font',text:'specialty.formats.0',color:'editor.specialtyFormat1Color',spacing:'editor.specialtyFormat1Spacing',min:10,max:800},
+  specialtyFormat2:{x:'editor.specialtyFormat2X',y:'editor.specialtyFormat2Y',size:'editor.specialtyFormat2Size',font:'editor.specialtyFormat2Font',text:'specialty.formats.1',color:'editor.specialtyFormat2Color',spacing:'editor.specialtyFormat2Spacing',min:10,max:800},
+  specialtyFormat3:{x:'editor.specialtyFormat3X',y:'editor.specialtyFormat3Y',size:'editor.specialtyFormat3Size',font:'editor.specialtyFormat3Font',text:'specialty.formats.2',color:'editor.specialtyFormat3Color',spacing:'editor.specialtyFormat3Spacing',min:10,max:800},
+  specialtyFormat4:{x:'editor.specialtyFormat4X',y:'editor.specialtyFormat4Y',size:'editor.specialtyFormat4Size',font:'editor.specialtyFormat4Font',text:'specialty.formats.3',color:'editor.specialtyFormat4Color',spacing:'editor.specialtyFormat4Spacing',min:10,max:800},
+  specialtyLink:{x:'editor.specialtyLinkX',y:'editor.specialtyLinkY',size:'editor.specialtyLinkSize',font:'editor.specialtyLinkFont',text:'specialty.linkText',color:'editor.specialtyLinkColor',spacing:'editor.specialtyLinkSpacing',min:10,max:800},
   greenhouse:{},
-  greenhouseKicker:{x:'editor.greenhouseKickerX',y:'editor.greenhouseKickerY',size:'editor.greenhouseKickerSize',font:'editor.greenhouseKickerFont',color:'editor.greenhouseKickerColor',spacing:'editor.greenhouseKickerSpacing',min:10,max:300},
-  greenhouseTitle:{x:'editor.greenhouseTitleX',y:'editor.greenhouseTitleY',size:'editor.greenhouseTitleSize',font:'editor.greenhouseTitleFont',text:'greenhouse.title',color:'editor.greenhouseTitleColor',spacing:'editor.greenhouseTitleSpacing',min:10,max:300},
-  greenhouseAccent:{x:'editor.greenhouseAccentX',y:'editor.greenhouseAccentY',size:'editor.greenhouseAccentSize',font:'editor.greenhouseAccentFont',text:'greenhouse.accent',color:'editor.greenhouseAccentColor',spacing:'editor.greenhouseAccentSpacing',min:10,max:300},
-  greenhouseText:{x:'editor.greenhouseTextX',y:'editor.greenhouseTextY',size:'editor.greenhouseTextSize',font:'editor.greenhouseTextFont',text:'greenhouse.text',color:'editor.greenhouseTextColor',spacing:'editor.greenhouseTextSpacing',min:10,max:300},
+  greenhouseKicker:{x:'editor.greenhouseKickerX',y:'editor.greenhouseKickerY',size:'editor.greenhouseKickerSize',font:'editor.greenhouseKickerFont',text:'greenhouse.kicker',color:'editor.greenhouseKickerColor',spacing:'editor.greenhouseKickerSpacing',min:10,max:800},
+  greenhouseTitle:{x:'editor.greenhouseTitleX',y:'editor.greenhouseTitleY',size:'editor.greenhouseTitleSize',font:'editor.greenhouseTitleFont',text:'greenhouse.title',color:'editor.greenhouseTitleColor',spacing:'editor.greenhouseTitleSpacing',min:10,max:800},
+  greenhouseAccent:{x:'editor.greenhouseAccentX',y:'editor.greenhouseAccentY',size:'editor.greenhouseAccentSize',font:'editor.greenhouseAccentFont',text:'greenhouse.accent',color:'editor.greenhouseAccentColor',spacing:'editor.greenhouseAccentSpacing',min:10,max:800},
+  greenhouseText:{x:'editor.greenhouseTextX',y:'editor.greenhouseTextY',size:'editor.greenhouseTextSize',font:'editor.greenhouseTextFont',text:'greenhouse.text',color:'editor.greenhouseTextColor',spacing:'editor.greenhouseTextSpacing',min:10,max:800},
   assortment:{},
-  assortmentKicker:{x:'editor.assortmentKickerX',y:'editor.assortmentKickerY',size:'editor.assortmentKickerSize',font:'editor.assortmentKickerFont',text:'assortmentKicker',color:'editor.assortmentKickerColor',spacing:'editor.assortmentKickerSpacing',min:10,max:300},
-  assortmentTitle:{x:'editor.assortmentTitleX',y:'editor.assortmentTitleY',size:'editor.assortmentTitleSize',font:'editor.assortmentTitleFont',text:'assortmentHeading',color:'editor.assortmentTitleColor',spacing:'editor.assortmentTitleSpacing',min:10,max:300},
+  assortmentKicker:{x:'editor.assortmentKickerX',y:'editor.assortmentKickerY',size:'editor.assortmentKickerSize',font:'editor.assortmentKickerFont',text:'assortmentKicker',color:'editor.assortmentKickerColor',spacing:'editor.assortmentKickerSpacing',min:10,max:800},
+  assortmentTitle:{x:'editor.assortmentTitleX',y:'editor.assortmentTitleY',size:'editor.assortmentTitleSize',font:'editor.assortmentTitleFont',text:'assortmentHeading',color:'editor.assortmentTitleColor',spacing:'editor.assortmentTitleSpacing',min:10,max:800},
   mother:{},
-  motherKicker:{x:'editor.motherKickerX',y:'editor.motherKickerY',size:'editor.motherKickerSize',font:'editor.motherKickerFont',color:'editor.motherKickerColor',spacing:'editor.motherKickerSpacing',min:10,max:300},
-  motherTitle:{x:'editor.motherTitleX',y:'editor.motherTitleY',size:'editor.motherTitleSize',font:'editor.motherTitleFont',text:'mother.title',color:'editor.motherTitleColor',spacing:'editor.motherTitleSpacing',min:10,max:300},
-  motherAccent:{x:'editor.motherAccentX',y:'editor.motherAccentY',size:'editor.motherAccentSize',font:'editor.motherAccentFont',text:'mother.accent',color:'editor.motherAccentColor',spacing:'editor.motherAccentSpacing',min:10,max:300},
-  motherText:{x:'editor.motherTextX',y:'editor.motherTextY',size:'editor.motherTextSize',font:'editor.motherTextFont',text:'mother.text',color:'editor.motherTextColor',spacing:'editor.motherTextSpacing',min:10,max:300},
+  motherKicker:{x:'editor.motherKickerX',y:'editor.motherKickerY',size:'editor.motherKickerSize',font:'editor.motherKickerFont',text:'mother.kicker',color:'editor.motherKickerColor',spacing:'editor.motherKickerSpacing',min:10,max:800},
+  motherTitle:{x:'editor.motherTitleX',y:'editor.motherTitleY',size:'editor.motherTitleSize',font:'editor.motherTitleFont',text:'mother.title',color:'editor.motherTitleColor',spacing:'editor.motherTitleSpacing',min:10,max:800},
+  motherAccent:{x:'editor.motherAccentX',y:'editor.motherAccentY',size:'editor.motherAccentSize',font:'editor.motherAccentFont',text:'mother.accent',color:'editor.motherAccentColor',spacing:'editor.motherAccentSpacing',min:10,max:800},
+  motherText:{x:'editor.motherTextX',y:'editor.motherTextY',size:'editor.motherTextSize',font:'editor.motherTextFont',text:'mother.text',color:'editor.motherTextColor',spacing:'editor.motherTextSpacing',min:10,max:800},
   gallery:{},
-  galleryKicker:{x:'editor.galleryKickerX',y:'editor.galleryKickerY',size:'editor.galleryKickerSize',font:'editor.galleryKickerFont',text:'galleryKicker',color:'editor.galleryKickerColor',spacing:'editor.galleryKickerSpacing',min:10,max:300},
-  galleryTitle:{x:'editor.galleryTitleX',y:'editor.galleryTitleY',size:'editor.galleryTitleSize',font:'editor.galleryTitleFont',text:'galleryHeading',color:'editor.galleryTitleColor',spacing:'editor.galleryTitleSpacing',min:10,max:300},
+  galleryKicker:{x:'editor.galleryKickerX',y:'editor.galleryKickerY',size:'editor.galleryKickerSize',font:'editor.galleryKickerFont',text:'galleryKicker',color:'editor.galleryKickerColor',spacing:'editor.galleryKickerSpacing',min:10,max:800},
+  galleryTitle:{x:'editor.galleryTitleX',y:'editor.galleryTitleY',size:'editor.galleryTitleSize',font:'editor.galleryTitleFont',text:'galleryHeading',color:'editor.galleryTitleColor',spacing:'editor.galleryTitleSpacing',min:10,max:800},
   knowledge:{},
-  knowledgeKicker:{x:'editor.knowledgeKickerX',y:'editor.knowledgeKickerY',size:'editor.knowledgeKickerSize',font:'editor.knowledgeKickerFont',text:'knowledgeKicker',color:'editor.knowledgeKickerColor',spacing:'editor.knowledgeKickerSpacing',min:10,max:300},
-  knowledgeTitle:{x:'editor.knowledgeTitleX',y:'editor.knowledgeTitleY',size:'editor.knowledgeTitleSize',font:'editor.knowledgeTitleFont',text:'knowledgeHeading',color:'editor.knowledgeTitleColor',spacing:'editor.knowledgeTitleSpacing',min:10,max:300},
+  knowledgeKicker:{x:'editor.knowledgeKickerX',y:'editor.knowledgeKickerY',size:'editor.knowledgeKickerSize',font:'editor.knowledgeKickerFont',text:'knowledgeKicker',color:'editor.knowledgeKickerColor',spacing:'editor.knowledgeKickerSpacing',min:10,max:800},
+  knowledgeTitle:{x:'editor.knowledgeTitleX',y:'editor.knowledgeTitleY',size:'editor.knowledgeTitleSize',font:'editor.knowledgeTitleFont',text:'knowledgeHeading',color:'editor.knowledgeTitleColor',spacing:'editor.knowledgeTitleSpacing',min:10,max:800},
   order:{},
-  orderKicker:{x:'editor.orderKickerX',y:'editor.orderKickerY',size:'editor.orderKickerSize',font:'editor.orderKickerFont',text:'order.kicker',color:'editor.orderKickerColor',spacing:'editor.orderKickerSpacing',min:10,max:300},
-  orderTitle:{x:'editor.orderTitleX',y:'editor.orderTitleY',size:'editor.orderTitleSize',font:'editor.orderTitleFont',text:'order.title',color:'editor.orderTitleColor',spacing:'editor.orderTitleSpacing',min:10,max:300},
-  orderAccent:{x:'editor.orderAccentX',y:'editor.orderAccentY',size:'editor.orderAccentSize',font:'editor.orderAccentFont',text:'order.accent',color:'editor.orderAccentColor',spacing:'editor.orderAccentSpacing',min:10,max:300},
-  orderText:{x:'editor.orderTextX',y:'editor.orderTextY',size:'editor.orderTextSize',font:'editor.orderTextFont',text:'order.text',color:'editor.orderTextColor',spacing:'editor.orderTextSpacing',min:10,max:300},
+  orderKicker:{x:'editor.orderKickerX',y:'editor.orderKickerY',size:'editor.orderKickerSize',font:'editor.orderKickerFont',text:'order.kicker',color:'editor.orderKickerColor',spacing:'editor.orderKickerSpacing',min:10,max:800},
+  orderTitle:{x:'editor.orderTitleX',y:'editor.orderTitleY',size:'editor.orderTitleSize',font:'editor.orderTitleFont',text:'order.title',color:'editor.orderTitleColor',spacing:'editor.orderTitleSpacing',min:10,max:800},
+  orderAccent:{x:'editor.orderAccentX',y:'editor.orderAccentY',size:'editor.orderAccentSize',font:'editor.orderAccentFont',text:'order.accent',color:'editor.orderAccentColor',spacing:'editor.orderAccentSpacing',min:10,max:800},
+  orderText:{x:'editor.orderTextX',y:'editor.orderTextY',size:'editor.orderTextSize',font:'editor.orderTextFont',text:'order.text',color:'editor.orderTextColor',spacing:'editor.orderTextSpacing',min:10,max:800},
   contacts:{}
 };
+
+for(let i=1;i<=6;i++){
+  META['assortmentItem'+i]={x:'editor.assortmentItem'+i+'X',y:'editor.assortmentItem'+i+'Y',size:'editor.assortmentItem'+i+'Size',font:'editor.assortmentItem'+i+'Font',text:'assortment.'+(i-1),color:'editor.assortmentItem'+i+'Color',spacing:'editor.assortmentItem'+i+'Spacing',min:10,max:800};
+  META['assortmentDesc'+i]={x:'editor.assortmentDesc'+i+'X',y:'editor.assortmentDesc'+i+'Y',size:'editor.assortmentDesc'+i+'Size',font:'editor.assortmentDesc'+i+'Font',text:'assortmentDescriptions.'+(i-1),color:'editor.assortmentDesc'+i+'Color',spacing:'editor.assortmentDesc'+i+'Spacing',min:10,max:800};
+  META['assortmentIndex'+i]={x:'editor.assortmentIndex'+i+'X',y:'editor.assortmentIndex'+i+'Y',size:'editor.assortmentIndex'+i+'Size',font:'editor.assortmentIndex'+i+'Font',color:'editor.assortmentIndex'+i+'Color',spacing:'editor.assortmentIndex'+i+'Spacing',min:10,max:800};
+}
+META.assortmentPrice={x:'editor.assortmentPriceX',y:'editor.assortmentPriceY',size:'editor.assortmentPriceSize',font:'editor.assortmentPriceFont',text:'assortmentPriceText',color:'editor.assortmentPriceColor',spacing:'editor.assortmentPriceSpacing',min:10,max:800};
+META.galleryLink={x:'editor.galleryLinkX',y:'editor.galleryLinkY',size:'editor.galleryLinkSize',font:'editor.galleryLinkFont',text:'galleryLinkText',color:'editor.galleryLinkColor',spacing:'editor.galleryLinkSpacing',min:10,max:800};
+for(let i=1;i<=3;i++){
+  META['resourceTitle'+i]={x:'editor.resourceTitle'+i+'X',y:'editor.resourceTitle'+i+'Y',size:'editor.resourceTitle'+i+'Size',font:'editor.resourceTitle'+i+'Font',text:'resources.'+(i-1)+'.title',color:'editor.resourceTitle'+i+'Color',spacing:'editor.resourceTitle'+i+'Spacing',min:10,max:800};
+  META['resourceIndex'+i]={x:'editor.resourceIndex'+i+'X',y:'editor.resourceIndex'+i+'Y',size:'editor.resourceIndex'+i+'Size',font:'editor.resourceIndex'+i+'Font',color:'editor.resourceIndex'+i+'Color',spacing:'editor.resourceIndex'+i+'Spacing',min:10,max:800};
+}
+META.orderButton={x:'editor.orderButtonX',y:'editor.orderButtonY',size:'editor.orderButtonSize',font:'editor.orderButtonFont',text:'order.button',color:'editor.orderButtonColor',spacing:'editor.orderButtonSpacing',min:10,max:800};
+META.orderPhone={x:'editor.orderPhoneX',y:'editor.orderPhoneY',size:'editor.orderPhoneSize',font:'editor.orderPhoneFont',text:'phone',color:'editor.orderPhoneColor',spacing:'editor.orderPhoneSpacing',min:10,max:800};
+META.orderHelp={x:'editor.orderHelpX',y:'editor.orderHelpY',size:'editor.orderHelpSize',font:'editor.orderHelpFont',text:'order.help',color:'editor.orderHelpColor',spacing:'editor.orderHelpSpacing',min:10,max:800};
 
 const readDataUrl=(file:Blob)=>new Promise<string>((ok,bad)=>{
   const r=new FileReader(); r.onload=()=>ok(String(r.result)); r.onerror=bad; r.readAsDataURL(file);
