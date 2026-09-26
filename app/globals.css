@@ -10,6 +10,13 @@
 .brand-logo-slot{display:grid;place-items:center;flex:0 0 auto;min-height:66px;position:relative}
 .header-brand .brand-image{display:block;max-width:none;object-fit:contain}
 .header-brand .brand-copy{display:block;position:relative;margin-left:.6rem;line-height:1.08;white-space:nowrap}
+
+.header-brush-signature{display:flex;flex-direction:column;justify-content:center;margin-left:.9rem;margin-right:.45rem;transform:rotate(-7deg) translateY(-1px);transform-origin:center;color:#6b573b;font-family:'Snell Roundhand','Segoe Script','Brush Script MT','Apple Chancery',cursive;font-size:1.05rem;line-height:.82;font-weight:500;letter-spacing:.01em;white-space:nowrap;text-shadow:0 1px 0 rgba(255,255,255,.35);opacity:.92}
+.header-brush-signature span:nth-child(2){margin-left:.8rem;font-size:.9em}
+.header-brush-signature span:nth-child(3){margin-left:1.55rem;font-size:.94em}
+@media(max-width:1100px) and (min-width:761px){.header-brush-signature{font-size:.82rem;margin-left:.45rem;margin-right:.2rem;transform:rotate(-7deg) translateY(-1px)}}
+@media(max-width:760px){.header-brush-signature{font-size:.68rem;margin-left:.25rem;margin-right:0;transform:rotate(-6deg)}.header-brush-signature span:nth-child(2){margin-left:.45rem}.header-brush-signature span:nth-child(3){margin-left:.85rem}}
+
 .topbar nav{justify-self:center;white-space:nowrap}
 .topbar .phone{justify-self:end;white-space:nowrap}
 .hero{background-color:#2a221d}
