@@ -438,11 +438,13 @@ export default function Admin(){
       <aside className="ve-inspector">
         <div className="panel-title"><span>{LAYERS.find(x=>x.key===selected)?.label}</span><small>Свойства элемента</small></div>
 
+        {LAYERS.find(x=>x.key===selected)?.group==='Шапка'&&<div className="inspector-section"><h3>Цвет шапки</h3><label className="color-control"><input type="color" value={current.header.bgColor||'#f3eee4'} onChange={e=>update('header.bgColor',e.target.value)}/><span>{current.header.bgColor||'#f3eee4'}</span></label><small style={{display:'block',marginTop:8,color:'#8e8175',lineHeight:1.45}}>Меняет фон всей шапки. Цвет сразу виден в предпросмотре.</small></div>}
+
         {meta.text&&<div className="inspector-section"><label className="text-label">Текст<textarea value={getPath(current,meta.text)||''} onChange={e=>update(meta.text!,e.target.value)}/></label></div>}
 
         {meta.font&&<div className="inspector-section"><label className="text-label">Шрифт<select value={getPath(current,meta.font)||'Georgia'} onChange={e=>update(meta.font!,e.target.value)}>{FONTS.map(font=><option key={font} style={{fontFamily:font}}>{font}</option>)}</select></label><div className="font-preview" style={{fontFamily:getPath(current,meta.font)||'Georgia'}}>Aa Бб — красивый сад</div></div>}
 
-        {meta.color&&<div className="inspector-section"><h3>Цвет</h3><label className="color-control"><input type="color" value={getPath(current,meta.color)||(selected==='headerBg'?'#f4eee3':selected==='accent'?'#d5ad68':selected==='contactDock'?'#5a482f':'#ffffff')} onChange={e=>update(meta.color!,e.target.value)}/><span>{getPath(current,meta.color)||'Выбрать цвет'}</span></label></div>}
+        {meta.color&&selected!=='headerBg'&&<div className="inspector-section"><h3>Цвет</h3><label className="color-control"><input type="color" value={getPath(current,meta.color)||(selected==='accent'?'#d5ad68':selected==='contactDock'?'#5a482f':'#ffffff')} onChange={e=>update(meta.color!,e.target.value)}/><span>{getPath(current,meta.color)||'Выбрать цвет'}</span></label></div>}
 
         {meta.spacing&&<div className="inspector-section"><h3>Расстояние между буквами</h3><Slider label="Интервал, em" value={num(getPath(current,meta.spacing),0)} min={-0.08} max={0.30} step={0.005} onChange={v=>update(meta.spacing!,String(v))}/></div>}
 
