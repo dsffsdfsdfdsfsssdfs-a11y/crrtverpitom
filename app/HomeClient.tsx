@@ -193,7 +193,30 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
     <section className="knowledge wrap" id="knowledge" data-editor-key="knowledge"><p data-editor-key="knowledgeKicker" className="eyebrow gold" style={editorTextStyle('knowledgeKicker',100)}>{c.knowledgeKicker||'ДЕЛИМСЯ ОПЫТОМ'}</p><h2 data-editor-key="knowledgeTitle" style={editorTextStyle('knowledgeTitle',100)}>{c.knowledgeHeading||'Полезная информация'}</h2><div className="knowledge-list">{c.resources.map((x:{title:string,url:string},i:number)=><a href={x.url} key={i}><span data-editor-key={'resourceIndex'+(i+1)} style={editorTextStyle('resourceIndex'+(i+1),100)}>0{i+1}</span><b data-editor-key={'resourceTitle'+(i+1)} style={editorTextStyle('resourceTitle'+(i+1),100)}>{x.title}</b><i>↗</i></a>)}</div></section>
     <section className="order wrap" id="order" data-editor-key="order"><div><p data-editor-key="orderKicker" className="eyebrow" style={editorTextStyle('orderKicker',100)}>{c.order?.kicker||'СДЕЛАЕМ ПОДБОРКУ'}</p><h2><span data-editor-key="orderTitle" style={{...editorTextStyle('orderTitle',100),display:'inline-block'}}>{c.order?.title||'Готовы выбрать'}</span><br/><em><span data-editor-key="orderAccent" style={{...editorTextStyle('orderAccent',100),display:'inline-block'}}>{c.order?.accent||'растения?'}</span></em></h2></div><div><p data-editor-key="orderText" style={editorTextStyle('orderText',100)}>{c.order?.text||'Напишите нам — подберём культуры, объём и формат поставки для вашей задачи.'}</p><button data-editor-key="orderButton" className="gold-btn" style={editorTextStyle('orderButton',100)} onClick={()=>setOrder(true)}>{c.order?.button||'Оформить заказ'} <span>↗</span></button><div className="help"><a data-editor-key="orderPhone" style={editorTextStyle('orderPhone',100)} href={'tel:+'+c.phoneLink}>{c.phone}</a><span data-editor-key="orderHelp" style={editorTextStyle('orderHelp',100)}>{c.order?.help||'Ответим на вопросы и поможем, если возникла проблема.'}</span></div></div></section>
     <footer data-editor-key="contacts"><div className="brand"><span className="brand-mark">ЦР</span><span>Центр<br/><b>размножения растений</b></span></div><div className="footer-contact">{contactPeople.map((x:{name:string,label:string,phone:string},i:number)=>{const shownLabel=i===0?(x.label||'').replace(/^8(?=\s*\()/,'+7'):x.label;return <div key={x.name}><small>{x.name}</small><a href={phoneHref(x.phone)}>{shownLabel}</a></div>})}<a href={'mailto:'+c.email}>{c.email}</a></div><a className="map" target="_blank" href={'https://yandex.ru/maps/?text='+encodeURIComponent(c.address)}>{c.address} ↗</a></footer>
-    {order&&<div className="modal" onClick={()=>setOrder(false)}><form onClick={e=>e.stopPropagation()}><button className="close" type="button" onClick={()=>setOrder(false)}>×</button><p className="eyebrow gold">ЗАЯВКА</p><h2>Расскажите, что вам нужно</h2><input required placeholder="Ваше имя"/><input required type="tel" placeholder="Телефон для связи"/><textarea placeholder="Какие растения и какой объём интересуют?"/><button className="gold-btn" type="submit">Отправить заявку <span>↗</span></button><small>Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</small></form></div>}
+    {order&&<div className="modal order-modal" onClick={()=>setOrder(false)}>
+      <form className="order-concierge-modal" onClick={e=>e.stopPropagation()}>
+        <button className="close" type="button" onClick={()=>setOrder(false)} aria-label="Закрыть">×</button>
+        <section className="order-concierge-intro">
+          <p className="order-concierge-kicker">Индивидуальный подбор</p>
+          <h2>Поможем<br/>с заказом</h2>
+          <p className="order-concierge-text">Оставьте контакт и коротко опишите запрос. Мы уточним интересующие растения, объём и подходящий формат поставки.</p>
+          <div className="order-concierge-points">
+            <span>Собственное производство</span>
+            <span>Кассеты 144 / 104 / 96</span>
+            <span>Контейнеры P9</span>
+          </div>
+        </section>
+        <section className="order-concierge-form">
+          <p className="eyebrow gold">ЗАЯВКА</p>
+          <h2>Ваш запрос</h2>
+          <input required placeholder="Ваше имя"/>
+          <input required type="tel" placeholder="Телефон для связи"/>
+          <textarea placeholder="Какие растения и какой объём интересуют?"/>
+          <button className="gold-btn order-concierge-submit" type="submit">Отправить заявку <span>↗</span></button>
+          <small>Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</small>
+        </section>
+      </form>
+    </div>}
     </main>
   </>
 }
