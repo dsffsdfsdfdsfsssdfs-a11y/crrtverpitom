@@ -78,3 +78,9 @@ linear-gradient(180deg,rgba(11,10,8,.04),rgba(11,10,8,.20));pointer-events:none}
 .color-control{display:flex;align-items:center;gap:10px;color:#d8c6b8;font-size:11px}.color-control input[type=color]{width:48px;height:36px;padding:2px;border:1px solid #5a4031;border-radius:8px;background:#21150f;cursor:pointer}.color-control span{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#bda99a}
 .editor-image-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #473126}.editor-image-row>span{font-size:11px;color:#b7ada5}.editor-image-row .upload-btn{min-width:92px;padding:8px 10px}
 .editor-resource{padding:10px 0 2px;border-bottom:1px solid #473126}.editor-resource:last-child{border-bottom:0}
+
+.specialty-image-hint{margin:12px 0 8px;padding:12px 13px;border:1px solid rgba(215,183,124,.24);border-radius:10px;background:rgba(215,183,124,.06)}
+.specialty-image-hint b{display:block;margin-bottom:5px;color:#e0bd7c;font-size:11px}
+.specialty-image-hint span{display:block;color:#a99b8d;font-size:10px;line-height:1.45}
+.specialty-card-upload>span{display:flex;flex-direction:column;gap:3px}
+.specialty-card-upload>span small{font-size:9px;color:#85786d}
