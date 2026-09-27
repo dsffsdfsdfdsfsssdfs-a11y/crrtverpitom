@@ -158,6 +158,7 @@ for(let i=1;i<=3;i++){
 META.orderButton={x:'editor.orderButtonX',y:'editor.orderButtonY',size:'editor.orderButtonSize',font:'editor.orderButtonFont',text:'order.button',color:'editor.orderButtonColor',spacing:'editor.orderButtonSpacing',min:10,max:800};
 META.orderPhone={x:'editor.orderPhoneX',y:'editor.orderPhoneY',size:'editor.orderPhoneSize',font:'editor.orderPhoneFont',text:'phone',color:'editor.orderPhoneColor',spacing:'editor.orderPhoneSpacing',min:10,max:800};
 META.orderHelp={x:'editor.orderHelpX',y:'editor.orderHelpY',size:'editor.orderHelpSize',font:'editor.orderHelpFont',text:'order.help',color:'editor.orderHelpColor',spacing:'editor.orderHelpSpacing',min:10,max:800};
+const BUTTON_LAYER_KEYS=['specialtyLink','assortmentPrice','galleryLink','orderButton'];
 
 const readDataUrl=(file:Blob)=>new Promise<string>((ok,bad)=>{
   const r=new FileReader(); r.onload=()=>ok(String(r.result)); r.onerror=bad; r.readAsDataURL(file);
@@ -495,6 +496,11 @@ export default function Admin(){
 
         {meta.size&&<div className="inspector-section"><h3>Размер</h3><Slider label={selected==='logo'?'Размер, px':'Масштаб, %'} value={num(getPath(current,meta.size),100)} min={meta.min||35} max={meta.max||240} onChange={v=>update(meta.size!,String(v))}/></div>}
 
+        {BUTTON_LAYER_KEYS.includes(selected)&&<div className="inspector-section"><h3>Размер кнопки</h3>
+          <Slider label="Масштаб кнопки, %" value={num(current.editor?.[selected+'ButtonScale'],100)} min={45} max={180} step={1} onChange={v=>update('editor.'+selected+'ButtonScale',String(v))}/>
+          <small style={{display:'block',marginTop:8,color:'#8e8175',lineHeight:1.45}}>Меняет размер всей кнопки целиком: фон, отступы и текст.</small>
+        </div>}
+
         {selected==='brandText'&&<div className="inspector-section"><h3>Текст шапки</h3><label className="text-label">Название<input value={current.header.title||''} onChange={e=>update('header.title',e.target.value)}/></label><label className="text-label">Подпись<input value={current.header.subtitle||''} onChange={e=>update('header.subtitle',e.target.value)}/></label></div>}
 
         {selected==='logo'&&<div className="inspector-section"><h3>Логотип</h3><label className="upload-btn">{uploading?'Загрузка…':'Заменить логотип'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'header.logoImage')}/></label></div>}
@@ -603,7 +609,7 @@ export default function Admin(){
 
         <button className="reset-btn" onClick={()=>{
           const defaults:any={headerBg:[0,0,100],logo:[0,0,80],brushText1:[0,0,55],brushText2:[0,24,55],brandText:[0,0,125],heroImage:[50,50,105],line1:[0,0,100],line2:[0,0,112],accent:[0,0,95],subtitle:[0,0,100],contactDock:[0,0,100]};
-          const d=defaults[selected]||[0,0,100]; if(meta.x)update(meta.x,String(d[0])); if(meta.y)update(meta.y,String(d[1])); if(meta.size)update(meta.size,String(d[2])); if(meta.spacing)update(meta.spacing,'0');
+          const d=defaults[selected]||[0,0,100]; if(meta.x)update(meta.x,String(d[0])); if(meta.y)update(meta.y,String(d[1])); if(meta.size)update(meta.size,String(d[2])); if(meta.spacing)update(meta.spacing,'0'); if(BUTTON_LAYER_KEYS.includes(selected))update('editor.'+selected+'ButtonScale','100');
         }}>Сбросить положение и размер</button>
       </aside>
     </div>
