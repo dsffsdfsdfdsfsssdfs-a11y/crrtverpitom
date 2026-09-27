@@ -1436,3 +1436,51 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
     border-radius:28px!important;
   }
 }
+
+
+/* Gallery button — ivory gold bottom variant 13 */
+.gallery-open-ivory{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:238px;
+  min-height:56px;
+  padding:0 1.6rem;
+  border:none;
+  border-radius:999px;
+  background:#fffaf4;
+  color:#5d4730;
+  font-size:.78rem;
+  font-weight:800;
+  letter-spacing:.075em;
+  text-transform:uppercase;
+  text-decoration:none;
+  box-shadow:
+    inset 0 -2px 0 #c7954f,
+    0 10px 22px rgba(76,54,34,.08);
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    background .22s ease;
+}
+.gallery-open-ivory:hover{
+  transform:translateY(-2px);
+  background:#fffdf9;
+  box-shadow:
+    inset 0 -2px 0 #c7954f,
+    0 14px 28px rgba(76,54,34,.12);
+}
+.gallery-open-ivory:active{
+  transform:translateY(0);
+}
+.gallery-open-ivory:focus-visible{
+  outline:2px solid rgba(199,149,79,.45);
+  outline-offset:3px;
+}
+@media(max-width:650px){
+  .gallery-open-ivory{
+    min-width:205px;
+    min-height:52px;
+    font-size:.72rem;
+  }
+}
