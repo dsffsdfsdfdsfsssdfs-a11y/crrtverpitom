@@ -483,3 +483,52 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .specialty-rail-foot p{margin:0;max-width:520px;color:#8b7765;font-size:.76rem;line-height:1.45;text-align:right}
 @media(max-width:980px){.specialty-rail-head{grid-template-columns:1fr}.specialty-rail-intro{max-width:680px}.specialty-rail-track{grid-template-columns:repeat(4,minmax(260px,280px));justify-content:start}.specialty-rail-foot{align-items:flex-start;flex-direction:column}.specialty-rail-foot p{text-align:left}}
 @media(max-width:640px){.specialty-rail{padding:52px 1.2rem 46px}.specialty-rail-title{font-size:clamp(2.8rem,13vw,4.15rem)}.specialty-rail-track{width:calc(100% + 1.2rem);margin-right:-1.2rem;grid-template-columns:repeat(4,78vw);gap:12px;padding-right:1.2rem}.specialty-rail-card{min-height:220px;border-radius:28px}.specialty-rail-card:has(.specialty-rail-image){min-height:0}.specialty-rail-image{height:190px}}
+
+
+/* Header shape experiment 02 — wavy bottom */
+/* Only the outer silhouette changes. Header contents/layout stay untouched. */
+.topbar{
+  border-bottom:0!important;
+  overflow:visible!important;
+  isolation:isolate;
+}
+.topbar::after{
+  content:'';
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-26px;
+  height:28px;
+  background:inherit;
+  pointer-events:none;
+  z-index:-1;
+  clip-path:polygon(
+    0 0,
+    100% 0,
+    100% 22%,
+    94% 27%,
+    88% 38%,
+    82% 52%,
+    76% 66%,
+    70% 76%,
+    64% 78%,
+    58% 70%,
+    52% 55%,
+    46% 39%,
+    40% 31%,
+    34% 34%,
+    28% 47%,
+    22% 63%,
+    16% 72%,
+    10% 68%,
+    4% 50%,
+    0 42%
+  );
+  filter:drop-shadow(0 7px 5px rgba(60,45,31,.08));
+}
+@media(max-width:760px){
+  .topbar::after{
+    bottom:-18px;
+    height:20px;
+  }
+}
