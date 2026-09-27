@@ -372,7 +372,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <button type="button" className="full-gallery-close" onClick={()=>setGalleryOpen(false)} aria-label="Закрыть">×</button>
         </div>
         <div className="full-gallery-grid">
-          {fullGalleryImages.map((url:string,i:number)=><button type="button" key={url+'-'+i} className="full-gallery-item" onClick={()=>setLightboxUrl(url)}><img src={url} alt={'Растения питомника — фото '+(i+1)} loading="lazy"/></button>)}
+          {fullGalleryImages.map((url:string,i:number)=><button type="button" key={url+'-'+i} className="full-gallery-item" onClick={()=>setLightboxUrl(url)}><img src={url} alt={'Растения питомника — фото '+(i+1)} loading="lazy" decoding="async" fetchPriority="low"/></button>)}
         </div>
         {fullGalleryImages.length===0&&<div className="full-gallery-empty">Фотографии появятся здесь после добавления в редакторе.</div>}
       </div>
