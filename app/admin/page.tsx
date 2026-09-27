@@ -488,7 +488,20 @@ export default function Admin(){
           <label className="text-label">Заголовок<input value={current.greenhouse.title||''} onChange={e=>update('greenhouse.title',e.target.value)}/></label>
           <label className="text-label">Акцент<input value={current.greenhouse.accent||''} onChange={e=>update('greenhouse.accent',e.target.value)}/></label>
           <label className="text-label">Текст<textarea value={current.greenhouse.text||''} onChange={e=>update('greenhouse.text',e.target.value)}/></label>
-          <label className="upload-btn">{uploading?'Загрузка…':'Заменить фото теплиц'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'greenhouse.image')}/></label>
+          <div className="specialty-image-editor">
+            <div className="specialty-image-hint">
+              <b>Фотографии страницы 3</b>
+              <span>Обе фотографии меняются отдельно. Первая — большое фото слева, вторая — верхнее фото справа.</span>
+            </div>
+            <div className="editor-image-row specialty-card-upload">
+              <span>Фото 1 — основное</span>
+              <label className="upload-btn">{uploading?'Загрузка…':'Заменить фото 1'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'greenhouse.image')}/></label>
+            </div>
+            <div className="editor-image-row specialty-card-upload">
+              <span>Фото 2 — дополнительное</span>
+              <label className="upload-btn">{uploading?'Загрузка…':(current.greenhouse.secondaryImage?'Заменить фото 2':'Добавить фото 2')}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'greenhouse.secondaryImage')}/></label>
+            </div>
+          </div>
         </div>}
 
         {selected==='assortment'&&<div className="inspector-section"><h3>Страница 4 — Ассортимент</h3>
