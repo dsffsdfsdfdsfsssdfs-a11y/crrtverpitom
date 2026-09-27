@@ -215,14 +215,12 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
       <div className="plant-grid">
         {c.assortment.map((x:string,i:number)=><article key={i} className={'plant p'+i}>
-          <span data-editor-key={'assortmentIndex'+(i+1)} style={editorTextStyle('assortmentIndex'+(i+1),100)}>0{i+1}</span>
           <h3 data-editor-key={'assortmentItem'+(i+1)} style={editorTextStyle('assortmentItem'+(i+1),100)}>{x}</h3>
           <p data-editor-key={'assortmentDesc'+(i+1)} style={editorTextStyle('assortmentDesc'+(i+1),100)}>{(c.assortmentDescriptions?.[i])||(i===5?'Вейгела · ива · лапчатка · рябинник · снежноягодник':'Сортовые растения собственного производства')}</p>
-          <i>↗</i>
         </article>)}
       </div>
       <div className="assortment-luxury-price">
-        <a data-editor-key="assortmentPrice" className="outline-btn" href={c.priceUrl} style={editorTextStyle('assortmentPrice',100)}>{c.assortmentPriceText||'Скачать прайс'} <span>↓</span></a>
+        <a data-editor-key="assortmentPrice" className="price-download-btn" href={c.priceUrl||'#'} download={Boolean(c.priceUrl&&c.priceUrl!=='#')} style={editorTextStyle('assortmentPrice',100)}>{c.assortmentPriceText||'Скачать прайс'}</a>
       </div>
     </section>
     <section className="mother" data-editor-key="mother" style={{backgroundImage:`linear-gradient(90deg,#281914e8,#28191424),url(${optimizeImage(c.mother.image)})`}}><div className="wrap mother-copy"><p data-editor-key="motherKicker" className="eyebrow" style={editorTextStyle('motherKicker',100)}>{c.mother.kicker||'ОСНОВА КАЧЕСТВА'}</p><h2><span data-editor-key="motherTitle" style={{...editorTextStyle('motherTitle',100),display:'inline-block'}}>{c.mother.title}</span><br/><em><span data-editor-key="motherAccent" style={{...editorTextStyle('motherAccent',100),display:'inline-block'}}>{c.mother.accent}</span></em></h2><p data-editor-key="motherText" style={editorTextStyle('motherText',100)}>{c.mother.text}</p></div></section>
