@@ -1219,3 +1219,22 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
     border-radius:16px;
   }
 }
+
+
+/* Assortment card photo support */
+.assortment-luxury .plant.has-image{
+  background-size:cover!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  color:#fff;
+}
+.assortment-luxury .plant.has-image h3,
+.assortment-luxury .plant.has-image p{
+  position:relative;
+  z-index:1;
+  color:#fff;
+  text-shadow:0 2px 12px rgba(0,0,0,.34);
+}
+.assortment-luxury .plant.has-image:hover{
+  filter:saturate(1.04) brightness(1.03);
+}
