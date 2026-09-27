@@ -219,7 +219,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <input required placeholder="Ваше имя"/>
           <input required type="tel" placeholder="Телефон для связи"/>
           <textarea placeholder="Какие растения и какой объём интересуют?"/>
-          <button className="gold-btn order-concierge-submit" type="submit">Отправить заявку <span>↗</span></button>
+          <button className="gold-btn order-concierge-submit" type="submit">Отправить заявку</button>
           <small>Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</small>
         </section>
       </form>
