@@ -1484,3 +1484,32 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
     font-size:.72rem;
   }
 }
+
+
+/* Price button matches gallery ivory variant */
+.assortment-luxury-price .gallery-price-ivory{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:238px!important;
+  min-height:56px!important;
+  padding:0 1.6rem!important;
+  border:none!important;
+  border-radius:999px!important;
+  background:#fffaf4!important;
+  color:#5d4730!important;
+  font-weight:800!important;
+  letter-spacing:.075em!important;
+  text-transform:uppercase!important;
+  text-decoration:none!important;
+  box-shadow:
+    inset 0 -2px 0 #c7954f,
+    0 10px 22px rgba(76,54,34,.08)!important;
+  transition:transform .22s ease,box-shadow .22s ease,background .22s ease!important;
+}
+.assortment-luxury-price .gallery-price-ivory:hover{
+  background:#fffdf9!important;
+  box-shadow:
+    inset 0 -2px 0 #c7954f,
+    0 14px 28px rgba(76,54,34,.12)!important;
+}
