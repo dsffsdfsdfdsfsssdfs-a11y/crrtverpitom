@@ -170,7 +170,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           const clean=String(x).replace(/\s*ячеек?/i,'').trim();
           const title=clean.toUpperCase()==='Р9'?'Контейнер Р9':`Кассета ${clean}`;
           const image=(c.specialty.cardImages||[])[i];
-          return <article className={'specialty-rail-card '+(i===0?'is-featured':'')} key={i}>
+          return <article className={'specialty-rail-card tone-'+(i+1)} key={i}>
             {image&&<div className="specialty-rail-image"><img src={optimizeImage(image)} alt={title}/></div>}
             <div className="specialty-rail-card-copy">
               <h3>{title}</h3>
