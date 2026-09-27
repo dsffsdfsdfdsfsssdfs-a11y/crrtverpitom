@@ -442,8 +442,12 @@ export default function Admin(){
           <label className="text-label">Текст справа<textarea value={current.specialty.paragraph2||''} onChange={e=>update('specialty.paragraph2',e.target.value)}/></label>
           {(current.specialty.formats||[]).map((x:string,i:number)=><label className="text-label" key={i}>Формат {i+1}<input value={x} onChange={e=>update('specialty.formats.'+i,e.target.value)}/></label>)}
           <div className="specialty-image-editor">
+            <div className="specialty-image-hint">
+              <b>Рекомендуемый размер фото: 1600 × 975 px</b>
+              <span>Пропорция 1.64:1. При таком размере фотография заполняет карточку аккуратно и почти без обрезки. Главный объект лучше располагать ближе к центру кадра.</span>
+            </div>
             {[0,1,2,3].map(i=><div className="editor-image-row specialty-card-upload" key={i}>
-              <span>Фото карточки {i+1}</span>
+              <span>Фото карточки {i+1}<small>1600 × 975 px</small></span>
               <label className="upload-btn">{uploading?'Загрузка…':(current.specialty.cardImages?.[i]?'Заменить':'Добавить фото')}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'specialty.cardImages.'+i)}/></label>
             </div>)}
           </div>
