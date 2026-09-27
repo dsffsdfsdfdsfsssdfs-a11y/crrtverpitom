@@ -765,15 +765,18 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
   resize:vertical;
 }
 .order-concierge-submit{
-  width:100%;
+  width:auto;
+  min-width:220px;
+  align-self:flex-start;
   margin-top:1.15rem;
-  min-height:58px;
-  border-radius:16px!important;
+  min-height:50px;
+  padding:0 1.5rem!important;
+  border-radius:14px!important;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:.65rem;
-  box-shadow:0 10px 24px rgba(119,82,40,.12);
+  gap:0;
+  box-shadow:0 8px 20px rgba(119,82,40,.11);
   transition:transform .22s ease,box-shadow .22s ease,filter .22s ease;
 }
 .order-concierge-submit:hover{
@@ -781,11 +784,6 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
   box-shadow:0 16px 32px rgba(119,82,40,.18);
   filter:saturate(1.05) brightness(1.03);
 }
-.order-concierge-submit span{
-  margin-left:.3rem!important;
-  transition:transform .22s ease;
-}
-.order-concierge-submit:hover span{transform:translate(3px,-3px)}
 .order-modal .order-concierge-form small{
   display:block;
   margin-top:.9rem;
@@ -844,7 +842,7 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
     padding:1.65rem 1.4rem 1.8rem;
   }
   .order-modal .order-concierge-form h2{font-size:2.45rem}
-  .order-concierge-submit{min-height:56px}
+  .order-concierge-submit{min-height:48px;min-width:200px}
 }
 @media(max-width:480px){
   .order-concierge-points{grid-template-columns:1fr}
