@@ -349,7 +349,10 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
         </div>
         <a data-editor-key="galleryLink" className="gallery-pill-link" href="#order" style={editorTextStyle('galleryLink',100)}>{c.galleryLinkText||'Открыть галерею'}</a>
       </div>
-      <div className="gallery-arc-stage">
+      <div className="gallery-arc-stage" style={{
+        transform:`translate3d(${num(c.galleryLayout?.x,0)}px,${num(c.galleryLayout?.y,0)}px,0) scale(${clamp(num(c.galleryLayout?.scale,100),55,145)/100})`,
+        transformOrigin:'center center'
+      }}>
         <span className="gallery-arc-line gallery-arc-line-one" aria-hidden="true"/>
         <span className="gallery-arc-line gallery-arc-line-two" aria-hidden="true"/>
         {c.galleryImages.slice(0,4).map((url:string,i:number)=>{
