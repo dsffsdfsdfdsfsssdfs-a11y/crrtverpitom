@@ -1006,3 +1006,57 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
   .greenhouse-story-copy h2{font-size:3rem}
   .greenhouse-story-metric{font-size:3rem}
 }
+
+
+/* Section separator — gold line center */
+.greenhouse-story + .assortment{
+  position:relative;
+  padding-top:9rem;
+}
+.greenhouse-story + .assortment::before{
+  content:'';
+  position:absolute;
+  top:3.15rem;
+  left:2.5rem;
+  right:2.5rem;
+  height:1px;
+  background:linear-gradient(
+    90deg,
+    rgba(177,124,52,0),
+    rgba(177,124,52,.48) 14%,
+    rgba(177,124,52,.48) 86%,
+    rgba(177,124,52,0)
+  );
+}
+.greenhouse-story + .assortment::after{
+  content:'КОЛЛЕКЦИЯ';
+  position:absolute;
+  top:3.15rem;
+  left:50%;
+  transform:translate(-50%,-50%);
+  padding:.7rem 1.15rem;
+  border-radius:999px;
+  background:#f4eee3;
+  border:1px solid rgba(177,124,52,.28);
+  color:#a77931;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  font-size:.64rem;
+  font-weight:700;
+  letter-spacing:.14em;
+  line-height:1;
+  box-shadow:0 8px 20px rgba(54,38,25,.05);
+  z-index:2;
+}
+@media(max-width:760px){
+  .greenhouse-story + .assortment{padding-top:7rem}
+  .greenhouse-story + .assortment::before{
+    top:2.45rem;
+    left:1.5rem;
+    right:1.5rem;
+  }
+  .greenhouse-story + .assortment::after{
+    top:2.45rem;
+    font-size:.58rem;
+    padding:.62rem .95rem;
+  }
+}
