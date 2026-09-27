@@ -576,6 +576,22 @@ export default function Admin(){
         {selected==='gallery'&&<div className="inspector-section"><h3>Галерея</h3>
           <label className="text-label">Метка<input value={current.galleryKicker||''} onChange={e=>update('galleryKicker',e.target.value)}/></label>
           <label className="text-label">Заголовок<textarea value={current.galleryHeading||''} onChange={e=>update('galleryHeading',e.target.value)}/></label>
+          <div className="specialty-image-editor">
+            <div className="specialty-image-hint">
+              <b>Расположение фотографий</b>
+              <span>Меняйте размер всей композиции и сдвигайте её целиком. Это не обрезает сами фотографии.</span>
+            </div>
+            <label className="text-label">Размер композиции — {num(current.galleryLayout?.scale,100)}%
+              <input type="range" min="55" max="145" step="1" value={num(current.galleryLayout?.scale,100)} onChange={e=>update('galleryLayout.scale',Number(e.target.value))}/>
+            </label>
+            <label className="text-label">Сдвиг по горизонтали — {num(current.galleryLayout?.x,0)} px
+              <input type="range" min="-260" max="260" step="2" value={num(current.galleryLayout?.x,0)} onChange={e=>update('galleryLayout.x',Number(e.target.value))}/>
+            </label>
+            <label className="text-label">Сдвиг по вертикали — {num(current.galleryLayout?.y,0)} px
+              <input type="range" min="-220" max="220" step="2" value={num(current.galleryLayout?.y,0)} onChange={e=>update('galleryLayout.y',Number(e.target.value))}/>
+            </label>
+            <button type="button" className="reset-btn" onClick={()=>{update('galleryLayout.scale',100);update('galleryLayout.x',0);update('galleryLayout.y',0)}}>Сбросить расположение</button>
+          </div>
           {(current.galleryImages||[]).map((url:string,i:number)=><div className="editor-image-row" key={i}><span>Фото {i+1}</span><label className="upload-btn">{uploading?'Загрузка…':'Заменить'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'galleryImages.'+i)}/></label></div>)}
         </div>}
 
