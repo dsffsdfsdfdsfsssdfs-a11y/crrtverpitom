@@ -29,6 +29,111 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
     document.body.style.overflow='hidden';
     return()=>{document.body.style.overflow=previous};
   },[order]);
+  useEffect(()=>{
+    const section=document.querySelector('.mother.mother-centered-poster') as HTMLElement|null;
+    if(!section)return;
+    const back=section.querySelector('.mother-particles-back') as HTMLCanvasElement|null;
+    const front=section.querySelector('.mother-particles-front') as HTMLCanvasElement|null;
+    if(!back||!front)return;
+
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduced)return;
+
+    type Particle={x:number;y:number;vx:number;vy:number;r:number;alpha:number;phase:number;twinkle:number;color:string};
+    const palette=['255,232,181','247,207,135','241,192,111','223,168,83','255,239,203','255,220,150'];
+
+    const createSystem=(canvas:HTMLCanvasElement,frontLayer:boolean)=>{
+      const ctx=canvas.getContext('2d');
+      if(!ctx)return null;
+      const dpr=Math.min(window.devicePixelRatio||1,2);
+      let w=1,h=1;
+      let particles:Particle[]=[];
+      const targetCount=()=>window.innerWidth<760?(frontLayer?34:70):(frontLayer?68:140);
+
+      const makeParticle=():Particle=>{
+        const angle=Math.random()*Math.PI*2;
+        const speed=(frontLayer?.16:.09)+Math.random()*(frontLayer?.34:.24);
+        return{
+          x:Math.random()*w,
+          y:Math.random()*h,
+          vx:Math.cos(angle)*speed,
+          vy:Math.sin(angle)*speed,
+          r:(frontLayer?1.1:.65)+Math.random()*(frontLayer?2.2:1.55),
+          alpha:(frontLayer?.30:.18)+Math.random()*(frontLayer?.52:.38),
+          phase:Math.random()*Math.PI*2,
+          twinkle:.004+Math.random()*.009,
+          color:palette[Math.floor(Math.random()*palette.length)]
+        };
+      };
+
+      const resize=()=>{
+        const rect=section.getBoundingClientRect();
+        w=Math.max(1,Math.round(rect.width));
+        h=Math.max(1,Math.round(rect.height));
+        canvas.width=Math.round(w*dpr);
+        canvas.height=Math.round(h*dpr);
+        canvas.style.width=w+'px';
+        canvas.style.height=h+'px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        const count=targetCount();
+        if(particles.length<count){
+          while(particles.length<count)particles.push(makeParticle());
+        }else if(particles.length>count){
+          particles=particles.slice(0,count);
+        }
+      };
+
+      let last=performance.now();
+      const draw=(now:number)=>{
+        const dt=Math.min(32,Math.max(8,now-last));
+        last=now;
+        ctx.clearRect(0,0,w,h);
+        for(const p of particles){
+          const drift=Math.sin(now*.00035+p.phase)*.045;
+          const driftY=Math.cos(now*.00027+p.phase*1.7)*.035;
+          p.x+=(p.vx+drift)*dt*.075;
+          p.y+=(p.vy+driftY)*dt*.075;
+
+          // Seamless toroidal wrap: particles continue from the opposite edge instead of restarting.
+          const pad=24;
+          if(p.x<-pad)p.x=w+pad;
+          else if(p.x>w+pad)p.x=-pad;
+          if(p.y<-pad)p.y=h+pad;
+          else if(p.y>h+pad)p.y=-pad;
+
+          const twinkle=.72+.28*Math.sin(now*p.twinkle+p.phase);
+          const a=p.alpha*twinkle;
+          const glow=p.r*(frontLayer?5.1:4.1);
+          const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,glow);
+          g.addColorStop(0,`rgba(${p.color},${Math.min(1,a)})`);
+          g.addColorStop(.28,`rgba(${p.color},${a*.58})`);
+          g.addColorStop(1,`rgba(${p.color},0)`);
+          ctx.fillStyle=g;
+          ctx.beginPath();
+          ctx.arc(p.x,p.y,glow,0,Math.PI*2);
+          ctx.fill();
+        }
+      };
+
+      resize();
+      return{resize,draw};
+    };
+
+    const backSystem=createSystem(back,false);
+    const frontSystem=createSystem(front,true);
+    let raf=0;
+    const loop=(now:number)=>{
+      backSystem?.draw(now);
+      frontSystem?.draw(now);
+      raf=requestAnimationFrame(loop);
+    };
+    raf=requestAnimationFrame(loop);
+
+    const resize=()=>{backSystem?.resize();frontSystem?.resize()};
+    window.addEventListener('resize',resize,{passive:true});
+    return()=>{cancelAnimationFrame(raf);window.removeEventListener('resize',resize)};
+  },[]);
+
   const num=(v:any,f=0)=>Number.isFinite(Number(v))?Number(v):f;
   const clamp=(v:number,min:number,max:number)=>Math.min(max,Math.max(min,v));
   const logoSize=clamp(num(c.header.logoSize,53),28,180);
@@ -224,6 +329,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
     </section>
     <section className="mother mother-centered-poster" data-editor-key="mother" style={{backgroundImage:`url(${optimizeImage(c.mother.image)})`}}>
+      <canvas className="mother-particles mother-particles-back" aria-hidden="true"/>
       <div className="wrap mother-copy">
         <p data-editor-key="motherKicker" className="eyebrow" style={editorTextStyle('motherKicker',100)}>{c.mother.kicker||'ОСНОВА КАЧЕСТВА'}</p>
         <h2>
@@ -233,6 +339,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
         </h2>
         <p data-editor-key="motherText" style={editorTextStyle('motherText',100)}>{c.mother.text}</p>
       </div>
+      <canvas className="mother-particles mother-particles-front" aria-hidden="true"/>
     </section>
     <section className="gallery wrap" id="gallery" data-editor-key="gallery"><div className="section-head"><div><p data-editor-key="galleryKicker" className="eyebrow gold" style={editorTextStyle('galleryKicker',100)}>{c.galleryKicker||'НАШИ РАСТЕНИЯ'}</p><h2 data-editor-key="galleryTitle" style={editorTextStyle('galleryTitle',100)}>{c.galleryHeading||<>Фотографии<br/>наших черенков.</>}</h2></div><a data-editor-key="galleryLink" className="line-link" href="#order" style={editorTextStyle('galleryLink',100)}>{c.galleryLinkText||'Открыть галерею'} <span>→</span></a></div><div className="gallery-grid">{c.galleryImages.map((url:string,i:number)=>{const s=c.galleryImageSettings?.[i]||{scale:100,x:50,y:50};return <div key={url} style={{backgroundImage:`url(${optimizeImage(url)})`,backgroundSize:`${s.scale}%`,backgroundPosition:`${s.x}% ${s.y}%`}}/>})}</div></section>
     {c.videos.length>0&&<section className="videos wrap"><p className="eyebrow gold">ВИДЕО ИЗ ПИТОМНИКА</p><h2>Смотрите, как мы работаем</h2><div className="video-grid">{c.videos.map((v:any,i:number)=><article key={i}><iframe src={videoSrc(v.url)} title={v.title} allowFullScreen/><b>{v.title}</b></article>)}</div></section>}
