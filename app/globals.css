@@ -1404,3 +1404,35 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
   .mother.mother-centered-poster .mother-particles-back{opacity:.76}
   .mother.mother-centered-poster .mother-copy::before{height:300px}
 }
+
+
+/* Gallery shape experiment — organic blob 03 */
+.gallery-grid div:nth-child(1){
+  border-radius:42% 58% 38% 62% / 24% 24% 76% 76%;
+  overflow:hidden;
+}
+.gallery-grid div:nth-child(2){
+  border-radius:54% 46% 62% 38% / 38% 60% 40% 62%;
+  overflow:hidden;
+}
+.gallery-grid div:nth-child(3){
+  border-radius:38% 62% 48% 52% / 62% 38% 62% 38%;
+  overflow:hidden;
+}
+.gallery-grid div:nth-child(4){
+  border-radius:50% 50% 32% 68% / 28% 24% 76% 72%;
+  overflow:hidden;
+}
+.gallery-grid div{
+  box-shadow:0 18px 38px rgba(50,34,22,.09);
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.gallery-grid div:hover{
+  transform:scale(1.012);
+  box-shadow:0 24px 46px rgba(50,34,22,.13);
+}
+@media(max-width:760px){
+  .gallery-grid div{
+    border-radius:28px!important;
+  }
+}
