@@ -373,7 +373,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
           <button type="button" className="full-gallery-close" onClick={()=>setGalleryOpen(false)} aria-label="Закрыть">×</button>
         </div>
         <div className="full-gallery-grid">
-          {fullGalleryImages.slice(0,galleryVisibleCount).map((url:string,i:number)=><button type="button" key={url+'-'+i} className="full-gallery-item" onClick={()=>setLightboxUrl(url)}><img src={url} alt={'Растения питомника — фото '+(i+1)} loading={i<12?'eager':'lazy'} decoding="async" fetchPriority={i<8?'high':'auto'}/></button>)}
+          {fullGalleryImages.slice(0,galleryVisibleCount).map((url:string,i:number)=><button type="button" key={url+'-'+i} className="full-gallery-item" onClick={()=>setLightboxUrl(url)}><img src={url} alt={'Растения питомника — фото '+(i+1)} loading="eager" decoding="async" fetchPriority={i<8?'high':'auto'}/></button>)}
         </div>
         {galleryVisibleCount<fullGalleryImages.length&&<div className="full-gallery-more-wrap"><button type="button" className="full-gallery-more" onClick={()=>setGalleryVisibleCount(v=>Math.min(v+24,fullGalleryImages.length))}>Показать ещё <span>{Math.min(24,fullGalleryImages.length-galleryVisibleCount)}</span></button></div>}
         {fullGalleryImages.length===0&&<div className="full-gallery-empty">Фотографии появятся здесь после добавления в редакторе.</div>}
