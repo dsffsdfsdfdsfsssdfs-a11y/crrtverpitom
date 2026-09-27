@@ -401,6 +401,60 @@ export default function Admin(){
     }
   }
 
+  async function addFullGalleryImages(files:FileList|null){
+    if(!files||!files.length||!contentRef.current||uploading)return;
+    setUploading(true);
+    setMessage('Добавляю фотографии…');
+    try{
+      const added:string[]=[];
+      for(const file of Array.from(files)){
+        const optimized=await optimizeImage(file);
+        const dataUrl=await readDataUrl(optimized);
+        const r=await fetch('/api/admin/upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:optimized.name,base64:dataUrl.split(',')[1]})});
+        const data=await r.json();
+        if(!r.ok||!data.url)throw new Error(data?.error||'Ошибка загрузки');
+        added.push(data.url+'?v='+Date.now());
+      }
+      const next=structuredClone(contentRef.current);
+      next.fullGalleryImages=[...(next.fullGalleryImages||[]),...added];
+      contentRef.current=next;
+      setContent(next);
+      setDirty(true);
+      sendPreview(next);
+      const saveResponse=await fetch('/api/admin/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(next)});
+      if(!saveResponse.ok)throw new Error('Ошибка сохранения');
+      setDirty(false);
+      setMessage('Фотографии добавлены');
+      window.setTimeout(()=>setMessage(''),1800);
+    }catch(error){
+      setMessage(error instanceof Error?error.message:'Ошибка загрузки');
+    }finally{
+      setUploading(false);
+    }
+  }
+
+  async function removeFullGalleryImage(index:number){
+    if(!contentRef.current)return;
+    const next=structuredClone(contentRef.current);
+    const arr=[...(next.fullGalleryImages||[])];
+    arr.splice(index,1);
+    next.fullGalleryImages=arr;
+    contentRef.current=next;
+    setContent(next);
+    setDirty(true);
+    sendPreview(next);
+    setMessage('Удаляю фото…');
+    try{
+      const r=await fetch('/api/admin/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(next)});
+      if(!r.ok)throw new Error('Ошибка сохранения');
+      setDirty(false);
+      setMessage('Фото удалено');
+      window.setTimeout(()=>setMessage(''),1500);
+    }catch{
+      setMessage('Ошибка сохранения');
+    }
+  }
+
   async function uploadDocument(file:File,path:string){
     if(!contentRef.current||uploading)return;
     const allowed=['pdf','xls','xlsx'];
@@ -582,7 +636,23 @@ export default function Admin(){
         {selected==='gallery'&&<div className="inspector-section"><h3>Галерея</h3>
           <label className="text-label">Метка<input value={current.galleryKicker||''} onChange={e=>update('galleryKicker',e.target.value)}/></label>
           <label className="text-label">Заголовок<textarea value={current.galleryHeading||''} onChange={e=>update('galleryHeading',e.target.value)}/></label>
-          {(current.galleryImages||[]).map((url:string,i:number)=><div className="editor-image-row" key={i}><span>Фото {i+1}</span><label className="upload-btn">{uploading?'Загрузка…':'Заменить'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'galleryImages.'+i)}/></label></div>)}
+
+          <div className="specialty-image-hint" style={{marginTop:14}}>
+            <b>4 фотографии на странице</b>
+            <span>Нажатие на них открывает оригинал в полноэкранном просмотре.</span>
+          </div>
+          {(current.galleryImages||[]).map((url:string,i:number)=><div className="editor-image-row" key={'main-'+i}><span>Фото {i+1}</span><label className="upload-btn">{uploading?'Загрузка…':'Заменить'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'galleryImages.'+i)}/></label></div>)}
+
+          <div className="specialty-image-hint" style={{marginTop:18}}>
+            <b>Большая галерея</b>
+            <span>Эти фотографии появляются в окне по кнопке «Открыть галерею». Можно добавлять любое количество.</span>
+          </div>
+          <label className="upload-btn" style={{marginTop:12,width:'100%',justifyContent:'center'}}>{uploading?'Загрузка…':'Добавить фотографии'}<input type="file" accept="image/*" multiple onChange={e=>addFullGalleryImages(e.target.files)}/></label>
+          {(current.fullGalleryImages||[]).map((url:string,i:number)=><div className="editor-image-row" key={'extra-'+i} style={{gap:8}}>
+            <span>Галерея {i+1}</span>
+            <label className="upload-btn">{uploading?'…':'Заменить'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'fullGalleryImages.'+i)}/></label>
+            <button type="button" onClick={()=>removeFullGalleryImage(i)} style={{border:'1px solid #d7c8b8',background:'#fff7f0',color:'#8f4e3b',borderRadius:10,padding:'8px 10px',cursor:'pointer'}}>Удалить</button>
+          </div>)}
         </div>}
 
         {selected==='knowledge'&&<div className="inspector-section"><h3>Полезная информация</h3>
