@@ -1827,3 +1827,23 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .full-gallery-item:hover img{
   transform:scale(1.012);
 }
+
+
+/* Custom MAX artwork */
+.header-social-max{
+  overflow:hidden;
+}
+.header-social-max img{
+  width:26px;
+  height:26px;
+  object-fit:contain;
+  display:block;
+  border-radius:8px;
+}
+@media(max-width:760px){
+  .header-social-max img{
+    width:23px;
+    height:23px;
+    border-radius:7px;
+  }
+}
