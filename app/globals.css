@@ -762,7 +762,8 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .order-modal .order-concierge-form textarea{
   min-height:88px;
   height:88px;
-  resize:vertical;
+  resize:none;
+  overflow-y:auto;
 }
 .order-concierge-submit{
   width:auto;
