@@ -1332,3 +1332,110 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
     font-size:.92rem;
   }
 }
+
+
+/* Motherstock Golden Dust — strong premium variant */
+.mother.mother-centered-poster .mother-copy::before{
+  content:'';
+  position:absolute;
+  z-index:-1;
+  left:50%;
+  top:44%;
+  width:min(920px,92vw);
+  height:390px;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(226,174,90,.27) 0%,rgba(226,174,90,.13) 27%,rgba(226,174,90,.045) 48%,transparent 72%),
+    radial-gradient(circle at 36% 46%,rgba(255,232,184,.12),transparent 34%),
+    radial-gradient(circle at 65% 48%,rgba(255,216,140,.10),transparent 36%);
+  filter:blur(10px);
+  animation:motherDustHalo 4.8s ease-in-out infinite;
+}
+.mother.mother-centered-poster .mother-copy::after{
+  content:'';
+  position:absolute;
+  z-index:-1;
+  inset:-90px -150px;
+  pointer-events:none;
+  opacity:.78;
+  background-image:
+    radial-gradient(circle at 8% 22%,rgba(255,226,165,.95) 0 1.8px,rgba(255,226,165,.18) 2px,transparent 4px),
+    radial-gradient(circle at 18% 68%,rgba(241,192,111,.9) 0 1.4px,transparent 3.5px),
+    radial-gradient(circle at 29% 31%,rgba(255,239,203,.92) 0 1.1px,transparent 3px),
+    radial-gradient(circle at 38% 82%,rgba(223,168,83,.86) 0 1.7px,transparent 3.8px),
+    radial-gradient(circle at 47% 18%,rgba(255,232,181,.88) 0 1.3px,transparent 3.2px),
+    radial-gradient(circle at 57% 68%,rgba(250,211,143,.92) 0 1.6px,transparent 3.5px),
+    radial-gradient(circle at 68% 28%,rgba(255,238,199,.92) 0 1.2px,transparent 3.2px),
+    radial-gradient(circle at 77% 77%,rgba(224,169,86,.88) 0 1.7px,transparent 3.8px),
+    radial-gradient(circle at 88% 39%,rgba(255,226,166,.95) 0 1.5px,transparent 3.6px),
+    radial-gradient(circle at 95% 70%,rgba(247,207,135,.85) 0 1.1px,transparent 3px);
+  background-size:
+    210px 210px,
+    265px 265px,
+    225px 225px,
+    290px 290px,
+    240px 240px,
+    275px 275px,
+    230px 230px,
+    310px 310px,
+    250px 250px,
+    285px 285px;
+  filter:drop-shadow(0 0 7px rgba(232,179,95,.42));
+  animation:motherGoldenDust 10s linear infinite;
+}
+.mother.mother-centered-poster .mother-copy h2{
+  position:relative;
+}
+.mother.mother-centered-poster .mother-copy h2::before{
+  content:'';
+  position:absolute;
+  left:50%;
+  top:47%;
+  width:112%;
+  height:1px;
+  transform:translate(-50%,-50%);
+  background:linear-gradient(90deg,transparent,rgba(217,170,95,.15),rgba(255,234,190,.65),rgba(217,170,95,.15),transparent);
+  box-shadow:0 0 22px rgba(236,188,104,.24);
+  opacity:.7;
+  z-index:-1;
+  animation:motherGoldLinePulse 3.2s ease-in-out infinite;
+}
+@keyframes motherDustHalo{
+  0%,100%{opacity:.62;transform:translate(-50%,-50%) scale(.96)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.07)}
+}
+@keyframes motherGoldenDust{
+  0%{
+    background-position:
+      0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0;
+  }
+  50%{
+    background-position:
+      36px -52px,-28px -74px,42px -36px,-34px -68px,24px -46px,-44px -58px,38px -70px,-30px -42px,46px -60px,-36px -80px;
+  }
+  100%{
+    background-position:
+      72px -104px,-56px -148px,84px -72px,-68px -136px,48px -92px,-88px -116px,76px -140px,-60px -84px,92px -120px,-72px -160px;
+  }
+}
+@keyframes motherGoldLinePulse{
+  0%,100%{opacity:.28;filter:blur(.2px)}
+  50%{opacity:.88;filter:blur(0)}
+}
+@media(prefers-reduced-motion:reduce){
+  .mother.mother-centered-poster .mother-copy::before,
+  .mother.mother-centered-poster .mother-copy::after,
+  .mother.mother-centered-poster .mother-copy h2::before{
+    animation:none!important;
+  }
+}
+@media(max-width:760px){
+  .mother.mother-centered-poster .mother-copy::after{
+    inset:-60px -50px;
+    opacity:.55;
+  }
+  .mother.mother-centered-poster .mother-copy::before{
+    height:300px;
+  }
+}
