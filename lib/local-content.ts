@@ -52,7 +52,9 @@ export async function saveContent(content: unknown) {
   const temp = contentFile + '.tmp';
   await fs.writeFile(temp, JSON.stringify(content, null, 2) + '\n', 'utf8');
   await fs.rename(temp, contentFile);
-  await cleanupUnusedUploads(content);
+  // Do not remove uploads during ordinary saves. Gallery uploads can run in parallel,
+  // and a save may happen before a newly uploaded file is referenced in site.json.
+  // Deleting here caused valid gallery images to disappear mid-upload.
 }
 
 export async function uploadFile(name: string, base64: string) {
