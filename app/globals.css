@@ -1238,3 +1238,97 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .assortment-luxury .plant.has-image:hover{
   filter:saturate(1.04) brightness(1.03);
 }
+
+
+/* Motherstock page — centered poster variant 03 */
+.mother.mother-centered-poster{
+  position:relative;
+  isolation:isolate;
+  min-height:700px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background-size:cover!important;
+  background-position:center!important;
+  color:#fff;
+  overflow:hidden;
+}
+.mother.mother-centered-poster::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:
+    radial-gradient(circle at 50% 46%,rgba(23,15,10,.18),rgba(23,15,10,.46) 72%),
+    linear-gradient(180deg,rgba(20,13,9,.18),rgba(20,13,9,.48));
+}
+.mother.mother-centered-poster::after{
+  content:'';
+  position:absolute;
+  left:7%;
+  right:7%;
+  top:7%;
+  bottom:7%;
+  border:1px solid rgba(213,171,101,.24);
+  pointer-events:none;
+  z-index:0;
+}
+.mother.mother-centered-poster .mother-copy{
+  position:relative;
+  z-index:1;
+  width:min(920px,82%);
+  padding:5.5rem 2rem;
+  text-align:center;
+}
+.mother.mother-centered-poster .mother-copy .eyebrow{
+  margin:0 0 1.2rem;
+  color:#ddb36d;
+  letter-spacing:.18em;
+}
+.mother.mother-centered-poster .mother-copy h2{
+  margin:0;
+  color:#fffaf3;
+  font-size:clamp(4.6rem,7.2vw,8.5rem);
+  line-height:.84;
+  letter-spacing:-.045em;
+  text-shadow:0 4px 24px rgba(0,0,0,.28);
+}
+.mother.mother-centered-poster .mother-copy h2 em{
+  display:inline-block;
+  margin-top:1rem;
+  color:#d8ab63;
+  font-size:.72em;
+  line-height:.92;
+  font-weight:500;
+  text-shadow:0 3px 18px rgba(0,0,0,.22);
+}
+.mother.mother-centered-poster .mother-copy>p:last-child{
+  max-width:660px;
+  margin:1.7rem auto 0;
+  color:rgba(248,239,227,.94);
+  font-size:1.05rem;
+  line-height:1.7;
+  text-shadow:0 2px 14px rgba(0,0,0,.32);
+}
+@media(max-width:760px){
+  .mother.mother-centered-poster{
+    min-height:620px;
+    background-position:center!important;
+  }
+  .mother.mother-centered-poster::after{
+    left:1rem;right:1rem;top:1rem;bottom:1rem;
+  }
+  .mother.mother-centered-poster .mother-copy{
+    width:92%;
+    padding:4rem 1rem;
+  }
+  .mother.mother-centered-poster .mother-copy h2{
+    font-size:3.9rem;
+  }
+  .mother.mother-centered-poster .mother-copy h2 em{
+    font-size:.76em;
+  }
+  .mother.mother-centered-poster .mother-copy>p:last-child{
+    font-size:.92rem;
+  }
+}
