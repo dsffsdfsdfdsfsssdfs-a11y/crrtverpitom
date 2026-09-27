@@ -174,6 +174,11 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
     position:'relative',
     zIndex:2
   } as React.CSSProperties);
+  const editorButtonStyle=(key:string,defaultSize=100,defaultColor?:string)=>{
+    const base=editorTextStyle(key,defaultSize,defaultColor);
+    const scale=clamp(num(c.editor?.[key+'ButtonScale'],100),45,180)/100;
+    return {...base,transform:`${base.transform||''} scale(${scale})`,transformOrigin:'center center'} as React.CSSProperties;
+  };
   const contactPeople=(c.contacts||[]).filter((x:{phone?:string})=>Boolean((x.phone||'').trim()));
   return <>
     <main style={fontStyles}>
@@ -266,7 +271,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
         </div>
         <div className="specialty-rail-intro">
           <p data-editor-key="specialtyDesc" style={editorTextStyle('specialtyDesc',100)}>{c.specialty.paragraph1}</p>
-          <a data-editor-key="specialtyLink" href="#assortment" style={editorTextStyle('specialtyLink',100)}>{c.specialty.linkText||'Посмотреть ассортимент'}</a>
+          <a data-editor-key="specialtyLink" href="#assortment" style={editorButtonStyle('specialtyLink',100)}>{c.specialty.linkText||'Посмотреть ассортимент'}</a>
         </div>
       </div>
 
@@ -325,7 +330,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
         </article>})}
       </div>
       <div className="assortment-luxury-price">
-        <a data-editor-key="assortmentPrice" className="price-download-btn" href={c.priceUrl||'#'} download={Boolean(c.priceUrl&&c.priceUrl!=='#')} style={editorTextStyle('assortmentPrice',100)}>{c.assortmentPriceText||'Скачать прайс'}</a>
+        <a data-editor-key="assortmentPrice" className="gallery-open-ivory gallery-price-ivory" href={c.priceUrl||'#'} download={Boolean(c.priceUrl&&c.priceUrl!=='#')} style={editorButtonStyle('assortmentPrice',100)}>{c.assortmentPriceText||'Скачать прайс'}</a>
       </div>
     </section>
     <section className="mother mother-centered-poster" data-editor-key="mother" style={{backgroundImage:`url(${optimizeImage(c.mother.image)})`}}>
@@ -341,10 +346,10 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
       <canvas className="mother-particles mother-particles-front" aria-hidden="true"/>
     </section>
-    <section className="gallery wrap" id="gallery" data-editor-key="gallery"><div className="section-head"><div><p data-editor-key="galleryKicker" className="eyebrow gold" style={editorTextStyle('galleryKicker',100)}>{c.galleryKicker||'НАШИ РАСТЕНИЯ'}</p><h2 data-editor-key="galleryTitle" style={editorTextStyle('galleryTitle',100)}>{c.galleryHeading||<>Фотографии<br/>наших черенков.</>}</h2></div><a data-editor-key="galleryLink" className="gallery-open-ivory" href="#order" style={editorTextStyle('galleryLink',100)}>{c.galleryLinkText||'Открыть галерею'}</a></div><div className="gallery-grid">{c.galleryImages.map((url:string,i:number)=>{const s=c.galleryImageSettings?.[i]||{scale:100,x:50,y:50};return <div key={url} style={{backgroundImage:`url(${optimizeImage(url)})`,backgroundSize:`${s.scale}%`,backgroundPosition:`${s.x}% ${s.y}%`}}/>})}</div></section>
+    <section className="gallery wrap" id="gallery" data-editor-key="gallery"><div className="section-head"><div><p data-editor-key="galleryKicker" className="eyebrow gold" style={editorTextStyle('galleryKicker',100)}>{c.galleryKicker||'НАШИ РАСТЕНИЯ'}</p><h2 data-editor-key="galleryTitle" style={editorTextStyle('galleryTitle',100)}>{c.galleryHeading||<>Фотографии<br/>наших черенков.</>}</h2></div><a data-editor-key="galleryLink" className="gallery-open-ivory" href="#order" style={editorButtonStyle('galleryLink',100)}>{c.galleryLinkText||'Открыть галерею'}</a></div><div className="gallery-grid">{c.galleryImages.map((url:string,i:number)=>{const s=c.galleryImageSettings?.[i]||{scale:100,x:50,y:50};return <div key={url} style={{backgroundImage:`url(${optimizeImage(url)})`,backgroundSize:`${s.scale}%`,backgroundPosition:`${s.x}% ${s.y}%`}}/>})}</div></section>
     {c.videos.length>0&&<section className="videos wrap"><p className="eyebrow gold">ВИДЕО ИЗ ПИТОМНИКА</p><h2>Смотрите, как мы работаем</h2><div className="video-grid">{c.videos.map((v:any,i:number)=><article key={i}><iframe src={videoSrc(v.url)} title={v.title} allowFullScreen/><b>{v.title}</b></article>)}</div></section>}
     <section className="knowledge wrap" id="knowledge" data-editor-key="knowledge"><p data-editor-key="knowledgeKicker" className="eyebrow gold" style={editorTextStyle('knowledgeKicker',100)}>{c.knowledgeKicker||'ДЕЛИМСЯ ОПЫТОМ'}</p><h2 data-editor-key="knowledgeTitle" style={editorTextStyle('knowledgeTitle',100)}>{c.knowledgeHeading||'Полезная информация'}</h2><div className="knowledge-list">{c.resources.map((x:{title:string,url:string},i:number)=><a href={x.url} key={i}><span data-editor-key={'resourceIndex'+(i+1)} style={editorTextStyle('resourceIndex'+(i+1),100)}>0{i+1}</span><b data-editor-key={'resourceTitle'+(i+1)} style={editorTextStyle('resourceTitle'+(i+1),100)}>{x.title}</b><i>↗</i></a>)}</div></section>
-    <section className="order wrap" id="order" data-editor-key="order"><div><p data-editor-key="orderKicker" className="eyebrow" style={editorTextStyle('orderKicker',100)}>{c.order?.kicker||'СДЕЛАЕМ ПОДБОРКУ'}</p><h2><span data-editor-key="orderTitle" style={{...editorTextStyle('orderTitle',100),display:'inline-block'}}>{c.order?.title||'Готовы выбрать'}</span><br/><em><span data-editor-key="orderAccent" style={{...editorTextStyle('orderAccent',100),display:'inline-block'}}>{c.order?.accent||'растения?'}</span></em></h2></div><div><p data-editor-key="orderText" style={editorTextStyle('orderText',100)}>{c.order?.text||'Напишите нам — подберём культуры, объём и формат поставки для вашей задачи.'}</p><button data-editor-key="orderButton" className="gold-btn" style={editorTextStyle('orderButton',100)} onClick={()=>setOrder(true)}>{c.order?.button||'Оформить заказ'} <span>↗</span></button><div className="help"><a data-editor-key="orderPhone" style={editorTextStyle('orderPhone',100)} href={'tel:+'+c.phoneLink}>{c.phone}</a><span data-editor-key="orderHelp" style={editorTextStyle('orderHelp',100)}>{c.order?.help||'Ответим на вопросы и поможем, если возникла проблема.'}</span></div></div></section>
+    <section className="order wrap" id="order" data-editor-key="order"><div><p data-editor-key="orderKicker" className="eyebrow" style={editorTextStyle('orderKicker',100)}>{c.order?.kicker||'СДЕЛАЕМ ПОДБОРКУ'}</p><h2><span data-editor-key="orderTitle" style={{...editorTextStyle('orderTitle',100),display:'inline-block'}}>{c.order?.title||'Готовы выбрать'}</span><br/><em><span data-editor-key="orderAccent" style={{...editorTextStyle('orderAccent',100),display:'inline-block'}}>{c.order?.accent||'растения?'}</span></em></h2></div><div><p data-editor-key="orderText" style={editorTextStyle('orderText',100)}>{c.order?.text||'Напишите нам — подберём культуры, объём и формат поставки для вашей задачи.'}</p><button data-editor-key="orderButton" className="gold-btn" style={editorButtonStyle('orderButton',100)} onClick={()=>setOrder(true)}>{c.order?.button||'Оформить заказ'} <span>↗</span></button><div className="help"><a data-editor-key="orderPhone" style={editorTextStyle('orderPhone',100)} href={'tel:+'+c.phoneLink}>{c.phone}</a><span data-editor-key="orderHelp" style={editorTextStyle('orderHelp',100)}>{c.order?.help||'Ответим на вопросы и поможем, если возникла проблема.'}</span></div></div></section>
     <footer data-editor-key="contacts"><div className="brand"><span className="brand-mark">ЦР</span><span>Центр<br/><b>размножения растений</b></span></div><div className="footer-contact">{contactPeople.map((x:{name:string,label:string,phone:string},i:number)=>{const shownLabel=i===0?(x.label||'').replace(/^8(?=\s*\()/,'+7'):x.label;return <div key={x.name}><small>{x.name}</small><a href={phoneHref(x.phone)}>{shownLabel}</a></div>})}<a href={'mailto:'+c.email}>{c.email}</a></div><a className="map" target="_blank" href={'https://yandex.ru/maps/?text='+encodeURIComponent(c.address)}>{c.address} ↗</a></footer>
     {order&&<div className="modal order-modal">
       <form className="order-concierge-modal">
