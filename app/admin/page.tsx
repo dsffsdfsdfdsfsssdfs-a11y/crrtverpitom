@@ -167,13 +167,13 @@ async function optimizeImage(file:File){
   if(!file.type.startsWith('image/')||file.type==='image/svg+xml')return file;
   try{
     const bitmap=await createImageBitmap(file);
-    const maxSide=1800, scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
+    const maxSide=1600, scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
     const canvas=document.createElement('canvas');
     canvas.width=Math.max(1,Math.round(bitmap.width*scale));
     canvas.height=Math.max(1,Math.round(bitmap.height*scale));
     const ctx=canvas.getContext('2d'); if(!ctx){bitmap.close();return file}
     ctx.drawImage(bitmap,0,0,canvas.width,canvas.height); bitmap.close();
-    const blob=await new Promise<Blob|null>(ok=>canvas.toBlob(ok,'image/webp',.82));
+    const blob=await new Promise<Blob|null>(ok=>canvas.toBlob(ok,'image/webp',.78));
     if(!blob||blob.size>=file.size)return file;
     return new File([blob],file.name.replace(/\.[^.]+$/,'')+'.webp',{type:'image/webp'});
   }catch{return file}
@@ -366,19 +366,31 @@ export default function Admin(){
     finally{setSaving(false);setTimeout(()=>setMessage(''),1800)}
   }
 
+  async function sendImageFile(file:File){
+    const optimized=await optimizeImage(file);
+    const form=new FormData();
+    form.append('file',optimized,optimized.name);
+    const controller=new AbortController();
+    const timer=window.setTimeout(()=>controller.abort(),60000);
+    try{
+      const r=await fetch('/api/admin/upload',{method:'POST',body:form,signal:controller.signal});
+      const data=await r.json().catch(()=>null);
+      if(!r.ok||!data?.url)throw new Error(data?.error||'Ошибка загрузки');
+      return data.url+'?v='+Date.now();
+    }finally{
+      window.clearTimeout(timer);
+    }
+  }
+
   async function upload(file:File,path:string){
     if(!contentRef.current||uploading)return;
     setUploading(true);
     setMessage('Загружаю фото…');
     try{
-      const optimized=await optimizeImage(file);
-      const dataUrl=await readDataUrl(optimized);
-      const r=await fetch('/api/admin/upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:optimized.name,base64:dataUrl.split(',')[1]})});
-      const data=await r.json();
-      if(!r.ok||!data.url)throw new Error(data?.error||'Ошибка загрузки');
+      const uploadedUrl=await sendImageFile(file);
 
       const next=structuredClone(contentRef.current);
-      setPath(next,path,data.url+'?v='+Date.now());
+      setPath(next,path,uploadedUrl);
       contentRef.current=next;
       setContent(next);
       setDirty(true);
@@ -403,29 +415,49 @@ export default function Admin(){
 
   async function addFullGalleryImages(files:FileList|null){
     if(!files||!files.length||!contentRef.current||uploading)return;
+    const selectedFiles=Array.from(files);
     setUploading(true);
-    setMessage('Добавляю фотографии…');
+    let completed=0;
+    let failed=0;
+    setMessage(`Подготовка: 0 из ${selectedFiles.length}`);
     try{
-      const added:string[]=[];
-      for(const file of Array.from(files)){
-        const optimized=await optimizeImage(file);
-        const dataUrl=await readDataUrl(optimized);
-        const r=await fetch('/api/admin/upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:optimized.name,base64:dataUrl.split(',')[1]})});
-        const data=await r.json();
-        if(!r.ok||!data.url)throw new Error(data?.error||'Ошибка загрузки');
-        added.push(data.url+'?v='+Date.now());
+      // Upload up to 3 files at the same time: much faster than the old one-by-one base64 flow,
+      // but conservative enough not to overload the server or browser.
+      for(let offset=0;offset<selectedFiles.length;offset+=3){
+        const batch=selectedFiles.slice(offset,offset+3);
+        const results=await Promise.all(batch.map(async file=>{
+          try{
+            const url=await sendImageFile(file);
+            completed++;
+            setMessage(`Загружено: ${completed} из ${selectedFiles.length}`);
+            return url;
+          }catch{
+            failed++;
+            completed++;
+            setMessage(`Обработано: ${completed} из ${selectedFiles.length}`);
+            return null;
+          }
+        }));
+        const urls=results.filter(Boolean) as string[];
+        if(urls.length&&contentRef.current){
+          // Save every finished batch. Even if a later photo fails, already uploaded photos stay in the gallery.
+          const next=structuredClone(contentRef.current);
+          next.fullGalleryImages=[...(next.fullGalleryImages||[]),...urls];
+          contentRef.current=next;
+          setContent(next);
+          setDirty(true);
+          sendPreview(next);
+          const saveResponse=await fetch('/api/admin/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(next)});
+          if(!saveResponse.ok)throw new Error('Не удалось сохранить добавленные фотографии');
+          setDirty(false);
+        }
       }
-      const next=structuredClone(contentRef.current);
-      next.fullGalleryImages=[...(next.fullGalleryImages||[]),...added];
-      contentRef.current=next;
-      setContent(next);
-      setDirty(true);
-      sendPreview(next);
-      const saveResponse=await fetch('/api/admin/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(next)});
-      if(!saveResponse.ok)throw new Error('Ошибка сохранения');
-      setDirty(false);
-      setMessage('Фотографии добавлены');
-      window.setTimeout(()=>setMessage(''),1800);
+      if(failed){
+        setMessage(`Добавлено ${selectedFiles.length-failed} из ${selectedFiles.length}. ${failed} не загрузилось`);
+      }else{
+        setMessage(`Добавлено фотографий: ${selectedFiles.length}`);
+      }
+      window.setTimeout(()=>setMessage(''),3000);
     }catch(error){
       setMessage(error instanceof Error?error.message:'Ошибка загрузки');
     }finally{
@@ -647,7 +679,7 @@ export default function Admin(){
             <b>Большая галерея</b>
             <span>Эти фотографии появляются в окне по кнопке «Открыть галерею». Можно добавлять любое количество.</span>
           </div>
-          <label className="upload-btn" style={{marginTop:12,width:'100%',justifyContent:'center'}}>{uploading?'Загрузка…':'Добавить фотографии'}<input type="file" accept="image/*" multiple onChange={e=>addFullGalleryImages(e.target.files)}/></label>
+          <label className="upload-btn" style={{marginTop:12,width:'100%',justifyContent:'center'}}>{uploading?'Загрузка…':'Добавить фотографии'}<input type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple onChange={async e=>{const input=e.currentTarget;await addFullGalleryImages(input.files);input.value=''}}/></label>
           {(current.fullGalleryImages||[]).map((url:string,i:number)=><div className="editor-image-row" key={'extra-'+i} style={{gap:8}}>
             <span>Галерея {i+1}</span>
             <label className="upload-btn">{uploading?'…':'Заменить'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'fullGalleryImages.'+i)}/></label>
