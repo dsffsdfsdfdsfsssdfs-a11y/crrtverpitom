@@ -380,7 +380,35 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
     </section>
     <section className="gallery wrap gallery-garden-portal" id="gallery" data-editor-key="gallery"><div className="section-head"><div><p data-editor-key="galleryKicker" className="eyebrow gold" style={editorTextStyle('galleryKicker',100)}>{c.galleryKicker||'НАШИ РАСТЕНИЯ'}</p><h2 data-editor-key="galleryTitle" style={editorTextStyle('galleryTitle',100)}>{c.galleryHeading||<>Фотографии<br/>наших черенков.</>}</h2></div><button type="button" data-editor-key="galleryLink" className="gallery-open-ivory" style={editorButtonStyle('galleryLink',100)} onClick={()=>{setGalleryVisibleCount(32);setGalleryOpen(true)}}>{c.galleryLinkText||'Открыть галерею'}</button></div><div className="gallery-grid">{c.galleryImages.map((url:string,i:number)=>{const s=c.galleryImageSettings?.[i]||{scale:100,x:50,y:50};return <button type="button" aria-label={'Открыть фотографию '+(i+1)} className="gallery-preview-card" key={url} onClick={()=>setLightboxUrl(url)} style={{backgroundImage:`url(${optimizeImage(url)})`,backgroundSize:`${s.scale}%`,backgroundPosition:`${s.x}% ${s.y}%`}}/>})}</div></section>
     {c.videos.length>0&&<section className="videos wrap"><p className="eyebrow gold">ВИДЕО ИЗ ПИТОМНИКА</p><h2>Смотрите, как мы работаем</h2><div className="video-grid">{c.videos.map((v:any,i:number)=><article key={i}><iframe src={videoSrc(v.url)} title={v.title} allowFullScreen/><b>{v.title}</b></article>)}</div></section>}
-    <section className="knowledge wrap" id="knowledge" data-editor-key="knowledge"><p data-editor-key="knowledgeKicker" className="eyebrow gold" style={editorTextStyle('knowledgeKicker',100)}>{c.knowledgeKicker||'ДЕЛИМСЯ ОПЫТОМ'}</p><h2 data-editor-key="knowledgeTitle" style={editorTextStyle('knowledgeTitle',100)}>{c.knowledgeHeading||'Полезная информация'}</h2><div className="knowledge-list">{c.resources.map((x:{title:string,url:string},i:number)=>i===2?<button type="button" className="knowledge-reality-link" key={i} onClick={()=>{setRealityActive(0);setRealityOpen(true)}}><span data-editor-key={'resourceIndex'+(i+1)} style={editorTextStyle('resourceIndex'+(i+1),100)}>0{i+1}</span><b data-editor-key={'resourceTitle'+(i+1)} style={editorTextStyle('resourceTitle'+(i+1),100)}>{x.title}</b><i>▶</i></button>:<a href={x.url} key={i}><span data-editor-key={'resourceIndex'+(i+1)} style={editorTextStyle('resourceIndex'+(i+1),100)}>0{i+1}</span><b data-editor-key={'resourceTitle'+(i+1)} style={editorTextStyle('resourceTitle'+(i+1),100)}>{x.title}</b><i>↗</i></a>)}</div></section>
+    <section className="knowledge knowledge-museum wrap" id="knowledge" data-editor-key="knowledge">
+      <div className="knowledge-museum-head">
+        <div>
+          <p data-editor-key="knowledgeKicker" className="eyebrow gold" style={editorTextStyle('knowledgeKicker',100)}>{c.knowledgeKicker||'ДЕЛИМСЯ ОПЫТОМ'}</p>
+          <h2 data-editor-key="knowledgeTitle" style={editorTextStyle('knowledgeTitle',100)}>{c.knowledgeHeading||'Полезная информация'}</h2>
+          <p className="knowledge-museum-sub">Практические материалы, оборудование и видео из жизни питомника.</p>
+        </div>
+        <span className="knowledge-museum-tag">Медиа-раздел</span>
+      </div>
+      <div className="knowledge-museum-layout">
+        <button type="button" className="knowledge-museum-feature" onClick={()=>{setRealityActive(0);setRealityOpen(true)}}>
+          <span className="knowledge-museum-feature-no" data-editor-key="resourceIndex3" style={editorTextStyle('resourceIndex3',100)}>03</span>
+          <span className="knowledge-museum-feature-type">СЕРИАЛ / RUTUBE</span>
+          <span className="knowledge-museum-feature-play">▶</span>
+          <b data-editor-key="resourceTitle3" style={editorTextStyle('resourceTitle3',100)}>{c.resources?.[2]?.title||'Реалити-шоу «Будни питомниковода»'}</b>
+          <span className="knowledge-museum-feature-copy">Серии открываются и проигрываются прямо на сайте.</span>
+        </button>
+        <div className="knowledge-museum-side">
+          {c.resources.slice(0,2).map((x:{title:string,url:string},i:number)=><a className="knowledge-museum-item" href={x.url} key={i}>
+            <span data-editor-key={'resourceIndex'+(i+1)} style={editorTextStyle('resourceIndex'+(i+1),100)}>0{i+1}</span>
+            <div>
+              <small>{i===0?'АГРОТЕХНИКА':'ОБОРУДОВАНИЕ'}</small>
+              <b data-editor-key={'resourceTitle'+(i+1)} style={editorTextStyle('resourceTitle'+(i+1),100)}>{x.title}</b>
+            </div>
+            <i>↗</i>
+          </a>)}
+        </div>
+      </div>
+    </section>
     <section className="order wrap" id="order" data-editor-key="order"><div><p data-editor-key="orderKicker" className="eyebrow" style={editorTextStyle('orderKicker',100)}>{c.order?.kicker||'СДЕЛАЕМ ПОДБОРКУ'}</p><h2><span data-editor-key="orderTitle" style={{...editorTextStyle('orderTitle',100),display:'inline-block'}}>{c.order?.title||'Готовы выбрать'}</span><br/><em><span data-editor-key="orderAccent" style={{...editorTextStyle('orderAccent',100),display:'inline-block'}}>{c.order?.accent||'растения?'}</span></em></h2></div><div><p data-editor-key="orderText" style={editorTextStyle('orderText',100)}>{c.order?.text||'Напишите нам — подберём культуры, объём и формат поставки для вашей задачи.'}</p><button data-editor-key="orderButton" className="gold-btn" style={editorButtonStyle('orderButton',100)} onClick={()=>setOrder(true)}>{c.order?.button||'Оформить заказ'} <span>↗</span></button><div className="help"><a data-editor-key="orderPhone" style={editorTextStyle('orderPhone',100)} href={'tel:+'+c.phoneLink}>{c.phone}</a><span data-editor-key="orderHelp" style={editorTextStyle('orderHelp',100)}>{c.order?.help||'Ответим на вопросы и поможем, если возникла проблема.'}</span></div></div></section>
     <footer data-editor-key="contacts"><div className="brand"><span className="brand-mark">ЦР</span><span>Центр<br/><b>размножения растений</b></span></div><div className="footer-contact">{contactPeople.map((x:{name:string,label:string,phone:string},i:number)=>{const shownLabel=i===0?(x.label||'').replace(/^8(?=\s*\()/,'+7'):x.label;return <div key={x.name}><small>{x.name}</small><a href={phoneHref(x.phone)}>{shownLabel}</a></div>})}<a href={'mailto:'+c.email}>{c.email}</a></div><a className="map" target="_blank" href={'https://yandex.ru/maps/?text='+encodeURIComponent(c.address)}>{c.address} ↗</a></footer>
     {realityOpen&&<div className="reality-modal" role="dialog" aria-modal="true" aria-label="Реалити-шоу Будни питомниковода">
