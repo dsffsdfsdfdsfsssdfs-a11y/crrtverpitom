@@ -207,6 +207,11 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
         <a className="header-social header-social-tg" href="https://t.me/crrtver" target="_blank" rel="noreferrer" aria-label="Telegram" title="Telegram">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 4.1 3.8 10.5c-.8.3-.8 1.4.1 1.6l4.1 1 1.6 4.9c.3.8 1.3 1 1.8.3l2.5-3 4 3c.7.5 1.7.1 1.8-.8l1.7-12.3c.1-.8-.5-1.4-1.2-1.1Z"/><path d="m8.1 13.1 8.8-5.7-6.6 7.3-.7 3.3"/></svg>
         </a>
+        <a className="header-social header-social-max" href="https://max.ru/id694909590453_biz" target="_blank" rel="noreferrer" aria-label="MAX" title="MAX">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5.2 17.4V6.6h3l3.8 4.8 3.8-4.8h3v10.8h-3v-6.1L12 15.9l-3.8-4.6v6.1h-3Z"/>
+          </svg>
+        </a>
         <button className="header-order-btn" onClick={()=>setOrder(true)}>Сделать заказ</button>
       </div>
       <button className="burger" aria-label="Открыть меню" onClick={()=>setMenu(!menu)}>☰</button>
