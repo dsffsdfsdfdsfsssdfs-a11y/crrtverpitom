@@ -1513,3 +1513,39 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
     inset 0 -2px 0 #c7954f,
     0 14px 28px rgba(76,54,34,.12)!important;
 }
+
+
+/* Gallery section shape — Garden Portal 20 */
+.gallery.gallery-garden-portal{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  border-radius:48% 48% 42px 42px / 18% 18% 42px 42px;
+  padding-top:5.2rem;
+  padding-bottom:4.6rem;
+  box-shadow:0 28px 70px rgba(52,36,23,.10);
+}
+.gallery.gallery-garden-portal::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 18%,rgba(185,145,88,.08),transparent 28%),
+    radial-gradient(circle at 82% 82%,rgba(98,117,78,.08),transparent 30%);
+}
+@media(max-width:900px){
+  .gallery.gallery-garden-portal{
+    border-radius:38% 38% 30px 30px / 10% 10% 30px 30px;
+    padding-top:4rem;
+    padding-bottom:3.8rem;
+  }
+}
+@media(max-width:650px){
+  .gallery.gallery-garden-portal{
+    border-radius:30% 30% 24px 24px / 7% 7% 24px 24px;
+    padding-top:3.2rem;
+    padding-bottom:3rem;
+  }
+}
