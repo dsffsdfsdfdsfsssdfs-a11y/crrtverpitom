@@ -214,10 +214,10 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
         <span className="assortment-luxury-badge">Собственное производство</span>
       </div>
       <div className="plant-grid">
-        {c.assortment.map((x:string,i:number)=><article key={i} className={'plant p'+i}>
+        {c.assortment.map((x:string,i:number)=>{const image=c.assortmentImages?.[i];return <article key={i} className={'plant p'+i+(image?' has-image':'')} style={image?{backgroundImage:`linear-gradient(180deg,rgba(16,18,14,.10) 0%,rgba(18,16,13,.72) 100%),url(${optimizeImage(image)})`}:undefined}>
           <h3 data-editor-key={'assortmentItem'+(i+1)} style={editorTextStyle('assortmentItem'+(i+1),100)}>{x}</h3>
           <p data-editor-key={'assortmentDesc'+(i+1)} style={editorTextStyle('assortmentDesc'+(i+1),100)}>{(c.assortmentDescriptions?.[i])||(i===5?'Вейгела · ива · лапчатка · рябинник · снежноягодник':'Сортовые растения собственного производства')}</p>
-        </article>)}
+        </article>})}
       </div>
       <div className="assortment-luxury-price">
         <a data-editor-key="assortmentPrice" className="price-download-btn" href={c.priceUrl||'#'} download={Boolean(c.priceUrl&&c.priceUrl!=='#')} style={editorTextStyle('assortmentPrice',100)}>{c.assortmentPriceText||'Скачать прайс'}</a>
