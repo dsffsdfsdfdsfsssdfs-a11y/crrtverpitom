@@ -468,8 +468,8 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .specialty-rail-image:after{content:'';position:absolute;inset:0;box-shadow:inset 0 -28px 34px rgba(35,25,18,.08);pointer-events:none}
 .specialty-rail-image img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .45s ease}
 .specialty-rail-card:hover .specialty-rail-image img{transform:scale(1.045)}
-.specialty-rail-card:has(.specialty-rail-image){min-height:390px}
-.specialty-rail-card-copy{margin-top:auto;padding:1.25rem 1.5rem 1.45rem;border-top:1px solid rgba(107,76,47,.10);transition:background .25s ease}
+.specialty-rail-card:has(.specialty-rail-image){min-height:0}
+.specialty-rail-card-copy{margin-top:0;padding:1.25rem 1.5rem 1.45rem;border-top:1px solid rgba(107,76,47,.10);transition:background .25s ease;flex:1}
 .specialty-rail-card.tone-1 .specialty-rail-card-copy{background:#fbf7f1}
 .specialty-rail-card.tone-2 .specialty-rail-card-copy{background:#f5ede2}
 .specialty-rail-card.tone-3 .specialty-rail-card-copy{background:#eee5d8}
@@ -482,4 +482,4 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .specialty-rail-foot span{color:#a57236;font:600 .62rem/1 Inter,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase}
 .specialty-rail-foot p{margin:0;max-width:520px;color:#8b7765;font-size:.76rem;line-height:1.45;text-align:right}
 @media(max-width:980px){.specialty-rail-head{grid-template-columns:1fr}.specialty-rail-intro{max-width:680px}.specialty-rail-track{grid-template-columns:repeat(4,minmax(260px,280px));justify-content:start}.specialty-rail-foot{align-items:flex-start;flex-direction:column}.specialty-rail-foot p{text-align:left}}
-@media(max-width:640px){.specialty-rail{padding:52px 1.2rem 46px}.specialty-rail-title{font-size:clamp(2.8rem,13vw,4.15rem)}.specialty-rail-track{width:calc(100% + 1.2rem);margin-right:-1.2rem;grid-template-columns:repeat(4,78vw);gap:12px;padding-right:1.2rem}.specialty-rail-card{min-height:220px;border-radius:21px}.specialty-rail-card:has(.specialty-rail-image){min-height:360px}.specialty-rail-image{height:190px}}
+@media(max-width:640px){.specialty-rail{padding:52px 1.2rem 46px}.specialty-rail-title{font-size:clamp(2.8rem,13vw,4.15rem)}.specialty-rail-track{width:calc(100% + 1.2rem);margin-right:-1.2rem;grid-template-columns:repeat(4,78vw);gap:12px;padding-right:1.2rem}.specialty-rail-card{min-height:220px;border-radius:21px}.specialty-rail-card:has(.specialty-rail-image){min-height:0}.specialty-rail-image{height:190px}}
