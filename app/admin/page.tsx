@@ -400,6 +400,45 @@ export default function Admin(){
     }
   }
 
+  async function uploadDocument(file:File,path:string){
+    if(!contentRef.current||uploading)return;
+    const allowed=['pdf','xls','xlsx'];
+    const ext=(file.name.split('.').pop()||'').toLowerCase();
+    if(!allowed.includes(ext)){
+      setMessage('Можно загрузить PDF, XLS или XLSX');
+      return;
+    }
+    setUploading(true);
+    setMessage('Загружаю прайс…');
+    try{
+      const dataUrl=await readDataUrl(file);
+      const r=await fetch('/api/admin/upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:file.name,base64:dataUrl.split(',')[1]})});
+      const data=await r.json();
+      if(!r.ok||!data.url)throw new Error(data?.error||'Ошибка загрузки');
+
+      const next=structuredClone(contentRef.current);
+      setPath(next,path,data.url+'?v='+Date.now());
+      contentRef.current=next;
+      setContent(next);
+      setDirty(true);
+      sendPreview(next);
+
+      setMessage('Сохраняю прайс…');
+      const saveResponse=await fetch('/api/admin/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(next)});
+      if(!saveResponse.ok){
+        const errorData=await saveResponse.json().catch(()=>null);
+        throw new Error(errorData?.error||'Ошибка сохранения');
+      }
+      setDirty(false);
+      setMessage('Прайс загружен');
+      window.setTimeout(()=>setMessage(''),1800);
+    }catch(error){
+      setMessage(error instanceof Error?error.message:'Ошибка загрузки прайса');
+    }finally{
+      setUploading(false);
+    }
+  }
+
   const meta=META[selected];
   const current=content;
   const groups=useMemo(()=>Array.from(new Set(LAYERS.map(x=>x.group))),[]);
@@ -505,9 +544,18 @@ export default function Admin(){
         </div>}
 
         {selected==='assortment'&&<div className="inspector-section"><h3>Страница 4 — Ассортимент</h3>
-          <label className="text-label">Метка<input value={current.assortmentKicker||''} onChange={e=>update('assortmentKicker',e.target.value)}/></label>
           <label className="text-label">Заголовок<textarea value={current.assortmentHeading||''} onChange={e=>update('assortmentHeading',e.target.value)}/></label>
           {(current.assortment||[]).map((x:string,i:number)=><label className="text-label" key={i}>Позиция {i+1}<input value={x} onChange={e=>update('assortment.'+i,e.target.value)}/></label>)}
+          <div className="specialty-image-editor">
+            <div className="specialty-image-hint">
+              <b>Файл прайса</b>
+              <span>Загрузите PDF, XLS или XLSX. После загрузки кнопка «Скачать прайс» на сайте автоматически будет скачивать этот файл.</span>
+            </div>
+            <div className="editor-image-row specialty-card-upload">
+              <span>{current.priceUrl&&current.priceUrl!=='#'?'Прайс подключён':'Прайс не загружен'}</span>
+              <label className="upload-btn">{uploading?'Загрузка…':(current.priceUrl&&current.priceUrl!=='#'?'Заменить прайс':'Загрузить прайс')}<input type="file" accept=".pdf,.xls,.xlsx,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onChange={e=>e.target.files?.[0]&&uploadDocument(e.target.files[0],'priceUrl')}/></label>
+            </div>
+          </div>
         </div>}
 
         {selected==='mother'&&<div className="inspector-section"><h3>Страница 5 — Маточник</h3>
