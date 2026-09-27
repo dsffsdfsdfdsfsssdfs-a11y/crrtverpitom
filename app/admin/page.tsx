@@ -500,6 +500,14 @@ export default function Admin(){
         {selected==='logo'&&<div className="inspector-section"><h3>Логотип</h3><label className="upload-btn">{uploading?'Загрузка…':'Заменить логотип'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'header.logoImage')}/></label></div>}
 
         {selected==='heroImage'&&<div className="inspector-section"><h3>Фоновое фото</h3><label className="upload-btn">{uploading?'Загрузка…':'Заменить фотографию'}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'hero.image')}/></label></div>}
+        {selected==='assortmentPrice'&&<div className="inspector-section"><h3>Файл для кнопки «Скачать прайс»</h3>
+          <div className="specialty-image-hint">
+            <b>{current.priceUrl&&current.priceUrl!=='#'?'Прайс уже подключён':'Прайс пока не загружен'}</b>
+            <span>Нажмите кнопку ниже и загрузите PDF, XLS или XLSX. Этот файл будет скачиваться посетителю при нажатии «Скачать прайс».</span>
+          </div>
+          <label className="upload-btn" style={{marginTop:12}}>{uploading?'Загрузка…':(current.priceUrl&&current.priceUrl!=='#'?'Заменить файл прайса':'Загрузить файл прайса')}<input type="file" accept=".pdf,.xls,.xlsx,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onChange={e=>e.target.files?.[0]&&uploadDocument(e.target.files[0],'priceUrl')}/></label>
+        </div>}
+
 
         {(selected==='brushText1'||selected==='brushText2')&&<div className="inspector-section"><h3>Поворот</h3><Slider label="Угол, °" value={num(getPath(current,selected==='brushText1'?'header.brush1Rotate':'header.brush2Rotate'),selected==='brushText1'?-2:0)} min={-45} max={45} step={0.5} onChange={v=>update(selected==='brushText1'?'header.brush1Rotate':'header.brush2Rotate',String(v))}/></div>}
 
@@ -548,13 +556,13 @@ export default function Admin(){
           {(current.assortment||[]).map((x:string,i:number)=><label className="text-label" key={i}>Позиция {i+1}<input value={x} onChange={e=>update('assortment.'+i,e.target.value)}/></label>)}
           <div className="specialty-image-editor">
             <div className="specialty-image-hint">
-              <b>Файл прайса</b>
-              <span>Загрузите PDF, XLS или XLSX. После загрузки кнопка «Скачать прайс» на сайте автоматически будет скачивать этот файл.</span>
+              <b>Фотографии карточек</b>
+              <span>Рекомендуемый размер: 1400 × 950 px. Фото автоматически заполняет карточку, текст остаётся поверх с затемнением.</span>
             </div>
-            <div className="editor-image-row specialty-card-upload">
-              <span>{current.priceUrl&&current.priceUrl!=='#'?'Прайс подключён':'Прайс не загружен'}</span>
-              <label className="upload-btn">{uploading?'Загрузка…':(current.priceUrl&&current.priceUrl!=='#'?'Заменить прайс':'Загрузить прайс')}<input type="file" accept=".pdf,.xls,.xlsx,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onChange={e=>e.target.files?.[0]&&uploadDocument(e.target.files[0],'priceUrl')}/></label>
-            </div>
+            {[0,1,2,3,4,5].map(i=><div className="editor-image-row specialty-card-upload" key={i}>
+              <span>Карточка {i+1}<small>1400 × 950 px</small></span>
+              <label className="upload-btn">{uploading?'Загрузка…':(current.assortmentImages?.[i]?'Заменить фото':'Добавить фото')}<input type="file" accept="image/*" onChange={e=>e.target.files?.[0]&&upload(e.target.files[0],'assortmentImages.'+i)}/></label>
+            </div>)}
           </div>
         </div>}
 
