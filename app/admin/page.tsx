@@ -77,7 +77,14 @@ const setPath=(o:any,path:string,value:any)=>{
   let x=o;
   for(let i=0;i<parts.length-1;i++){
     const k=parts[i];
-    if(x[k]==null||typeof x[k]!=='object') x[k]={};
+    const wantsArray=/^\d+$/.test(parts[i+1]);
+    if(x[k]==null||typeof x[k]!=='object'){
+      x[k]=wantsArray?[]:{};
+    }else if(wantsArray&&!Array.isArray(x[k])){
+      const arr:any[]=[];
+      Object.entries(x[k]).forEach(([key,val])=>{if(/^\d+$/.test(key))arr[Number(key)]=val});
+      x[k]=arr;
+    }
     x=x[k];
   }
   x[parts[parts.length-1]]=value;
@@ -359,16 +366,38 @@ export default function Admin(){
   }
 
   async function upload(file:File,path:string){
-    if(!content)return;
+    if(!contentRef.current||uploading)return;
     setUploading(true);
+    setMessage('Загружаю фото…');
     try{
       const optimized=await optimizeImage(file);
       const dataUrl=await readDataUrl(optimized);
       const r=await fetch('/api/admin/upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:optimized.name,base64:dataUrl.split(',')[1]})});
       const data=await r.json();
-      if(!r.ok||!data.url)throw new Error();
-      update(path,data.url+'?v='+Date.now());
-    }finally{setUploading(false)}
+      if(!r.ok||!data.url)throw new Error(data?.error||'Ошибка загрузки');
+
+      const next=structuredClone(contentRef.current);
+      setPath(next,path,data.url+'?v='+Date.now());
+      contentRef.current=next;
+      setContent(next);
+      setDirty(true);
+      sendPreview(next);
+
+      setMessage('Сохраняю фото…');
+      const saveResponse=await fetch('/api/admin/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(next)});
+      if(!saveResponse.ok){
+        const errorData=await saveResponse.json().catch(()=>null);
+        throw new Error(errorData?.error||'Ошибка сохранения');
+      }
+
+      setDirty(false);
+      setMessage('Фото сохранено');
+      window.setTimeout(()=>setMessage(''),1800);
+    }catch(error){
+      setMessage(error instanceof Error?error.message:'Ошибка загрузки фото');
+    }finally{
+      setUploading(false);
+    }
   }
 
   const meta=META[selected];
