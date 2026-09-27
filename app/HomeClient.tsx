@@ -207,7 +207,24 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
         </div>
       </div>
     </section>
-    <section className="assortment wrap" id="assortment" data-editor-key="assortment"><div className="section-head"><div><p data-editor-key="assortmentKicker" className="eyebrow gold" style={editorTextStyle('assortmentKicker',100)}>{c.assortmentKicker||'КОЛЛЕКЦИЯ'}</p><h2 data-editor-key="assortmentTitle" style={editorTextStyle('assortmentTitle',100)}>{c.assortmentHeading||<>Ассортимент<br/>для красивых садов.</>}</h2></div><a data-editor-key="assortmentPrice" className="outline-btn" href={c.priceUrl} style={editorTextStyle('assortmentPrice',100)}>{c.assortmentPriceText||'Скачать прайс'} <span>↓</span></a></div><div className="plant-grid">{c.assortment.map((x:string,i:number)=><article key={i} className={'plant p'+i}><span data-editor-key={'assortmentIndex'+(i+1)} style={editorTextStyle('assortmentIndex'+(i+1),100)}>0{i+1}</span><h3 data-editor-key={'assortmentItem'+(i+1)} style={editorTextStyle('assortmentItem'+(i+1),100)}>{x}</h3><p data-editor-key={'assortmentDesc'+(i+1)} style={editorTextStyle('assortmentDesc'+(i+1),100)}>{(c.assortmentDescriptions?.[i])||(i===5?'Вейгела · ива · лапчатка · рябинник · снежноягодник':'Сортовые растения собственного производства')}</p><i>↗</i></article>)}</div></section>
+    <section className="assortment assortment-luxury wrap" id="assortment" data-editor-key="assortment">
+      <div className="assortment-luxury-head">
+        <h2 data-editor-key="assortmentTitle" style={editorTextStyle('assortmentTitle',100)}>{c.assortmentHeading||'Ассортимент растений'}</h2>
+        <p className="assortment-luxury-intro">Шесть основных направлений. Полный перечень — в прайсе.</p>
+        <span className="assortment-luxury-badge">Собственное производство</span>
+      </div>
+      <div className="plant-grid">
+        {c.assortment.map((x:string,i:number)=><article key={i} className={'plant p'+i}>
+          <span data-editor-key={'assortmentIndex'+(i+1)} style={editorTextStyle('assortmentIndex'+(i+1),100)}>0{i+1}</span>
+          <h3 data-editor-key={'assortmentItem'+(i+1)} style={editorTextStyle('assortmentItem'+(i+1),100)}>{x}</h3>
+          <p data-editor-key={'assortmentDesc'+(i+1)} style={editorTextStyle('assortmentDesc'+(i+1),100)}>{(c.assortmentDescriptions?.[i])||(i===5?'Вейгела · ива · лапчатка · рябинник · снежноягодник':'Сортовые растения собственного производства')}</p>
+          <i>↗</i>
+        </article>)}
+      </div>
+      <div className="assortment-luxury-price">
+        <a data-editor-key="assortmentPrice" className="outline-btn" href={c.priceUrl} style={editorTextStyle('assortmentPrice',100)}>{c.assortmentPriceText||'Скачать прайс'} <span>↓</span></a>
+      </div>
+    </section>
     <section className="mother" data-editor-key="mother" style={{backgroundImage:`linear-gradient(90deg,#281914e8,#28191424),url(${optimizeImage(c.mother.image)})`}}><div className="wrap mother-copy"><p data-editor-key="motherKicker" className="eyebrow" style={editorTextStyle('motherKicker',100)}>{c.mother.kicker||'ОСНОВА КАЧЕСТВА'}</p><h2><span data-editor-key="motherTitle" style={{...editorTextStyle('motherTitle',100),display:'inline-block'}}>{c.mother.title}</span><br/><em><span data-editor-key="motherAccent" style={{...editorTextStyle('motherAccent',100),display:'inline-block'}}>{c.mother.accent}</span></em></h2><p data-editor-key="motherText" style={editorTextStyle('motherText',100)}>{c.mother.text}</p></div></section>
     <section className="gallery wrap" id="gallery" data-editor-key="gallery"><div className="section-head"><div><p data-editor-key="galleryKicker" className="eyebrow gold" style={editorTextStyle('galleryKicker',100)}>{c.galleryKicker||'НАШИ РАСТЕНИЯ'}</p><h2 data-editor-key="galleryTitle" style={editorTextStyle('galleryTitle',100)}>{c.galleryHeading||<>Фотографии<br/>наших черенков.</>}</h2></div><a data-editor-key="galleryLink" className="line-link" href="#order" style={editorTextStyle('galleryLink',100)}>{c.galleryLinkText||'Открыть галерею'} <span>→</span></a></div><div className="gallery-grid">{c.galleryImages.map((url:string,i:number)=>{const s=c.galleryImageSettings?.[i]||{scale:100,x:50,y:50};return <div key={url} style={{backgroundImage:`url(${optimizeImage(url)})`,backgroundSize:`${s.scale}%`,backgroundPosition:`${s.x}% ${s.y}%`}}/>})}</div></section>
     {c.videos.length>0&&<section className="videos wrap"><p className="eyebrow gold">ВИДЕО ИЗ ПИТОМНИКА</p><h2>Смотрите, как мы работаем</h2><div className="video-grid">{c.videos.map((v:any,i:number)=><article key={i}><iframe src={videoSrc(v.url)} title={v.title} allowFullScreen/><b>{v.title}</b></article>)}</div></section>}
