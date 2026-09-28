@@ -18,6 +18,7 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
   const [lightboxUrl,setLightboxUrl]=useState<string|null>(null);
   const [realityOpen,setRealityOpen]=useState(false);
   const [realityActive,setRealityActive]=useState<number>(0);
+  const [mediaSection,setMediaSection]=useState<0|1|2>(2);
   const [c,setContent]=useState<any>(initialContent);
   useLayoutEffect(()=>{
     if('scrollRestoration' in history) history.scrollRestoration='manual';
@@ -170,7 +171,17 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
     const key=raw.match(/[?&]p=([^&]+)/)?.[1];
     return 'https://rutube.ru/play/embed/'+m[1]+(key?'/?p='+encodeURIComponent(key):'');
   };
-  const realityVideos=(c.realityVideos||[]) as {title:string;url:string}[];
+  const mediaCollections=[
+    (c.agrotechVideos||[]) as {title:string;url:string}[],
+    (c.equipmentVideos||[]) as {title:string;url:string}[],
+    (c.realityVideos||[]) as {title:string;url:string}[]
+  ];
+  const mediaVideos=mediaCollections[mediaSection]||[];
+  const mediaTitles=[
+    c.resources?.[0]?.title||'Агротехника доращивания черенков в Р9',
+    c.resources?.[1]?.title||'Теплицы, техника и оборудование в питомнике',
+    c.resources?.[2]?.title||'Реалити-шоу «Будни питомниковода»'
+  ];
 
   const optimizeImage=(url:string)=>url?.includes('images.unsplash.com')?url.replace(/w=\d+/,'w=1600').replace(/q=\d+/,'q=72'):url;
   const fullGalleryImages=Array.from(new Set([...(c.galleryImages||[]),...(c.fullGalleryImages||[])].filter(Boolean))) as string[];
@@ -390,44 +401,44 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
         <span className="knowledge-museum-tag">Медиа-раздел</span>
       </div>
       <div className="knowledge-museum-layout">
-        <button type="button" className="knowledge-museum-feature" onClick={()=>{setRealityActive(0);setRealityOpen(true)}}>
+        <button type="button" className="knowledge-museum-feature" onClick={()=>{setMediaSection(2);setRealityActive(0);setRealityOpen(true)}}>
           <span className="knowledge-museum-feature-type">СЕРИАЛ / RUTUBE</span>
           <span className="knowledge-museum-feature-play">▶</span>
           <b data-editor-key="resourceTitle3" style={editorTextStyle('resourceTitle3',100)}>{c.resources?.[2]?.title||'Реалити-шоу «Будни питомниковода»'}</b>
           <span className="knowledge-museum-feature-copy">Серии открываются и проигрываются прямо на сайте.</span>
         </button>
         <div className="knowledge-museum-side">
-          {c.resources.slice(0,2).map((x:{title:string,url:string},i:number)=><a className="knowledge-museum-item" href={x.url} key={i}>
+          {c.resources.slice(0,2).map((x:{title:string;url:string},i:number)=><button type="button" className="knowledge-museum-item knowledge-museum-video-item" key={i} onClick={()=>{setMediaSection(i as 0|1);setRealityActive(0);setRealityOpen(true)}}>
             <div>
               <small>{i===0?'АГРОТЕХНИКА':'ОБОРУДОВАНИЕ'}</small>
               <b data-editor-key={'resourceTitle'+(i+1)} style={editorTextStyle('resourceTitle'+(i+1),100)}>{x.title}</b>
             </div>
             <span className="knowledge-museum-item-play" aria-hidden="true">▶</span>
-          </a>)}
+          </button>)}
         </div>
       </div>
     </section>
     <section className="order wrap" id="order" data-editor-key="order"><div><p data-editor-key="orderKicker" className="eyebrow" style={editorTextStyle('orderKicker',100)}>{c.order?.kicker||'СДЕЛАЕМ ПОДБОРКУ'}</p><h2><span data-editor-key="orderTitle" style={{...editorTextStyle('orderTitle',100),display:'inline-block'}}>{c.order?.title||'Готовы выбрать'}</span><br/><em><span data-editor-key="orderAccent" style={{...editorTextStyle('orderAccent',100),display:'inline-block'}}>{c.order?.accent||'растения?'}</span></em></h2></div><div><p data-editor-key="orderText" style={editorTextStyle('orderText',100)}>{c.order?.text||'Напишите нам — подберём культуры, объём и формат поставки для вашей задачи.'}</p><button data-editor-key="orderButton" className="gold-btn" style={editorButtonStyle('orderButton',100)} onClick={()=>setOrder(true)}>{c.order?.button||'Оформить заказ'} <span>↗</span></button><div className="help"><a data-editor-key="orderPhone" style={editorTextStyle('orderPhone',100)} href={'tel:+'+c.phoneLink}>{c.phone}</a><span data-editor-key="orderHelp" style={editorTextStyle('orderHelp',100)}>{c.order?.help||'Ответим на вопросы и поможем, если возникла проблема.'}</span></div></div></section>
     <footer data-editor-key="contacts"><div className="brand"><span className="brand-mark">ЦР</span><span>Центр<br/><b>размножения растений</b></span></div><div className="footer-contact">{contactPeople.map((x:{name:string,label:string,phone:string},i:number)=>{const shownLabel=i===0?(x.label||'').replace(/^8(?=\s*\()/,'+7'):x.label;return <div key={x.name}><small>{x.name}</small><a href={phoneHref(x.phone)}>{shownLabel}</a></div>})}<a href={'mailto:'+c.email}>{c.email}</a></div><a className="map" target="_blank" href={'https://yandex.ru/maps/?text='+encodeURIComponent(c.address)}>{c.address} ↗</a></footer>
-    {realityOpen&&<div className="reality-modal" role="dialog" aria-modal="true" aria-label="Реалити-шоу Будни питомниковода">
+    {realityOpen&&<div className="reality-modal" role="dialog" aria-modal="true" aria-label={mediaTitles[mediaSection]}>
       <div className="reality-shell">
         <div className="reality-head">
-          <div><p>ДЕЛИМСЯ ОПЫТОМ</p><h2>Будни питомниковода</h2><span>{realityVideos.length?realityVideos.length+' серий':'Серии скоро появятся'}</span></div>
+          <div><p>ДЕЛИМСЯ ОПЫТОМ</p><h2>{mediaTitles[mediaSection]}</h2><span>{mediaVideos.length?mediaVideos.length+' видео':'Видео скоро появятся'}</span></div>
           <button type="button" className="reality-close" onClick={()=>setRealityOpen(false)} aria-label="Закрыть">×</button>
         </div>
-        {realityVideos.length>0&&<>
+        {mediaVideos.length>0&&<>
           <div className="reality-player-wrap">
-            <iframe key={realityActive+'-'+realityVideos[realityActive]?.url} src={rutubeEmbed(realityVideos[realityActive]?.url)} title={realityVideos[realityActive]?.title||'Будни питомниковода'} allow="clipboard-write; autoplay; fullscreen" allowFullScreen loading="eager"/>
+            <iframe key={mediaSection+'-'+realityActive+'-'+mediaVideos[realityActive]?.url} src={rutubeEmbed(mediaVideos[realityActive]?.url)} title={mediaVideos[realityActive]?.title||mediaTitles[mediaSection]} allow="clipboard-write; autoplay; fullscreen" allowFullScreen loading="eager"/>
           </div>
           <div className="reality-series">
-            {realityVideos.map((v:any,i:number)=><button type="button" key={(v.url||'video')+'-'+i} className={'reality-series-card '+(i===realityActive?'active':'')} onClick={()=>setRealityActive(i)}>
+            {mediaVideos.map((v:any,i:number)=><button type="button" key={(v.url||'video')+'-'+i} className={'reality-series-card '+(i===realityActive?'active':'')} onClick={()=>setRealityActive(i)}>
               <span>{String(i+1).padStart(2,'0')}</span>
-              <b>{v.title||'Серия '+(i+1)}</b>
+              <b>{v.title||'Видео '+(i+1)}</b>
               <i>▶</i>
             </button>)}
           </div>
         </>}
-        {realityVideos.length===0&&<div className="reality-empty">Добавьте ссылки на серии RUTUBE через редактор сайта.</div>}
+        {mediaVideos.length===0&&<div className="reality-empty">Добавьте ссылки RUTUBE для этого раздела через редактор сайта.</div>}
       </div>
     </div>}
     {galleryOpen&&<div className="full-gallery-modal" role="dialog" aria-modal="true" aria-label="Галерея растений">
