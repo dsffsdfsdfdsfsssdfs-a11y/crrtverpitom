@@ -391,7 +391,6 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
       </div>
       <div className="knowledge-museum-layout">
         <button type="button" className="knowledge-museum-feature" onClick={()=>{setRealityActive(0);setRealityOpen(true)}}>
-          <span className="knowledge-museum-feature-no" data-editor-key="resourceIndex3" style={editorTextStyle('resourceIndex3',100)}>03</span>
           <span className="knowledge-museum-feature-type">СЕРИАЛ / RUTUBE</span>
           <span className="knowledge-museum-feature-play">▶</span>
           <b data-editor-key="resourceTitle3" style={editorTextStyle('resourceTitle3',100)}>{c.resources?.[2]?.title||'Реалити-шоу «Будни питомниковода»'}</b>
@@ -399,12 +398,11 @@ export default function HomeClient({initialContent}:{initialContent:any}) {
         </button>
         <div className="knowledge-museum-side">
           {c.resources.slice(0,2).map((x:{title:string,url:string},i:number)=><a className="knowledge-museum-item" href={x.url} key={i}>
-            <span data-editor-key={'resourceIndex'+(i+1)} style={editorTextStyle('resourceIndex'+(i+1),100)}>0{i+1}</span>
             <div>
               <small>{i===0?'АГРОТЕХНИКА':'ОБОРУДОВАНИЕ'}</small>
               <b data-editor-key={'resourceTitle'+(i+1)} style={editorTextStyle('resourceTitle'+(i+1),100)}>{x.title}</b>
             </div>
-            <i>↗</i>
+            <span className="knowledge-museum-item-play" aria-hidden="true">▶</span>
           </a>)}
         </div>
       </div>
