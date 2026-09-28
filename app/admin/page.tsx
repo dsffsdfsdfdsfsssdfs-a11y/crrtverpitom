@@ -691,30 +691,36 @@ export default function Admin(){
           <label className="text-label">Метка<input value={current.knowledgeKicker||''} onChange={e=>update('knowledgeKicker',e.target.value)}/></label>
           <label className="text-label">Заголовок<input value={current.knowledgeHeading||''} onChange={e=>update('knowledgeHeading',e.target.value)}/></label>
           {(current.resources||[]).map((x:any,i:number)=><div className="editor-resource" key={i}><label className="text-label">Название {i+1}<input value={x.title||''} onChange={e=>update('resources.'+i+'.title',e.target.value)}/></label>{i!==2&&<label className="text-label">Ссылка<input value={x.url||''} onChange={e=>update('resources.'+i+'.url',e.target.value)}/></label>}</div>)}
-          <div className="specialty-image-hint" style={{marginTop:18}}>
-            <b>Реалити-шоу «Будни питомниковода»</b>
-            <span>Видео не загружаются на сайт. Просто вставляйте ссылки RUTUBE — плеер будет работать прямо на странице.</span>
-          </div>
-          <button type="button" className="upload-btn" style={{width:'100%',justifyContent:'center',marginTop:12}} onClick={()=>{
-            const next=[...(current.realityVideos||[]),{title:'Новая серия',url:''}];
-            update('realityVideos',next);
-          }}>Добавить видео</button>
-          {(current.realityVideos||[]).map((v:any,i:number)=><div className="editor-resource" key={'rv-'+i} style={{marginTop:12}}>
-            <label className="text-label">Название серии {i+1}<input value={v.title||''} onChange={e=>update('realityVideos.'+i+'.title',e.target.value)}/></label>
-            <label className="text-label">Ссылка RUTUBE<input placeholder="https://rutube.ru/video/..." value={v.url||''} onChange={e=>update('realityVideos.'+i+'.url',e.target.value)}/></label>
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr auto',gap:8}}>
-              <button type="button" className="upload-btn" disabled={i===0} onClick={()=>{
-                if(i===0)return;
-                const arr=[...(current.realityVideos||[])]; [arr[i-1],arr[i]]=[arr[i],arr[i-1]]; update('realityVideos',arr);
-              }}>↑ Выше</button>
-              <button type="button" className="upload-btn" disabled={i===(current.realityVideos||[]).length-1} onClick={()=>{
-                if(i===(current.realityVideos||[]).length-1)return;
-                const arr=[...(current.realityVideos||[])]; [arr[i+1],arr[i]]=[arr[i],arr[i+1]]; update('realityVideos',arr);
-              }}>↓ Ниже</button>
-              <button type="button" onClick={()=>{
-                const arr=[...(current.realityVideos||[])]; arr.splice(i,1); update('realityVideos',arr);
-              }} style={{border:'1px solid #d7c8b8',background:'#fff7f0',color:'#8f4e3b',borderRadius:10,padding:'8px 10px',cursor:'pointer'}}>Удалить</button>
+          {[
+            {key:'agrotechVideos',label:current.resources?.[0]?.title||'Агротехника доращивания черенков в Р9'},
+            {key:'equipmentVideos',label:current.resources?.[1]?.title||'Теплицы, техника и оборудование в питомнике'},
+            {key:'realityVideos',label:current.resources?.[2]?.title||'Реалити-шоу «Будни питомниковода»'}
+          ].map((group:any)=><div key={group.key} style={{marginTop:18}}>
+            <div className="specialty-image-hint">
+              <b>{group.label}</b>
+              <span>Видео не загружаются на сайт. Вставляйте ссылки RUTUBE — ролики будут проигрываться прямо на сайте.</span>
             </div>
+            <button type="button" className="upload-btn" style={{width:'100%',justifyContent:'center',marginTop:12}} onClick={()=>{
+              const next=[...(current[group.key]||[]),{title:'Новое видео',url:''}];
+              update(group.key,next);
+            }}>Добавить видео</button>
+            {(current[group.key]||[]).map((v:any,i:number)=><div className="editor-resource" key={group.key+'-'+i} style={{marginTop:12}}>
+              <label className="text-label">Название видео {i+1}<input value={v.title||''} onChange={e=>update(group.key+'.'+i+'.title',e.target.value)}/></label>
+              <label className="text-label">Ссылка RUTUBE<input placeholder="https://rutube.ru/video/..." value={v.url||''} onChange={e=>update(group.key+'.'+i+'.url',e.target.value)}/></label>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr auto',gap:8}}>
+                <button type="button" className="upload-btn" disabled={i===0} onClick={()=>{
+                  if(i===0)return;
+                  const arr=[...(current[group.key]||[])]; [arr[i-1],arr[i]]=[arr[i],arr[i-1]]; update(group.key,arr);
+                }}>↑ Выше</button>
+                <button type="button" className="upload-btn" disabled={i===(current[group.key]||[]).length-1} onClick={()=>{
+                  if(i===(current[group.key]||[]).length-1)return;
+                  const arr=[...(current[group.key]||[])]; [arr[i+1],arr[i]]=[arr[i],arr[i+1]]; update(group.key,arr);
+                }}>↓ Ниже</button>
+                <button type="button" onClick={()=>{
+                  const arr=[...(current[group.key]||[])]; arr.splice(i,1); update(group.key,arr);
+                }} style={{border:'1px solid #d7c8b8',background:'#fff7f0',color:'#8f4e3b',borderRadius:10,padding:'8px 10px',cursor:'pointer'}}>Удалить</button>
+              </div>
+            </div>)}
           </div>)}
         </div>}
 
