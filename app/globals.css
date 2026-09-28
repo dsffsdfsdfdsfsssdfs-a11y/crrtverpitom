@@ -2513,3 +2513,10 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
     height:46px!important;
   }
 }
+
+
+/* Hide large text inside knowledge cards */
+.knowledge-museum-feature b,
+.knowledge-museum-item b{
+  display:none!important;
+}
