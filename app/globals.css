@@ -2371,3 +2371,14 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
     height:50px;
   }
 }
+
+
+/* Knowledge video button reset */
+.knowledge-museum-video-item{
+  appearance:none;
+  -webkit-appearance:none;
+  width:100%;
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+}
