@@ -2520,3 +2520,26 @@ main{position:relative;z-index:1;width:100%;min-height:100vh;background:var(--cr
 .knowledge-museum-item b{
   display:none!important;
 }
+
+
+/* Reality show card cover */
+.knowledge-museum-feature{
+  background:
+    #111 url('/reality-cover.webp') center center / contain no-repeat!important;
+  overflow:hidden!important;
+}
+.knowledge-museum-feature-type{
+  position:relative!important;
+  z-index:2!important;
+  padding:.45rem .7rem!important;
+  border-radius:999px!important;
+  color:#f0cf93!important;
+  background:rgba(10,10,9,.62)!important;
+  backdrop-filter:blur(5px)!important;
+}
+.knowledge-museum-feature-play{
+  position:relative!important;
+  z-index:2!important;
+  background:rgba(10,10,9,.66)!important;
+  backdrop-filter:blur(5px)!important;
+}
